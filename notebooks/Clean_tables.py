@@ -9,8 +9,13 @@ fasttext.FastText.eprint = lambda x: None # avoid Warning : `load_model` does no
 
 path_parent = os.path.dirname(os.getcwd())
 data_path = os.path.join(path_parent, 'src\data')
-table_corpus_path = os.path.join(data_path, 'product\lspc2020_to_tablecorpus')
-top_100_path = os.path.join(data_path, 'product\product_top100')
+
+# product
+#top_100_path = os.path.join(data_path, 'product\product_top100')
+#cleaned_top_100_path = os.path.join(top_100_path, 'cleaned')
+
+# LocalBusiness
+top_100_path = os.path.join(data_path, 'LocalBusiness\LocalBusiness_top100')
 cleaned_top_100_path = os.path.join(top_100_path, 'cleaned')
 
 def remove_irrelevant_tlds():
