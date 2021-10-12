@@ -2,12 +2,14 @@ import pandas as pd
 import os
 import fasttext
 import progressbar
+
 fasttext.FastText.eprint = lambda x: None
 
 path = os.getcwd()
 data_path = os.path.join(os.getcwd(), 'src\data')
 table_corpus_path = os.path.join(data_path, 'product\lspc2020_to_tablecorpus')
 top_100_path = os.path.join(data_path, 'product\product_top100')
+
 
 def remove_irrelevant_tlds():
     all_files = os.listdir(top_100_path)
@@ -26,12 +28,13 @@ def remove_irrelevant_tlds():
 
     print(len(valid_files))
 
+
 pretrained_fasttext_path = os.path.join(os.getcwd(), 'src\models\lid.176.bin')
 model = fasttext.load_model(pretrained_fasttext_path)
 
 df = pd.read_json(top_100_path + r'\Product_alibaba.com_September2020.json.gz', compression='gzip', lines=True)
 
-#iterrate over rows
+# iterate over rows
 english_products = []
 count = 0
 with progressbar.ProgressBar(max_value=df.shape[0]) as bar:
@@ -45,4 +48,4 @@ with progressbar.ProgressBar(max_value=df.shape[0]) as bar:
         count += 1
         bar.update(count)
 
-test=2
+test = 2
