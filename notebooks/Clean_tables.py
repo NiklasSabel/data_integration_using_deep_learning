@@ -7,6 +7,7 @@ import gzip
 import shutil
 fasttext.FastText.eprint = lambda x: None # avoid Warning : `load_model` does not return WordVectorModel or SupervisedModel any more, but a `FastText` object which is very similar.
 
+
 path_parent = os.path.dirname(os.getcwd())
 data_path = os.path.join(path_parent, 'src\data')
 
@@ -17,6 +18,7 @@ data_path = os.path.join(path_parent, 'src\data')
 # LocalBusiness
 top_100_path = os.path.join(data_path, 'LocalBusiness\LocalBusiness_top100')
 cleaned_top_100_path = os.path.join(top_100_path, 'cleaned')
+
 
 def remove_irrelevant_tlds():
     """
@@ -88,9 +90,11 @@ def remove_with_fasttext():
         # design new dataframe with english products only
         df_cleaned = df[df['row_id'].isin(english_products)]
 
+
         # write to gzip compressed json file
         df_cleaned.to_json(os.path.join(cleaned_top_100_path, '{}'.format(file)), compression='gzip', orient='records', lines=True)
 
 # run functions
 remove_irrelevant_tlds()
 remove_with_fasttext()
+
