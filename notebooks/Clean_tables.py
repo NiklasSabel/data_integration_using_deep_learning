@@ -92,7 +92,8 @@ def remove_with_fasttext():
 
 
         # write to gzip compressed json file
-        df_cleaned.to_json(os.path.join(cleaned_top_100_path, '{}'.format(file)), compression='gzip', orient='records', lines=True)
+        if df.shape[0] > 0:
+            df_cleaned.to_json(os.path.join(cleaned_top_100_path, '{}'.format(file)), compression='gzip', orient='records', lines=True)
 
 # run functions
 remove_irrelevant_tlds()
