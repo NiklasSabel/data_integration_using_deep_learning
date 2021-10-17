@@ -1,0 +1,53 @@
+﻿Category;b:top_100;a:top_100;b:min3;a:min_3;b:rest;a:rest;Tables Left;Gesamt
+Radio intermediate;100;57;146;100;180;108;426;
+Radio;;20;;48;;49;117;0,274647887
+LandmarksOrHistoricalBuildings intermediate;100;41;246;114;109;52;455;
+LandmarksOrHistoricalBuildings;;37;;87;;18;142;0,312087912
+Library intermediate;100;47;52;23;310;130;462;
+Library;;16;;11;;16;43;0,093073593
+SportsTeam intermediate;100;38;146;92;243;102;489;
+SportsTeam;;22;;51;;43;116;0,237218814
+GovernmentOrganization intermediate;100;36;15;15;454;176;569;
+GovernmentOrganization;;23;;15;;82;120;0,210896309
+Dataset intermediate;100;40;532;201;248;126;880;
+Dataset;;30;;72;;30;132;0,15
+TVEpisode intermediate;100;58;742;358;117;57;959;
+TVEpisode;;52;;221;;29;302;0,314911366
+CollegeOrUniversity intermediate;100;60;174;87;715;321;989;
+CollegeOrUniversity;;54;;46;;263;363;0,367037412
+School intermediate;100;69;168;122;836;504;1104;
+School;;61;;74;;130;265;0,240036232
+Hospital intermediate;100;62;358;269;1112;877;1570;
+Hospital;;40;;162;;849;1051;0,669426752
+EducationalOrganization intemediate;100;58;485;294;3190;1906;3775;
+EducationalOrganization;;44;;185;;844;1073;0,284238411
+SportsEvent intermediate;100;61;2576;1394;1179;692;3855;
+SportsEvent;;48;;474;;78;600;0,155642023
+Movie intermediate;100;47;5688;2690;1251;746;7039;
+Movie;;42;;1217;;120;1379;0,19590851
+MusicAlbum intermediate;100;49;4088;3741;6012;5673;10200;
+MusicAlbum;;44;;3462;;4785;8291;0,812843137
+MusicRecording intermediate;100;74;13694;12810;4413;4206;18207;
+MusicRecording;;70;;12198;;2453;14721;0,808535179
+Hotel intermediate;100;55;13014;8876;12414;7696;25528;
+Hotel;;46;;3189;;5062;8297;0,325015669
+Job Postin Intermediate;100;74;23497;13991;;;23597;
+JobPosting;;42;;3887;;;3929;0,166504217
+Recipe intermediate;100;65;30480;21550;;;30580;
+Recipe;;27;;2072;;;2099;0,068639634
+Event intermediate;100;72;143898;91788;;;143998;
+Event;;58;;33297;;;33355;0,231635162
+Book intermediate;100;63;7662;4256;;;7762;
+Book;;52;;2530;;;2582;0,332646225
+CreativeWork intermediate;100;77;173855;121371;;;173955;
+CreativeWork;;69;;69245;;;69314;0,398459372
+LocalBusiness intermediate;100;55;50506;31602;;;50606;
+LocalBusiness;;44;;14943;;;14987;0,296150654
+Person intermediate;100;67;127363;127363;;;127463;
+Person;;65;;88544;;;88609;0,695174286
+Product intermediate;100;77;zu groß;;;;100;
+Product;;72;;;;;72;0,72
+Place intermediate;100;78;27355;18440;;;27455;
+Place;;73;;14315;;;14388;0,524057549
+Restaurant intermediate;100;65;6470;2887;;;6570;
+Restaurant;;49;;887;;;936;0,142465753
