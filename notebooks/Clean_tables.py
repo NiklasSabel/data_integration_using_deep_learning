@@ -11,14 +11,6 @@ fasttext.FastText.eprint = lambda x: None # avoid Warning : `load_model` does no
 path_parent = os.path.dirname(os.getcwd())
 data_path = os.path.join(path_parent, 'src\data')
 
-# product
-#top_100_path = os.path.join(data_path, 'product\product_top100')
-#cleaned_top_100_path = os.path.join(top_100_path, 'cleaned')
-
-# LocalBusiness
-top_100_path = os.path.join(data_path, 'LocalBusiness\LocalBusiness_top100')
-cleaned_top_100_path = os.path.join(top_100_path, 'cleaned')
-
 
 def remove_irrelevant_tlds():
     """
@@ -56,6 +48,10 @@ def remove_with_fasttext():
     for file in files:
         print(file)
         df = pd.read_json(os.path.join(cleaned_top_100_path, '{}'.format(file)), compression='gzip', lines=True)
+        df['concat'] = ''
+
+        for j in range(df.shape[1]):  # iterate over columns
+            df['concat'] = df['concat'] + df.iloc[:,j].astype('str')
 
         #iterrate over rows and save row_ids of english products
         english_products = []
@@ -63,26 +59,9 @@ def remove_with_fasttext():
         with progressbar.ProgressBar(max_value=df.shape[0]) as bar:
             for i in range(df.shape[0]):  # iterate over rows
                 row_id = df['row_id'][i]
-                for j in range(df.shape[1]): # iterate over columns
-                    if df.columns[j].lower() == 'brand': # exclude brand column
-                        cell_pred = 'None'
-                    else:
-                        cell = df.iat[i,j]
-                        if type(cell) == str:
-                            cell_pred = model.predict([cell])[0]
-                        elif type(cell) == list:
-                            if type(cell[0]) == str:
-                                cell_pred = model.predict(cell)[0]
-                            else:
-                                cell_pred = 'None'
-                        else:
-                            cell_pred = 'None'
-                    if cell_pred == 'None' or cell_pred == [['__label__en']]:
-                        english = 'True'
-                    else:
-                        english = 'False'
-                        break
-                if english == 'True':
+                cell = df['concat'][i]
+                cell_pred = model.predict([cell])[0]
+                if cell_pred == [['__label__en']]:
                     english_products.append(row_id)
                 count += 1
                 bar.update(count)
@@ -96,6 +75,24 @@ def remove_with_fasttext():
             df_cleaned.to_json(os.path.join(cleaned_top_100_path, '{}'.format(file)), compression='gzip', orient='records', lines=True)
 
 # run functions
-remove_irrelevant_tlds()
-remove_with_fasttext()
+entities = ['product_top100', 'product_min3', 'localbusiness_top100', 'localbusiness_min3']
+
+for entity in entities:
+    if entity == 'product_top100':
+        top_100_path = os.path.join(data_path, 'product\product_top100')
+        cleaned_top_100_path = os.path.join(top_100_path, 'cleaned')
+    elif entity == 'product_min3':
+        top_100_path = os.path.join(data_path, 'product\product_minimum3')
+        cleaned_top_100_path = os.path.join(top_100_path, 'cleaned')
+    elif entity == 'localbusiness_top100':
+        top_100_path = os.path.join(data_path, 'LocalBusiness\LocalBusiness_top100')
+        cleaned_top_100_path = os.path.join(top_100_path, 'cleaned')
+    elif entity == 'localbusiness_min3':
+        top_100_path = os.path.join(data_path, 'LocalBusiness\LocalBusiness_minimum3')
+        cleaned_top_100_path = os.path.join(top_100_path, 'cleaned')
+
+    print('running {} path'.format(entity))
+
+    remove_irrelevant_tlds()
+    remove_with_fasttext()
 
