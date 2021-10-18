@@ -45,6 +45,8 @@ def remove_with_fasttext():
     # list all top 100 product files
     files = [file for file in os.listdir(cleaned_top_100_path) if file.endswith('.json.gz')]
 
+    count_files = 0
+
     for file in files:
         print(file)
         df = pd.read_json(os.path.join(cleaned_top_100_path, '{}'.format(file)), compression='gzip', lines=True)
@@ -84,6 +86,9 @@ def remove_with_fasttext():
         else:
             # if df does not contain more than 20 entries delete it from cleaned file path
             os.remove(os.path.join(cleaned_top_100_path, '{}'.format(file)))
+
+        count_files += 1
+        print('{} out of {} files done'.format(count_files, len(files)))
 
 
 # run functions
