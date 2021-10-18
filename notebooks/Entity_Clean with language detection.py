@@ -9,7 +9,7 @@ fasttext.FastText.eprint = lambda x: None # avoid Warning : `load_model` does no
 
 
 path_parent = os.path.dirname(os.getcwd())
-data_path = os.path.join(path_parent, 'src\data')
+data_path = os.path.join(path_parent, 'src/data')
 
 
 def remove_irrelevant_tlds():
@@ -39,7 +39,7 @@ def remove_with_fasttext():
     reads all files from cleaned data path and removes non-english products from the data tables
     :return:
     """
-    pretrained_fasttext_path = os.path.join(path_parent, 'src\models\lid.176.bin')
+    pretrained_fasttext_path = os.path.join(path_parent, 'src/models/lid.176.bin')
     model = fasttext.load_model(pretrained_fasttext_path)
 
     # list all top 100 product files
@@ -96,16 +96,16 @@ entities = ['product_top100', 'product_min3', 'localbusiness_top100', 'localbusi
 
 for entity in entities:
     if entity == 'product_top100':
-        top_100_path = os.path.join(data_path, 'product\product_top100')
+        top_100_path = os.path.join(data_path, 'product/product_top100')
         cleaned_top_100_path = os.path.join(top_100_path, 'cleaned')
     elif entity == 'product_min3':
-        top_100_path = os.path.join(data_path, 'product\product_minimum3')
+        top_100_path = os.path.join(data_path, 'product/product_minimum3')
         cleaned_top_100_path = os.path.join(top_100_path, 'cleaned')
     elif entity == 'localbusiness_top100':
-        top_100_path = os.path.join(data_path, 'LocalBusiness\LocalBusiness_top100')
+        top_100_path = os.path.join(data_path, 'LocalBusiness/LocalBusiness_top100')
         cleaned_top_100_path = os.path.join(top_100_path, 'cleaned')
     elif entity == 'localbusiness_min3':
-        top_100_path = os.path.join(data_path, 'LocalBusiness\LocalBusiness_minimum3')
+        top_100_path = os.path.join(data_path, 'LocalBusiness/LocalBusiness_minimum3')
         cleaned_top_100_path = os.path.join(top_100_path, 'cleaned')
 
     print('running {} path'.format(entity))
