@@ -109,3 +109,6 @@ for entity in entities:
         cleaned_top_100_path = os.path.join(top_100_path, 'cleaned')
 
     print('running {} path'.format(entity))
+
+    remove_irrelevant_tlds()
+    remove_with_fasttext()
