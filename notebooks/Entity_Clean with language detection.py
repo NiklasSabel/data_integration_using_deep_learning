@@ -28,17 +28,20 @@ def remove_irrelevant_tlds():
     count = 0
     with progressbar.ProgressBar(max_value=len(files)) as bar:
         for file in files:
-            file_valid = 'false'
-            for tld in valid_tld:
-                if tld in file:
-                    file_valid = 'true'
-            if file_valid == 'true':
-                valid_files.append(file)
-                # copy only files with valid tlds to cleaned path
-                shutil.copy(os.path.join(top_100_path, '{}'.format(file)), cleaned_top_100_path, follow_symlinks=True)
+            if count < 3: # just for testing reasons
+                file_valid = 'false'
+                for tld in valid_tld:
+                    if tld in file:
+                        file_valid = 'true'
+                if file_valid == 'true':
+                    valid_files.append(file)
+                    # copy only files with valid tlds to cleaned path
+                    shutil.copy(os.path.join(top_100_path, '{}'.format(file)), cleaned_top_100_path, follow_symlinks=True)
 
             count += 1
             bar.update(count)
+
+    print('tlds cleaning done')
 
 
 def remove_with_fasttext():
@@ -99,7 +102,8 @@ def remove_with_fasttext():
 
 
 # run functions
-entities = ['product_top100', 'product_min3', 'localbusiness_top100', 'localbusiness_min3']
+# entities = ['product_top100', 'product_min3', 'localbusiness_top100', 'localbusiness_min3']
+entities = ['product_min3', 'localbusiness_top100', 'localbusiness_min3']
 
 for entity in entities:
     if entity == 'product_top100':
