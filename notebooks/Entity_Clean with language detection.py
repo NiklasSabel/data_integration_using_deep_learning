@@ -28,7 +28,7 @@ def remove_irrelevant_tlds():
     count = 0
     with progressbar.ProgressBar(max_value=len(files)) as bar:
         for file in files:
-            if count < 3: # just for testing reasons
+            if count < 10: # just for testing reasons
                 file_valid = 'false'
                 for tld in valid_tld:
                     if tld in file:
