@@ -6,18 +6,10 @@ import gzip
 import shutil
 
 path_parent = os.path.dirname(os.getcwd())
-data_path = os.path.join(path_parent, 'src\data')
-
-mapping_corpus_path = os.path.join(data_path, 'product\lspc2020_to_tablecorpus')
-table_corpus_path = os.path.join(data_path, 'product\product_top100\cleaned')
-table_with_id_path = os.path.join(table_corpus_path, 'with_id')
-
-
-zip_files_mapping = os.listdir(mapping_corpus_path)
-zip_files_tables = [file for file in os.listdir(table_corpus_path) if file.endswith('.json.gz')]
-zip_files_with_id = [file for file in os.listdir(table_with_id_path) if file.endswith('.json.gz')]
+data_path = os.path.join(path_parent, 'src/data')
 
 def add_cluster_id_column():
+    print('add cluster id column')
     count = 0
     with progressbar.ProgressBar(max_value=len(zip_files_tables)) as bar:
         for file in zip_files_tables:
@@ -29,8 +21,12 @@ def add_cluster_id_column():
             count += 1
             bar.update(count)
 
+    print('adding cluster id column done')
+
 
 def match_cluster_ids_to_tables():
+
+    print('match cluster ids')
 
     try:
         rd = open(os.path.join(table_with_id_path, 'files_done.txt'), 'r')
@@ -68,7 +64,32 @@ def match_cluster_ids_to_tables():
                 wr.writelines([element])
             wr.close()
 
+    print('matching cluster ids done')
+
 
 # run functions
-add_cluster_id_column()
-match_cluster_ids_to_tables()
+#entities = ['product_top100', 'product_min3']
+entities = ['product_top100']
+
+for entity in entities:
+    if entity == 'product_top100':
+        mapping_corpus_path = os.path.join(data_path, 'product/lspc2020_to_tablecorpus')
+        table_corpus_path = os.path.join(data_path, 'product/product_top100/cleaned')
+        table_with_id_path = os.path.join(table_corpus_path, 'with_id')
+
+        zip_files_mapping = os.listdir(mapping_corpus_path)
+        zip_files_tables = [file for file in os.listdir(table_corpus_path) if file.endswith('.json.gz')]
+        zip_files_with_id = [file for file in os.listdir(table_with_id_path) if file.endswith('.json.gz')]
+    elif entity == 'product_min3':
+        mapping_corpus_path = os.path.join(data_path, 'product/lspc2020_to_tablecorpus')
+        table_corpus_path = os.path.join(data_path, 'product/product_minimum3/cleaned')
+        table_with_id_path = os.path.join(table_corpus_path, 'with_id')
+
+        zip_files_mapping = os.listdir(mapping_corpus_path)
+        zip_files_tables = [file for file in os.listdir(table_corpus_path) if file.endswith('.json.gz')]
+        zip_files_with_id = [file for file in os.listdir(table_with_id_path) if file.endswith('.json.gz')]
+
+    print('running {} path'.format(entity))
+
+    add_cluster_id_column()
+    match_cluster_ids_to_tables()
