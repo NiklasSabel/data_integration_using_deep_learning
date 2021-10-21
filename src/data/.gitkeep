@@ -1,0 +1,6 @@
+# keep data and models
+/data/
+**/data
+**/models
+**/product
+**/LocalBusiness
