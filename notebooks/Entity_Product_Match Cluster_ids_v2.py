@@ -35,6 +35,7 @@ def match_cluster_ids_to_tables():
     except:
         files_done = []
 
+    count_files = 0
     for map_file in zip_files_mapping:
         if '{}\n'.format(map_file) not in files_done:
             df_map = pd.read_json(os.path.join(mapping_corpus_path, '{}'.format(map_file)), compression='gzip', lines=True)
@@ -63,6 +64,9 @@ def match_cluster_ids_to_tables():
             for element in files_done:
                 wr.writelines([element])
             wr.close()
+
+            count_files += 1
+            print('{} out of {} files done'.format(count_files, len(zip_files_mapping)))
 
     print('matching cluster ids done')
 
