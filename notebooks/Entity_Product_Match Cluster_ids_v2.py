@@ -68,8 +68,8 @@ def match_cluster_ids_to_tables():
 
 
 # run functions
-#entities = ['product_top100', 'product_min3']
-entities = ['product_top100']
+entities = ['product_top100', 'product_minimum3']
+#entities = ['product_top100']
 
 for entity in entities:
     if entity == 'product_top100':
