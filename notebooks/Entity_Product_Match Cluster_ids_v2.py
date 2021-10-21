@@ -73,7 +73,7 @@ entities = ['product_top100', 'product_minimum3']
 
 for entity in entities:
     if entity == 'product_top100':
-        mapping_corpus_path = os.path.join(data_path, 'product/lspc2020_to_tablecorpus')
+        mapping_corpus_path = os.path.join(data_path, 'product/lspc2020_to_tablecorpus/Cleaned')
         table_corpus_path = os.path.join(data_path, 'product/product_top100/cleaned')
         table_with_id_path = os.path.join(table_corpus_path, 'with_id')
 
@@ -81,7 +81,7 @@ for entity in entities:
         zip_files_tables = [file for file in os.listdir(table_corpus_path) if file.endswith('.json.gz')]
         zip_files_with_id = [file for file in os.listdir(table_with_id_path) if file.endswith('.json.gz')]
     elif entity == 'product_min3':
-        mapping_corpus_path = os.path.join(data_path, 'product/lspc2020_to_tablecorpus')
+        mapping_corpus_path = os.path.join(data_path, 'product/lspc2020_to_tablecorpus/Cleaned')
         table_corpus_path = os.path.join(data_path, 'product/product_minimum3/cleaned')
         table_with_id_path = os.path.join(table_corpus_path, 'with_id')
 
