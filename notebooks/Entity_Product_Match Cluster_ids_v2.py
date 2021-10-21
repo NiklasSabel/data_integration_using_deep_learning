@@ -84,7 +84,7 @@ for entity in entities:
         zip_files_mapping = os.listdir(mapping_corpus_path)
         zip_files_tables = [file for file in os.listdir(table_corpus_path) if file.endswith('.json.gz')]
         zip_files_with_id = [file for file in os.listdir(table_with_id_path) if file.endswith('.json.gz')]
-    elif entity == 'product_min3':
+    elif entity == 'product_minimum3':
         mapping_corpus_path = os.path.join(data_path, 'product/lspc2020_to_tablecorpus/Cleaned')
         table_corpus_path = os.path.join(data_path, 'product/product_minimum3/cleaned')
         table_with_id_path = os.path.join(table_corpus_path, 'with_id')
