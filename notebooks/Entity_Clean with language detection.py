@@ -113,9 +113,9 @@ def remove_with_fasttext():
 
 
 # run functions
-entities = ['product_top100', 'product_minimum3', 'LocalBusiness_top100', 'LocalBusiness_minimum3', 'LocalBusiness_rest',
-            'Restaurant_top100', 'Restaurant_minimum3', 'Restaurant_rest', 'Hotel_top100', 'Hotel_minimum3', 'Hotel_rest']
-
+#entities = ['product_top100', 'product_minimum3', 'LocalBusiness_top100', 'LocalBusiness_minimum3', 'LocalBusiness_rest',
+ #           'Restaurant_top100', 'Restaurant_minimum3', 'Restaurant_rest', 'Hotel_top100', 'Hotel_minimum3', 'Hotel_rest']
+entities = ['Hotel_top100', 'Hotel_minimum3', 'Hotel_rest']
 
 for entity in entities:
     if entity == 'product_top100':
@@ -135,11 +135,11 @@ for entity in entities:
     elif entity == 'Restaurant_rest':
         data_path = os.path.join(path_parent, 'src/data/Restaurant/Restaurant_rest')
     elif entity == 'Hotel_top100':
-        data_path = os.path.join(path_parent, 'src/data/Restaurant/Hotel_top100')
+        data_path = os.path.join(path_parent, 'src/data/Hotel/Hotel_top100')
     elif entity == 'Hotel_minimum3':
-        data_path = os.path.join(path_parent, 'src/data/Restaurant/Hotel_minimum3')
+        data_path = os.path.join(path_parent, 'src/data/Hotel/Hotel_minimum3')
     elif entity == 'Hotel_rest':
-        data_path = os.path.join(path_parent, 'src/data/Restaurant/Hotel_rest')
+        data_path = os.path.join(path_parent, 'src/data/Hotel/Hotel_rest')
 
     cleaned_data_path = os.path.join(data_path, 'cleaned')
 
