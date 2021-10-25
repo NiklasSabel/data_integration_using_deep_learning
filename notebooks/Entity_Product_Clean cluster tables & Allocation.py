@@ -54,8 +54,8 @@ def clean_clusters():
         unique_cluster_ids = list(set(unique_cluster_ids))
 
         # add dictionary keys
-        new_cluster_ids_tables_dict = dict.fromkeys(new_cluster_ids, [])
-        new_cluster_ids_amount_dict = dict.fromkeys(new_cluster_ids, 0)
+        new_cluster_ids_tables_dict = {key: [] for key in new_cluster_ids}
+        new_cluster_ids_amount_dict = {key: 0 for key in new_cluster_ids}
 
         allocation_with_table_ids_total_dict.update(new_cluster_ids_tables_dict)
         allocation_with_table_ids_set_dict.update(new_cluster_ids_tables_dict)
@@ -70,19 +70,18 @@ def clean_clusters():
 
                 allocation_with_table_ids_total_dict[cluster_id].append(table_id) # write every table_id inside
                 allocation_amount_only_total_dict[cluster_id] += 1 # increment for every table_id
+                allocation_with_table_ids_set_dict[cluster_id] = list(set(allocation_with_table_ids_total_dict[cluster_id])) # write only unique table_ids inside
+                allocation_amount_only_set_dict[cluster_id] = len(allocation_with_table_ids_set_dict[cluster_id]) # increment only for unique table_ids
 
-                test = allocation_with_table_ids_set_dict[cluster_id]
-                if table_id not in allocation_with_table_ids_set_dict[cluster_id]: # check whether table_id is already there
-                    allocation_with_table_ids_set_dict[cluster_id].append(table_id) # write only unique table_ids inside
-                    allocation_amount_only_set_dict[cluster_id] += 1 # increment only for unique table_ids
-
+                count += 1
                 bar.update(count)
+
+        count_files += 1
 
         print('{} out of {} cluster files done'.format(count_files, len(cluster_files)))
 
-
         # write to gzip compressed json file
-        #df_cleaned.to_json(os.path.join(cluster_path, '{}'.format(cluster_file)), compression='gzip', orient='records', lines=True)
+        df_cleaned.to_json(os.path.join(cluster_path, '{}'.format(cluster_file)), compression='gzip', orient='records', lines=True)
 
     # save dictionaries with allocation of products
     with open(os.path.join(cluster_path, 'allocation_with_table_ids_total_dict.json'), 'w', encoding='utf-8') as f:
@@ -96,7 +95,6 @@ def clean_clusters():
 
     with open(os.path.join(cluster_path, 'allocation_amount_only_set_dict.json'), 'w', encoding='utf-8') as f:
         json.dump(allocation_amount_only_set_dict, f)
-
 
 # run functions
 clean_clusters()
