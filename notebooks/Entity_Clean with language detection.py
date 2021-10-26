@@ -60,7 +60,8 @@ def remove_with_fasttext():
     for file in files:
         print(file)
         df = pd.read_json(os.path.join(cleaned_data_path, '{}'.format(file)), compression='gzip', lines=True)
-        if df.shape[0] > 20:
+        #if df.shape[0] > 20: # for top100 & min3
+        if df.shape[0] > 0: # for rest only
             df['concat'] = ''
 
             for j in range(df.shape[1]):  # iterate over columns
@@ -92,7 +93,8 @@ def remove_with_fasttext():
             df_cleaned = df[df['row_id'].isin(english_products)]
 
             # write to gzip compressed json file
-            if df_cleaned.shape[0] > 20:
+            #if df_cleaned.shape[0] > 20: # for top100 & min3
+            if df_cleaned.shape[0] > 0: # for rest only
                 df_cleaned.to_json(os.path.join(cleaned_data_path, '{}'.format(file)), compression='gzip', orient='records', lines=True)
             else:
                 os.remove(os.path.join(cleaned_data_path, '{}'.format(file)))
@@ -115,7 +117,7 @@ def remove_with_fasttext():
 # run functions
 #entities = ['product_top100', 'product_minimum3', 'LocalBusiness_top100', 'LocalBusiness_minimum3', 'LocalBusiness_rest',
  #           'Restaurant_top100', 'Restaurant_minimum3', 'Restaurant_rest', 'Hotel_top100', 'Hotel_minimum3', 'Hotel_rest']
-entities = ['Hotel_top100', 'Hotel_minimum3', 'Hotel_rest']
+entities = ['LocalBusiness_rest', 'Restaurant_rest', 'Hotel_rest']
 
 for entity in entities:
     if entity == 'product_top100':
