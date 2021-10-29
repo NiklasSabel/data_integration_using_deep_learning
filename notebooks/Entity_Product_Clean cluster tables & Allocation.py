@@ -178,13 +178,15 @@ def keyword_search(data_path):
         with open(os.path.join(product_path,'product_clothes', 'clothes_dict.json'), 'r', encoding='utf-8') as f:
             clothes_dict = json.load(f)
     else:
-        clothes_dict = {entity:{key: [] for key in brands_dict['clothes']}}
+        clothes_dict = {'top100/cleaned':{key: [] for key in brands_dict['clothes']},
+                        'minimum3/cleaned':{key: [] for key in brands_dict['clothes']}}
 
     if os.path.isfile(os.path.join(product_path,'product_electronics', 'electronics_dict.json')):
         with open(os.path.join(product_path,'product_electronics', 'electronics_dict.json'), 'r', encoding='utf-8') as f:
             electronics_dict = json.load(f)
     else:
-        electronics_dict = {entity:{key: [] for key in brands_dict['electronics_total']}}
+        electronics_dict = {'top100/cleaned':{key: [] for key in brands_dict['electronics_total']},
+                            'minimum3/cleaned':{key: [] for key in brands_dict['electronics_total']}}
 
     count_files = 0
     for data_file in data_files:
