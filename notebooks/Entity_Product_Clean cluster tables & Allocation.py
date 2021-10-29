@@ -111,6 +111,7 @@ def get_keywords():
     :return: dictionary {'clothes' : [clothes_brand1, clothes_brand2, ...],
                         'electronics' : [electronics_brand1, electronics_brand2, ...]}
     """
+    print('get keywords')
     # search for clothes brands top100
     clothes_html = urlopen('https://fashionunited.com/i/most-valuable-fashion-brands/')
     clothes_bsObj = BeautifulSoup(clothes_html.read(), 'lxml')
@@ -148,6 +149,8 @@ def get_keywords():
     with open(os.path.join(product_path, 'brands_dict.json'), 'w', encoding='utf-8') as f:
         json.dump(brands_dict, f)
 
+    print('getting keywords done')
+
     return brands_dict
 
 def keyword_search(data_path):
@@ -156,6 +159,8 @@ def keyword_search(data_path):
     selects only "electronic products" for structured data and "clothes" for unstructured data
     :return: two dictionaries for electronics, clothes each containing table and row ids
     """
+
+    print('run keyword search')
 
     with open(os.path.join(product_path, 'brands_dict.json'), 'r', encoding='utf-8') as f:
         brands_dict = json.load(f)
@@ -167,6 +172,7 @@ def keyword_search(data_path):
     #brands_dict['electronics_total'].append('arip santoso')  ##
 
     entity = data_path.split('product_')[1]
+    print(entity)
     # check whether dictionaries already exist
     if os.path.isfile(os.path.join(product_path,'product_clothes', 'clothes_dict.json')):
         with open(os.path.join(product_path,'product_clothes', 'clothes_dict.json'), 'r', encoding='utf-8') as f:
@@ -180,6 +186,7 @@ def keyword_search(data_path):
     else:
         electronics_dict = {entity:{key: [] for key in brands_dict['electronics_total']}}
 
+    count_files = 0
     for data_file in data_files:
         print(data_file)
         df = pd.read_json(os.path.join(data_path, '{}'.format(data_file)), compression='gzip', lines=True)
@@ -253,6 +260,9 @@ def keyword_search(data_path):
         if electronics_df.shape[0] > 0:
             electronics_df.to_json(os.path.join(product_path, 'product_electronics' ,data_file), compression='gzip', orient='records',
                                lines=True)
+
+        count_files += 1
+        print('{} out of {} files done'.format(count_files, len(data_files)))
 
 
 def thread_function(name):
