@@ -244,6 +244,9 @@ def keyword_search(data_path):
                         count += 1
                         bar.update(count)
 
+                # drop concatenated row again
+                df = df.drop('concat', axis=1)
+
         # save dictionaries with selected data
         with open(os.path.join(product_path,'product_clothes', 'clothes_dict.json'), 'w', encoding='utf-8') as f:
             json.dump(clothes_dict, f)
