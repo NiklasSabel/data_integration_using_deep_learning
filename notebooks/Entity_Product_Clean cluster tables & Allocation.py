@@ -203,7 +203,7 @@ def keyword_search(data_path):
                     row_id = int(df['row_id'][i])
                     cell = df['brand'][i]
                     if cell != None:
-                        cell = cell.lower()
+                        cell = str(cell).lower()
                         if cell in brands_dict['clothes']:
                             clothes_dict[entity][cell].append((data_file, row_id))
                             clothes_row_ids.append(row_id)
@@ -226,7 +226,7 @@ def keyword_search(data_path):
                         row_id = int(df['row_id'][i])
                         cell = df['concat'][i]
                         if cell != None:
-                            cell = cell.lower()
+                            cell = str(cell).lower()
                             for brand in brands_dict['clothes']:
                                 if ' {} '.format(brand) in cell:
                                     clothes_dict[entity][brand].append((data_file, row_id))
