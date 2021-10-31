@@ -235,17 +235,16 @@ def keyword_search(data_path):
         electronics_dict = {'top100/cleaned':{key: [] for key in brands_dict['electronics_cleaned']},
                             'minimum3/cleaned':{key: [] for key in brands_dict['electronics_cleaned']}}
 
-    count_files = 0
-    for data_file in data_files:
-        print(data_file)
-        df = pd.read_json(os.path.join(data_path, '{}'.format(data_file)), compression='gzip', lines=True)
+    count = 0
+    with progressbar.ProgressBar(max_value=len(data_files)) as bar:
+        for data_file in data_files:
+            df = pd.read_json(os.path.join(data_path, '{}'.format(data_file)), compression='gzip', lines=True)
 
-        clothes_row_ids = []
-        electronics_row_ids = []
+            clothes_row_ids = []
+            electronics_row_ids = []
 
-        # iterrate over rows and look for keywords
-        count = 0
-        with progressbar.ProgressBar(max_value=df.shape[0]) as bar:
+            # iterrate over rows and look for keywords
+
             if 'brand' in df.columns: # check whether column 'brand' exists
                 for i in range(df.shape[0]):  # iterate over rows
                     #if i < 1000: # only for testing
@@ -259,8 +258,6 @@ def keyword_search(data_path):
                         elif cell in brands_dict['electronics_cleaned']:
                             electronics_dict[entity][cell].append((data_file, row_id))
                             electronics_row_ids.append(row_id)
-                    count += 1
-                    bar.update(count)
             else: # if column 'brand' does not exist check for whole row in concatenated column
                 df['concat'] = ''
                 df['brand'] = ''
@@ -268,53 +265,49 @@ def keyword_search(data_path):
                     df['concat'] = df['concat'] + df.iloc[:, j].astype('str')
 
                 # iterrate over rows
-                count = 0
-                with progressbar.ProgressBar(max_value=df.shape[0]) as bar:
-                    for i in range(df.shape[0]):
-                        #if i < 1000: # for testing
-                        row_id = int(df['row_id'][i])
-                        cell = df['concat'][i]
-                        if cell != None:
-                            cell = str(cell).lower()
-                            for brand in brands_dict['clothes_cleaned']:
-                                if ' {} '.format(brand) in cell:
-                                    clothes_dict[entity][brand].append((data_file, row_id))
-                                    clothes_row_ids.append(row_id)
-                                    df['brand'] = brand
-                                    break
-                            for brand in brands_dict['electronics_cleaned']:
-                                if ' {} '.format(brand) in cell:
-                                    electronics_dict[entity][brand].append((data_file, row_id))
-                                    electronics_row_ids.append(row_id)
-                                    df['brand'] = brand
-                                    break
-                        count += 1
-                        bar.update(count)
+                for i in range(df.shape[0]):
+                    #if i < 1000: # for testing
+                    row_id = int(df['row_id'][i])
+                    cell = df['concat'][i]
+                    if cell != None:
+                        cell = str(cell).lower()
+                        for brand in brands_dict['clothes_cleaned']:
+                            if ' {} '.format(brand) in cell:
+                                clothes_dict[entity][brand].append((data_file, row_id))
+                                clothes_row_ids.append(row_id)
+                                df['brand'] = brand
+                                break
+                        for brand in brands_dict['electronics_cleaned']:
+                            if ' {} '.format(brand) in cell:
+                                electronics_dict[entity][brand].append((data_file, row_id))
+                                electronics_row_ids.append(row_id)
+                                df['brand'] = brand
+                                break
 
                 # drop concatenated row again
                 df = df.drop('concat', axis=1)
 
-        # save dictionaries with selected data
-        with open(os.path.join(product_path,'product_clothes', 'clothes_dict.json'), 'w', encoding='utf-8') as f:
-            json.dump(clothes_dict, f)
+            count += 1
+            bar.update(count)
 
-        with open(os.path.join(product_path,'product_electronics', 'electronics_dict.json'), 'w', encoding='utf-8') as f:
-            json.dump(electronics_dict, f)
+            # save dictionaries with selected data
+            with open(os.path.join(product_path,'product_clothes', 'clothes_dict.json'), 'w', encoding='utf-8') as f:
+                json.dump(clothes_dict, f)
 
-        # write selected data into seperate folders
-        clothes_df = df[df['row_id'].isin(clothes_row_ids)]
-        electronics_df = df[df['row_id'].isin(electronics_row_ids)]
+            with open(os.path.join(product_path,'product_electronics', 'electronics_dict.json'), 'w', encoding='utf-8') as f:
+                json.dump(electronics_dict, f)
 
-        if clothes_df.shape[0] > 0:
-            clothes_df.to_json(os.path.join(product_path, 'product_clothes' ,data_file), compression='gzip', orient='records',
-                               lines=True)
+            # write selected data into seperate folders
+            clothes_df = df[df['row_id'].isin(clothes_row_ids)]
+            electronics_df = df[df['row_id'].isin(electronics_row_ids)]
 
-        if electronics_df.shape[0] > 0:
-            electronics_df.to_json(os.path.join(product_path, 'product_electronics' ,data_file), compression='gzip', orient='records',
-                               lines=True)
+            if clothes_df.shape[0] > 0:
+                clothes_df.to_json(os.path.join(product_path, 'product_clothes' ,data_file), compression='gzip', orient='records',
+                                   lines=True)
 
-        count_files += 1
-        print('{} out of {} files done'.format(count_files, len(data_files)))
+            if electronics_df.shape[0] > 0:
+                electronics_df.to_json(os.path.join(product_path, 'product_electronics' ,data_file), compression='gzip', orient='records',
+                                   lines=True)
 
 
 def thread_function(name):
