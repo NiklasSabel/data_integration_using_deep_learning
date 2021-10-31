@@ -11,6 +11,33 @@ import re
 import logging
 import threading
 import time
+import requests
+import multiprocessing
+import time
+
+def thread_function(name):
+    logging.info("Thread %s: starting", name)
+    time.sleep(2)
+    logging.info("Thread %s: finishing", name)
+
+"""
+session = None
+
+def set_global_session():
+    global session
+    if not session:
+        session = requests.Session()
+
+def download_site(url):
+    with session.get(url) as response:
+        name = multiprocessing.current_process().name
+        print(f"{name}:Read {len(response.content)} from {url}")
+
+def download_all_sites(sites):
+    with multiprocessing.Pool(initializer=set_global_session) as pool:
+        pool.map(download_site, sites)
+"""
+
 
 path_parent = os.path.dirname(os.getcwd())
 product_path = os.path.join(path_parent, 'src/data/product')
@@ -162,39 +189,12 @@ def clean_keywords():
     with open(os.path.join(product_path, 'brands_dict.json'), 'r', encoding='utf-8') as f:
         brands_dict = json.load(f)
 
-    deselected_clothes = ['foot locker inc.','chow tai fook','lao feng xiang','jaeger-le coultre','elie taharie',
-                          'zalando', 'macy’s','american eagle outfitters','net-a-porter','tod’s','diesel','longines',
-                          'ray ban','tag heuer','elie saab','patek philippe','chopard','longchamp','furla','new look',
-                          'swarovski','swatch','valentino','breguet','hermes','coach','next','omega','audemars piguet',
-                          'iwc schaffhausen', 'skechers','rolex','fossil','tissot','vacheron constantin','cartier',
-                          'tiffany & co.',
-                          'nine west','steve madden','cole haan','escada','stuart weitzman','christian louboutin','aldo',
-                          'jimmy choo','manolo blahnik',
-                          'banana republic', 'desigual','cavalli','ted baker']
-
-    deselected_electronics = ['taiwan semiconductor manufacturing','dixon technologies', 'teradyne','skyworks solutions',
-                              'benchmark electronics','midea group','quanta computer','o2micro','murata seisakusho',
-                              'ams ag','wolfspeed','bharat electronics','iec electronics','compal eLectronics',
-                              'cadence design systems','fabrinet','samsung electro-mechanics','ttm technologies',
-                              'renesas electronics','emagin','bajaj electricals','largan precision','v-guard industries',
-                              'ducommun','pegatron','regal rexnord','techtronic industries',
-                              'universal display corporation','nec corp','rada electronic industries',
-                              'hon hai precision industry','nanya technology','ibiden','rogers corporation','daktronics',
-                              'cts corporation','methode electronics','bel fuse','nan ya pcb','lg corp',
-                              'india nippon electricals','voxx international','energous','lightpath technologies',
-                              'sanmina','synopsys','allied motion technologies','vicor','heico','arista networks',
-                              'dell technologies','aterian','samsung electronics','honeywell international',
-                              'enphase energy']
-    add_electronics = ['dell']
-
-    brands_dict['clothes_cleaned'] = [brand for brand in brands_dict['clothes'] if brand not in deselected_clothes]
-    brands_dict['electronics_cleaned'] = [brand for brand in brands_dict['electronics_total'] if brand not in deselected_electronics]
-
-    for brand in add_electronics:
-        brands_dict['electronics_cleaned'].append(brand)
-
-    brands_dict['clothes_cleaned'] = list(set(brands_dict['clothes_cleaned']))
-    brands_dict['electronics_cleaned'] = list(set(brands_dict['electronics_cleaned']))
+    brands_dict['clothes_cleaned'] = ['prada','calvin klein','louis vuitton','under armour','the north face',
+                                      'tommy hilfiger','dolce & gabbana','adidas','puma','oakley','dior','chanel','gap',
+                                      'gucci','michael kors','patagonia','moncler','armani','burberry','nike']
+    brands_dict['electronics_cleaned'] = ['lenovo','canon','hitachi','resonant','sony','nvidia','nintendo','apple',
+                                          'samsung','yaskawa','asus','dell','hp','amd','nikon','xiaomi','cisco',
+                                          'panasonic','intel','flex']
 
     with open(os.path.join(product_path, 'brands_dict.json'), 'w', encoding='utf-8') as f:
         json.dump(brands_dict, f)
@@ -310,12 +310,8 @@ def keyword_search(data_path):
                                    lines=True)
 
 
-def thread_function(name):
-    logging.info("Thread %s: starting", name)
-    time.sleep(2)
-    logging.info("Thread %s: finishing", name)
-
 if __name__ == "__main__":
+    # for multithreading
     os.environ['NUMEXPR_MAX_THREADS'] = '24'
     format = "%(asctime)s: %(message)s"
     logging.basicConfig(format=format, level=logging.INFO,
@@ -328,6 +324,18 @@ if __name__ == "__main__":
     logging.info("Main    : wait for the thread to finish")
     # x.join()
     logging.info("Main    : all done")
+
+    """
+    # for multiprocessing
+    sites = [
+                "https://www.jython.org",
+                "http://olympus.realpython.org/dice",
+            ] * 80
+    start_time = time.time()
+    download_all_sites(sites)
+    duration = time.time() - start_time
+    print(f"Downloaded {len(sites)} in {duration} seconds")
+    """
 
     # run functions
     #clean_clusters()
