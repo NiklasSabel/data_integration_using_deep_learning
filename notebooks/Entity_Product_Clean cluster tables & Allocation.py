@@ -190,7 +190,8 @@ def clean_keywords():
     brands_dict['clothes_cleaned'] = [brand for brand in brands_dict['clothes'] if brand not in deselected_clothes]
     brands_dict['electronics_cleaned'] = [brand for brand in brands_dict['electronics_total'] if brand not in deselected_electronics]
 
-    brands_dict['electronics_cleaned'].append(brand for brand in add_electronics)
+    for brand in add_electronics:
+        brands_dict['electronics_cleaned'].append(brand)
 
     brands_dict['clothes_cleaned'] = list(set(brands_dict['clothes_cleaned']))
     brands_dict['electronics_cleaned'] = list(set(brands_dict['electronics_cleaned']))
