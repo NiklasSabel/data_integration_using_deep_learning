@@ -143,6 +143,9 @@ def get_keywords():
                          'honeywell international', 'apple', 'dell technologies', 'hp', 'lenovo', 'quanta computer', 'canon',
                          'compal eLectronics', 'hewlett packard enterprise']
 
+    # only top 10
+    clothes_top10 = []
+
     brands_dict = {'clothes': clothes_list, 'electronics1':electronics_list, 'electronics2':electronics_list2,
                    'electronics_total':list(set(electronics_list + electronics_list2))}
 
@@ -152,6 +155,49 @@ def get_keywords():
     print('getting keywords done')
 
     return brands_dict
+
+def clean_keywords():
+
+    print('clean keywords')
+    with open(os.path.join(product_path, 'brands_dict.json'), 'r', encoding='utf-8') as f:
+        brands_dict = json.load(f)
+
+    deselected_clothes = ['foot locker inc.','chow tai fook','lao feng xiang','jaeger-le coultre','elie taharie',
+                          'zalando', 'macy’s','american eagle outfitters','net-a-porter','tod’s','diesel','longines',
+                          'ray ban','tag heuer','elie saab','patek philippe','chopard','longchamp','furla','new look',
+                          'swarovski','swatch','valentino','breguet','hermes','coach','next','omega','audemars piguet',
+                          'iwc schaffhausen', 'skechers','rolex','fossil','tissot','vacheron constantin','cartier',
+                          'tiffany & co.',
+                          'nine west','steve madden','cole haan','escada','stuart weitzman','christian louboutin','aldo',
+                          'jimmy choo','manolo blahnik',
+                          'banana republic', 'desigual','cavalli','ted baker']
+
+    deselected_electronics = ['taiwan semiconductor manufacturing','dixon technologies', 'teradyne','skyworks solutions',
+                              'benchmark electronics','midea group','quanta computer','o2micro','murata seisakusho',
+                              'ams ag','wolfspeed','bharat electronics','iec electronics','compal eLectronics',
+                              'cadence design systems','fabrinet','samsung electro-mechanics','ttm technologies',
+                              'renesas electronics','emagin','bajaj electricals','largan precision','v-guard industries',
+                              'ducommun','pegatron','regal rexnord','techtronic industries',
+                              'universal display corporation','nec corp','rada electronic industries',
+                              'hon hai precision industry','nanya technology','ibiden','rogers corporation','daktronics',
+                              'cts corporation','methode electronics','bel fuse','nan ya pcb','lg corp',
+                              'india nippon electricals','voxx international','energous','lightpath technologies',
+                              'sanmina','synopsys','allied motion technologies','vicor','heico','arista networks',
+                              'dell technologies','aterian','samsung electronics','honeywell international',
+                              'enphase energy']
+    add_electronics = ['dell']
+
+    brands_dict['clothes_cleaned'] = [brand for brand in brands_dict['clothes'] if brand not in deselected_clothes]
+    brands_dict['electronics_cleaned'] = [brand for brand in brands_dict['electronics_total'] if brand not in deselected_electronics]
+
+    brands_dict['electronics_cleaned'].append(brand for brand in add_electronics)
+
+    brands_dict['clothes_cleaned'] = list(set(brands_dict['clothes_cleaned']))
+    brands_dict['electronics_cleaned'] = list(set(brands_dict['electronics_cleaned']))
+
+    with open(os.path.join(product_path, 'brands_dict.json'), 'w', encoding='utf-8') as f:
+        json.dump(brands_dict, f)
+
 
 def keyword_search(data_path):
     """
@@ -168,8 +214,8 @@ def keyword_search(data_path):
     data_files = [file for file in os.listdir(data_path) if file.endswith('.json.gz')]
 
     # for testing
-    #brands_dict['clothes'].append('nejron')  ##
-    #brands_dict['electronics_total'].append('arip santoso')  ##
+    #brands_dict['clothes_cleaned'].append('nejron')  ##
+    #brands_dict['electronics_cleaned'].append('arip santoso')  ##
 
     entity = data_path.split('product_')[1]
     print(entity)
@@ -178,15 +224,15 @@ def keyword_search(data_path):
         with open(os.path.join(product_path,'product_clothes', 'clothes_dict.json'), 'r', encoding='utf-8') as f:
             clothes_dict = json.load(f)
     else:
-        clothes_dict = {'top100/cleaned':{key: [] for key in brands_dict['clothes']},
-                        'minimum3/cleaned':{key: [] for key in brands_dict['clothes']}}
+        clothes_dict = {'top100/cleaned':{key: [] for key in brands_dict['clothes_cleaned']},
+                        'minimum3/cleaned':{key: [] for key in brands_dict['clothes_cleaned']}}
 
     if os.path.isfile(os.path.join(product_path,'product_electronics', 'electronics_dict.json')):
         with open(os.path.join(product_path,'product_electronics', 'electronics_dict.json'), 'r', encoding='utf-8') as f:
             electronics_dict = json.load(f)
     else:
-        electronics_dict = {'top100/cleaned':{key: [] for key in brands_dict['electronics_total']},
-                            'minimum3/cleaned':{key: [] for key in brands_dict['electronics_total']}}
+        electronics_dict = {'top100/cleaned':{key: [] for key in brands_dict['electronics_cleaned']},
+                            'minimum3/cleaned':{key: [] for key in brands_dict['electronics_cleaned']}}
 
     count_files = 0
     for data_file in data_files:
@@ -206,10 +252,10 @@ def keyword_search(data_path):
                     cell = df['brand'][i]
                     if cell != None:
                         cell = str(cell).lower()
-                        if cell in brands_dict['clothes']:
+                        if cell in brands_dict['clothes_cleaned']:
                             clothes_dict[entity][cell].append((data_file, row_id))
                             clothes_row_ids.append(row_id)
-                        elif cell in brands_dict['electronics_total']:
+                        elif cell in brands_dict['electronics_cleaned']:
                             electronics_dict[entity][cell].append((data_file, row_id))
                             electronics_row_ids.append(row_id)
                     count += 1
@@ -229,13 +275,13 @@ def keyword_search(data_path):
                         cell = df['concat'][i]
                         if cell != None:
                             cell = str(cell).lower()
-                            for brand in brands_dict['clothes']:
+                            for brand in brands_dict['clothes_cleaned']:
                                 if ' {} '.format(brand) in cell:
                                     clothes_dict[entity][brand].append((data_file, row_id))
                                     clothes_row_ids.append(row_id)
                                     df['brand'] = brand
                                     break
-                            for brand in brands_dict['electronics_total']:
+                            for brand in brands_dict['electronics_cleaned']:
                                 if ' {} '.format(brand) in cell:
                                     electronics_dict[entity][brand].append((data_file, row_id))
                                     electronics_row_ids.append(row_id)
@@ -291,5 +337,6 @@ if __name__ == "__main__":
     # run functions
     #clean_clusters()
     get_keywords()
+    clean_keywords()
     keyword_search(cleaned_top100_path)
     keyword_search(cleaned_min3_path)
