@@ -4,13 +4,48 @@ import progressbar
 import json
 import gzip
 import shutil
+from urllib.request import urlopen, Request
+from bs4 import BeautifulSoup
+import json
+import re
+import logging
+import threading
+import time
+import requests
+import multiprocessing
+import time
+
+def thread_function(name):
+    logging.info("Thread %s: starting", name)
+    time.sleep(2)
+    logging.info("Thread %s: finishing", name)
+
+"""
+session = None
+
+def set_global_session():
+    global session
+    if not session:
+        session = requests.Session()
+
+def download_site(url):
+    with session.get(url) as response:
+        name = multiprocessing.current_process().name
+        print(f"{name}:Read {len(response.content)} from {url}")
+
+def download_all_sites(sites):
+    with multiprocessing.Pool(initializer=set_global_session) as pool:
+        pool.map(download_site, sites)
+"""
+
 
 path_parent = os.path.dirname(os.getcwd())
+product_path = os.path.join(path_parent, 'src/data/product')
 
-cleaned_top100_path = os.path.join(path_parent, 'src/data/product/product_top100/cleaned')
-cleaned_min3_path = os.path.join(path_parent, 'src/data/product/product_minimum3/cleaned')
+cleaned_top100_path = os.path.join(product_path, 'product_top100/cleaned')
+cleaned_min3_path = os.path.join(product_path, 'product_minimum3/cleaned')
 
-cluster_path = os.path.join(path_parent, 'src/data/product/lspc2020_to_tablecorpus/Cleaned')
+cluster_path = os.path.join(product_path, 'lspc2020_to_tablecorpus/Cleaned')
 
 def clean_clusters():
     """
@@ -96,5 +131,215 @@ def clean_clusters():
     with open(os.path.join(cluster_path, 'allocation_amount_only_set_dict.json'), 'w', encoding='utf-8') as f:
         json.dump(allocation_amount_only_set_dict, f)
 
-# run functions
-clean_clusters()
+
+def get_keywords():
+    """
+    finds all important brands for clothes and electronics
+    :return: dictionary {'clothes' : [clothes_brand1, clothes_brand2, ...],
+                        'electronics' : [electronics_brand1, electronics_brand2, ...]}
+    """
+    print('get keywords')
+    # search for clothes brands top100
+    clothes_html = urlopen('https://fashionunited.com/i/most-valuable-fashion-brands/')
+    clothes_bsObj = BeautifulSoup(clothes_html.read(), 'lxml')
+    clothes_table = clothes_bsObj.find('table')
+    clothes_lines = clothes_table.find('tbody').find_all('tr')
+
+    clothes_list = []
+    for clothes_line in clothes_lines:
+        clothes_brand = clothes_line.get_text().split('\n')[2].lower()
+        clothes_list.append(clothes_brand)
+
+    # search for top electronic brands
+    req = Request('https://companiesmarketcap.com/electronics/largest-electronic-manufacturing-by-market-cap/',
+        headers={'User-Agent': 'Mozilla/5.0'})
+    electronics_html = urlopen(req)
+    electronics_bsObj = BeautifulSoup(electronics_html.read(), 'lxml')
+    electronics_lines = electronics_bsObj.find_all('tr')
+
+    electronics_list = []
+    for electronics_line in electronics_lines:
+        electronics_brand_info = electronics_line.find('a')
+        if electronics_brand_info != None:
+            electronics_brand = electronics_brand_info.find('div').get_text().split('\r')[0].lower()
+            electronics_list.append(electronics_brand)
+
+    # second page
+    electronics_list2 = ['intel', 'taiwan semiconductor manufacturing', 'samsung electronics', 'hon hai precision industry',
+                         'hitachi', 'sony', 'panasonic', 'lg electronics', 'pegatron', 'mitsubishi electric', 'midea group',
+                         'honeywell international', 'apple', 'dell technologies', 'hp', 'lenovo', 'quanta computer', 'canon',
+                         'compal eLectronics', 'hewlett packard enterprise']
+
+    # only top 10
+    clothes_top10 = []
+
+    brands_dict = {'clothes': clothes_list, 'electronics1':electronics_list, 'electronics2':electronics_list2,
+                   'electronics_total':list(set(electronics_list + electronics_list2))}
+
+    with open(os.path.join(product_path, 'brands_dict.json'), 'w', encoding='utf-8') as f:
+        json.dump(brands_dict, f)
+
+    print('getting keywords done')
+
+    return brands_dict
+
+def clean_keywords():
+
+    print('clean keywords')
+    with open(os.path.join(product_path, 'brands_dict.json'), 'r', encoding='utf-8') as f:
+        brands_dict = json.load(f)
+
+    brands_dict['clothes_cleaned'] = ['prada','calvin klein','louis vuitton','under armour','the north face',
+                                      'tommy hilfiger','dolce & gabbana','adidas','puma','oakley','dior','chanel','gap',
+                                      'gucci','michael kors','patagonia','moncler','armani','burberry','nike']
+    brands_dict['electronics_cleaned'] = ['lenovo','canon','hitachi','resonant','sony','nvidia','nintendo','apple',
+                                          'samsung','yaskawa','asus','dell','hp','amd','nikon','xiaomi','cisco',
+                                          'panasonic','intel','flex']
+
+    with open(os.path.join(product_path, 'brands_dict.json'), 'w', encoding='utf-8') as f:
+        json.dump(brands_dict, f)
+
+
+def keyword_search(data_path):
+    """
+    product selection for phase 1b;
+    selects only "electronic products" for structured data and "clothes" for unstructured data
+    :return: two dictionaries for electronics, clothes each containing table and row ids
+    """
+
+    print('run keyword search')
+
+    with open(os.path.join(product_path, 'brands_dict.json'), 'r', encoding='utf-8') as f:
+        brands_dict = json.load(f)
+
+    data_files = [file for file in os.listdir(data_path) if file.endswith('.json.gz')]
+
+    # for testing
+    #brands_dict['clothes_cleaned'].append('nejron')  ##
+    #brands_dict['electronics_cleaned'].append('arip santoso')  ##
+
+    entity = data_path.split('product_')[1]
+    print(entity)
+    # check whether dictionaries already exist
+    if os.path.isfile(os.path.join(product_path,'product_clothes', 'clothes_dict.json')):
+        with open(os.path.join(product_path,'product_clothes', 'clothes_dict.json'), 'r', encoding='utf-8') as f:
+            clothes_dict = json.load(f)
+    else:
+        clothes_dict = {'top100/cleaned':{key: [] for key in brands_dict['clothes_cleaned']},
+                        'minimum3/cleaned':{key: [] for key in brands_dict['clothes_cleaned']}}
+
+    if os.path.isfile(os.path.join(product_path,'product_electronics', 'electronics_dict.json')):
+        with open(os.path.join(product_path,'product_electronics', 'electronics_dict.json'), 'r', encoding='utf-8') as f:
+            electronics_dict = json.load(f)
+    else:
+        electronics_dict = {'top100/cleaned':{key: [] for key in brands_dict['electronics_cleaned']},
+                            'minimum3/cleaned':{key: [] for key in brands_dict['electronics_cleaned']}}
+
+    count = 0
+    with progressbar.ProgressBar(max_value=len(data_files)) as bar:
+        for data_file in data_files:
+            df = pd.read_json(os.path.join(data_path, '{}'.format(data_file)), compression='gzip', lines=True)
+
+            clothes_row_ids = []
+            electronics_row_ids = []
+
+            # iterrate over rows and look for keywords
+
+            if 'brand' in df.columns: # check whether column 'brand' exists
+                for i in range(df.shape[0]):  # iterate over rows
+                    #if i < 1000: # only for testing
+                    row_id = int(df['row_id'][i])
+                    cell = df['brand'][i]
+                    if cell != None:
+                        cell = str(cell).lower()
+                        if cell in brands_dict['clothes_cleaned']:
+                            clothes_dict[entity][cell].append((data_file, row_id))
+                            clothes_row_ids.append(row_id)
+                        elif cell in brands_dict['electronics_cleaned']:
+                            electronics_dict[entity][cell].append((data_file, row_id))
+                            electronics_row_ids.append(row_id)
+            else: # if column 'brand' does not exist check for whole row in concatenated column
+                df['concat'] = ''
+                df['brand'] = ''
+                for j in range(df.shape[1]):  # iterate over columns
+                    df['concat'] = df['concat'] + df.iloc[:, j].astype('str')
+
+                # iterrate over rows
+                for i in range(df.shape[0]):
+                    #if i < 1000: # for testing
+                    row_id = int(df['row_id'][i])
+                    cell = df['concat'][i]
+                    if cell != None:
+                        cell = str(cell).lower()
+                        for brand in brands_dict['clothes_cleaned']:
+                            if ' {} '.format(brand) in cell:
+                                clothes_dict[entity][brand].append((data_file, row_id))
+                                clothes_row_ids.append(row_id)
+                                df['brand'] = brand
+                                break
+                        for brand in brands_dict['electronics_cleaned']:
+                            if ' {} '.format(brand) in cell:
+                                electronics_dict[entity][brand].append((data_file, row_id))
+                                electronics_row_ids.append(row_id)
+                                df['brand'] = brand
+                                break
+
+                # drop concatenated row again
+                df = df.drop('concat', axis=1)
+
+            count += 1
+            bar.update(count)
+
+            # save dictionaries with selected data
+            with open(os.path.join(product_path,'product_clothes', 'clothes_dict.json'), 'w', encoding='utf-8') as f:
+                json.dump(clothes_dict, f)
+
+            with open(os.path.join(product_path,'product_electronics', 'electronics_dict.json'), 'w', encoding='utf-8') as f:
+                json.dump(electronics_dict, f)
+
+            # write selected data into seperate folders
+            clothes_df = df[df['row_id'].isin(clothes_row_ids)]
+            electronics_df = df[df['row_id'].isin(electronics_row_ids)]
+
+            if clothes_df.shape[0] > 0:
+                clothes_df.to_json(os.path.join(product_path, 'product_clothes' ,data_file), compression='gzip', orient='records',
+                                   lines=True)
+
+            if electronics_df.shape[0] > 0:
+                electronics_df.to_json(os.path.join(product_path, 'product_electronics' ,data_file), compression='gzip', orient='records',
+                                   lines=True)
+
+
+if __name__ == "__main__":
+    # for multithreading
+    os.environ['NUMEXPR_MAX_THREADS'] = '24'
+    format = "%(asctime)s: %(message)s"
+    logging.basicConfig(format=format, level=logging.INFO,
+                        datefmt="%H:%M:%S")
+
+    logging.info("Main    : before creating thread")
+    x = threading.Thread(target=thread_function, args=(1,))
+    logging.info("Main    : before running thread")
+    x.start()
+    logging.info("Main    : wait for the thread to finish")
+    # x.join()
+    logging.info("Main    : all done")
+
+    """
+    # for multiprocessing
+    sites = [
+                "https://www.jython.org",
+                "http://olympus.realpython.org/dice",
+            ] * 80
+    start_time = time.time()
+    download_all_sites(sites)
+    duration = time.time() - start_time
+    print(f"Downloaded {len(sites)} in {duration} seconds")
+    """
+
+    # run functions
+    #clean_clusters()
+    get_keywords()
+    clean_keywords()
+    keyword_search(cleaned_top100_path)
+    keyword_search(cleaned_min3_path)
