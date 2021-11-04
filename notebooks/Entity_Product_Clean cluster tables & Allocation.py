@@ -259,7 +259,7 @@ def keyword_search(data_path):
                         elif cell in brands_dict['electronics_cleaned']:
                             electronics_dict[entity][cell].append((data_file, row_id))
                             electronics_row_ids.append(row_id)
-            else: # if column 'brand' does not exist check for first word in name column
+            elif 'name' in df.columns: # if column 'brand' does not exist check for first word in name column
                 df['brand'] = ''
                 # iterrate over rows
                 for i in range(df.shape[0]):
