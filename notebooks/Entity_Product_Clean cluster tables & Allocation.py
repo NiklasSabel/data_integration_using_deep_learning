@@ -221,19 +221,19 @@ def keyword_search(data_path):
     entity = data_path.split('product_')[1]
     print(entity)
     # check whether dictionaries already exist
-    if os.path.isfile(os.path.join(product_path,'product_clothes_v2', 'clothes_dict.json')):
-        with open(os.path.join(product_path,'product_clothes_v2', 'clothes_dict.json'), 'r', encoding='utf-8') as f:
+    if os.path.isfile(os.path.join(product_path,'product_clothes', 'clothes_dict.json')):
+        with open(os.path.join(product_path,'product_clothes', 'clothes_dict.json'), 'r', encoding='utf-8') as f:
             clothes_dict = json.load(f)
     else:
-        clothes_dict = {'top100/cleaned':{key: [] for key in brands_dict['clothes_cleaned']},
-                        'minimum3/cleaned':{key: [] for key in brands_dict['clothes_cleaned']}}
+        clothes_dict = {'top100/cleaned':{key: [] for key in brands_dict['clothes']},
+                        'minimum3/cleaned':{key: [] for key in brands_dict['clothes']}}
 
-    if os.path.isfile(os.path.join(product_path,'product_electronics_v2', 'electronics_dict.json')):
-        with open(os.path.join(product_path,'product_electronics_v2', 'electronics_dict.json'), 'r', encoding='utf-8') as f:
+    if os.path.isfile(os.path.join(product_path,'product_electronics', 'electronics_dict.json')):
+        with open(os.path.join(product_path,'product_electronics', 'electronics_dict.json'), 'r', encoding='utf-8') as f:
             electronics_dict = json.load(f)
     else:
-        electronics_dict = {'top100/cleaned':{key: [] for key in brands_dict['electronics_cleaned']},
-                            'minimum3/cleaned':{key: [] for key in brands_dict['electronics_cleaned']}}
+        electronics_dict = {'top100/cleaned':{key: [] for key in brands_dict['electronics_total']},
+                            'minimum3/cleaned':{key: [] for key in brands_dict['electronics_total']}}
 
     count = 0
     with progressbar.ProgressBar(max_value=len(data_files)) as bar:
@@ -253,10 +253,10 @@ def keyword_search(data_path):
                     cell = df['brand'][i]
                     if cell != None:
                         cell = str(cell).lower()
-                        if cell in brands_dict['clothes_cleaned']:
+                        if cell in brands_dict['clothes']:
                             clothes_dict[entity][cell].append((data_file, row_id))
                             clothes_row_ids.append(row_id)
-                        elif cell in brands_dict['electronics_cleaned']:
+                        elif cell in brands_dict['electronics_total']:
                             electronics_dict[entity][cell].append((data_file, row_id))
                             electronics_row_ids.append(row_id)
             elif 'name' in df.columns: # if column 'brand' does not exist check for first word in name column
@@ -269,25 +269,33 @@ def keyword_search(data_path):
 
                         # check for first word in name column
                         cell = str(name_split_list[0]).lower()
-                        if cell in brands_dict['electronics_cleaned']:
+                        if cell in brands_dict['electronics_total']:
                             electronics_dict[entity][cell].append((data_file, row_id))
                             electronics_row_ids.append(row_id)
                             df.at[i,'brand'] = cell
-                        elif cell in brands_dict['clothes_cleaned']:
+                        elif cell in brands_dict['clothes']:
                             clothes_dict[entity][cell].append((data_file, row_id))
                             clothes_row_ids.append(row_id)
                             df.at[i,'brand'] = cell
                         elif len(name_split_list)>1:
-                            # for clothes check for two words (since ngrams brands)
+                            # check for two words (since ngrams brands)
                             cell = cell + ' ' + str(name_split_list[1]).lower()
-                            if cell in brands_dict['clothes_cleaned']:
+                            if cell in brands_dict['electronics_total']:
+                                electronics_dict[entity][cell].append((data_file, row_id))
+                                electronics_row_ids.append(row_id)
+                                df.at[i, 'brand'] = cell
+                            elif cell in brands_dict['clothes']:
                                 clothes_dict[entity][cell].append((data_file, row_id))
                                 clothes_row_ids.append(row_id)
                                 df.at[i,'brand'] = cell
                             elif len(name_split_list)>2:
-                                # for clothes check for three words (since ngrams brands)
+                                # check for three words (since ngrams brands)
                                 cell = cell + ' ' + str(name_split_list[2]).lower()
-                                if cell in brands_dict['clothes_cleaned']:
+                                if cell in brands_dict['electronics_total']:
+                                    electronics_dict[entity][cell].append((data_file, row_id))
+                                    electronics_row_ids.append(row_id)
+                                    df.at[i, 'brand'] = cell
+                                elif cell in brands_dict['clothes']:
                                     clothes_dict[entity][cell].append((data_file, row_id))
                                     clothes_row_ids.append(row_id)
                                     df.at[i,'brand'] = cell
@@ -300,29 +308,29 @@ def keyword_search(data_path):
                 electronics_df = df[df['row_id'].isin(electronics_row_ids)]
 
                 if clothes_df.shape[0] > 0:
-                    clothes_df.to_json(os.path.join(product_path, 'product_clothes_v2', data_file), compression='gzip',
+                    clothes_df.to_json(os.path.join(product_path, 'product_clothes', data_file), compression='gzip',
                                        orient='records',
                                        lines=True)
 
                 if electronics_df.shape[0] > 0:
-                    electronics_df.to_json(os.path.join(product_path, 'product_electronics_v2', data_file),
+                    electronics_df.to_json(os.path.join(product_path, 'product_electronics', data_file),
                                            compression='gzip', orient='records',
                                            lines=True)
 
                 ## nur alle paar tausend saven
                 # save dictionaries with selected data
                 if count % 1000 == 0:
-                    with open(os.path.join(product_path,'product_clothes_v2', 'clothes_dict.json'), 'w', encoding='utf-8') as f:
+                    with open(os.path.join(product_path,'product_clothes', 'clothes_dict.json'), 'w', encoding='utf-8') as f:
                         json.dump(clothes_dict, f)
 
-                    with open(os.path.join(product_path,'product_electronics_v2', 'electronics_dict.json'), 'w', encoding='utf-8') as f:
+                    with open(os.path.join(product_path,'product_electronics', 'electronics_dict.json'), 'w', encoding='utf-8') as f:
                         json.dump(electronics_dict, f)
 
     # save at the end of running
-    with open(os.path.join(product_path, 'product_clothes_v2', 'clothes_dict.json'), 'w', encoding='utf-8') as f:
+    with open(os.path.join(product_path, 'product_clothes', 'clothes_dict.json'), 'w', encoding='utf-8') as f:
         json.dump(clothes_dict, f)
 
-    with open(os.path.join(product_path, 'product_electronics_v2', 'electronics_dict.json'), 'w', encoding='utf-8') as f:
+    with open(os.path.join(product_path, 'product_electronics', 'electronics_dict.json'), 'w', encoding='utf-8') as f:
         json.dump(electronics_dict, f)
 
 
