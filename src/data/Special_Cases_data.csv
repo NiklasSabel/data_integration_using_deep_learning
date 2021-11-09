@@ -1,12 +1,16 @@
-﻿Class;#Tables;Properties;Percentage;Tables with property;Match Class;Match Property;Match Percentage;Tables;Matching Tables w/ property;Average
-Product;2.028.980;image;26,97;547.216;creativeWork;image;9,91;252.106;24.984;286.100
-Product;2.028.980;image;26,97;547.216;Place;photo;1,13;76.679;866;274.041
-Product;2.028.974;aggregaterating;9,91;201.071;LocalBusiness;aggregaterating;27,47;465.816;127.960;164.515
-Product;2.028.981;releasedate;2,46;201.071;Person ;birthdate;29;921.777;267.315;234.193
-Product;2.028.980;releasedate;1,46;29.623;Creative Work;datepublished;71,21;252.106;179.525;104.574
-Product;2.028.979;aggregaterating;9,91;201.072;Place;aggregaterating;9;76.679;6.901;103.986
-Product;2.028.975;aggregaterating;9,91;201.071;CreativeWork;aggregaterating;0,71;252.106;1.790;101.431
-Product;2.028.975;aggregaterating;9,91;201.071;RadioStation;aggregaterating;45,24;431;195;100.633
-CreativeWork;252.107;Commentcount;0,46;1.160;Book;numberofpages;27,02;229.980;62.141;31.650
-Recipe;39246;cooktime;59,79;23.465;Movie;duration;38,34;7.039;2.699;13.082
-Recipe;39246;totaltime;55,28;21.695;creativeWork;timerequired;0,02;252.106;50;10.873
+﻿Class;#Tables;Properties;Percentage;Tables with property;Match Class;Match_datatype;Match Property;Match Percentage;Tables;Matching Tables w/ property;Average
+Product;2.028.980;image;26,97;547.216;creativeWork;image;image;9,91;252.106;24.984;286.100
+Product;2.028.980;image;26,97;547.216;Place;image;photo;1,13;76.679;866;274.041
+Product;2.028.974;aggregaterating;9,91;201.071;LocalBusiness;integer;aggregaterating;27,47;465.816;127.960;164.515
+Product;2.028.981;releasedate;2,46;201.071;Person ;date;birthdate;29;921.777;267.315;234.193
+Product;2.028.980;releasedate;1,46;29.623;Creative Work;datetime;datepublished;71,21;252.106;179.525;104.574
+Product;2.028.979;aggregaterating;9,91;201.072;Place;string;aggregaterating;9;76.679;6.901;103.986
+Product;2.028.975;aggregaterating;9,91;201.071;CreativeWork;string;aggregaterating;0,71;252.106;1.790;101.431
+Product;2.028.975;aggregaterating;9,91;201.071;RadioStation;string;aggregaterating;45,24;431;195;100.633
+Product;2.028.979;aggregaterating;9,91;201.072;Place;integer;aggregaterating;9;76.679;6.901;103.986
+Product;2.028.975;aggregaterating;9,91;201.071;CreativeWork;integer;aggregaterating;0,71;252.106;1.790;101.431
+Product;2.028.975;aggregaterating;9,91;201.071;RadioStation;integer;aggregaterating;45,24;431;195;100.633
+CreativeWork;252.107;Commentcount;0,46;1.160;Book;integer;numberofpages;27,02;229.980;62.141;31.650
+Recipe;39246;cooktime;59,79;23.465;Movie;datetime;duration;38,34;7.039;2.699;13.082
+Recipe;39246;totaltime;55,28;21.695;creativeWork;datetime;timerequired;0,02;252.106;50;10.873
+Product;2.028.974;aggregaterating;9,91;201.071;LocalBusiness;string;aggregaterating;27,47;465.816;127.960;164.515
