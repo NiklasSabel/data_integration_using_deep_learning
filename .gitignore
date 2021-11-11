@@ -94,3 +94,5 @@ target/
 venv
 
 src/
+notebooks/bizer-tp2021
+notebooks/Results
