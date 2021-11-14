@@ -523,7 +523,7 @@ def post_cleaning():
                                                        'clothes_clusters_all_8_tables_post_processed.csv'),
                                           columns=None)
 
-    test =1
+    test =2
 
 
 if __name__ == "__main__":
