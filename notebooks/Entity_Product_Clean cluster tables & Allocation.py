@@ -346,6 +346,14 @@ def remove_stopwords(token_vector, stopwords_list):
 def remove_punctuation(token_vector):
     return token_vector.apply(lambda token_list: [word for word in token_list if word not in string.punctuation])
 
+def jaccard_similarity_score(original, translation):
+    intersect = set(original).intersection(set(translation))
+    union = set(original).union(set(translation))
+    try:
+        return len(intersect) / len(union)
+    except ZeroDivisionError:
+        return 0
+
 def post_cleaning():
     """
     Measures the similarity within a cluster_id of our final electronics and clothes entities and removes ...??
@@ -411,6 +419,11 @@ def post_cleaning():
             # calculate similarity and filter for the ones which are in the current cluster
             similar_doc = model_electronics.docvecs.most_similar(f'{index_most_common}', topn=electronics_clusters_all_15_df.shape[0])
             similar_doc_cluster = [tup for tup in similar_doc if int(tup[0]) in list(electronics_single_cluster_id_df.index)] # similarities as tuples with index and similarity measure compared to baseline product
+
+            # measure similarity with Jaccard
+            jaccard_score = electronics_single_cluster_id_df['name'].apply(lambda row: jaccard_similarity_score(
+                row,electronics_single_cluster_id_df['name'].loc[int(index_most_common)]))
+            jaccard_score = jaccard_score.drop(int(index_most_common)).sort_values(ascending=False)
 
             count += 1
             bar.update(count)
