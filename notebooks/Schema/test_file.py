@@ -22,3 +22,5 @@ clothes_clusters_all_10_df = cluster_df[cluster_df['cluster_id'].isin(clothes_fi
 
 electronics_clusters_all_15_df.to_csv(os.path.join(mapping_corpus_path_2, 'electronics_clusters_all_15_tables.csv'), columns=None)
 clothes_clusters_all_10_df.to_csv(os.path.join(mapping_corpus_path_2, 'clothes_clusters_all_10_tables.csv'), columns=None)
+
+test = 1
