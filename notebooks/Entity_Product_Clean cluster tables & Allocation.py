@@ -15,6 +15,12 @@ import requests
 import multiprocessing
 import time
 
+import nltk
+from nltk.corpus import stopwords
+import string
+from gensim.models.doc2vec import Doc2Vec, TaggedDocument
+from nltk.tokenize import word_tokenize
+
 def thread_function(name):
     logging.info("Thread %s: starting", name)
     time.sleep(2)
@@ -46,6 +52,7 @@ cleaned_top100_path = os.path.join(product_path, 'product_top100/cleaned')
 cleaned_min3_path = os.path.join(product_path, 'product_minimum3/cleaned')
 
 cluster_path = os.path.join(product_path, 'lspc2020_to_tablecorpus/Cleaned')
+notebook_path = os.path.join(path_parent,'notebooks')
 
 def clean_clusters():
     """
@@ -333,6 +340,109 @@ def keyword_search(data_path):
     with open(os.path.join(product_path, 'product_electronics', 'electronics_dict.json'), 'w', encoding='utf-8') as f:
         json.dump(electronics_dict, f)
 
+def remove_stopwords(token_vector, stopwords_list):
+    return token_vector.apply(lambda token_list: [word for word in token_list if word not in stopwords_list])
+
+def remove_punctuation(token_vector):
+    return token_vector.apply(lambda token_list: [word for word in token_list if word not in string.punctuation])
+
+def jaccard_similarity_score(original, translation):
+    intersect = set(original).intersection(set(translation))
+    union = set(original).union(set(translation))
+    try:
+        return len(intersect) / len(union)
+    except ZeroDivisionError:
+        return 0
+
+def post_cleaning():
+    """
+    Measures the similarity within a cluster_id of our final electronics and clothes entities and removes ...??
+    Post-processing.
+    :return:
+    """
+    # read final dataframes with all cluster_ids left for electronics and clothes
+    electronics_clusters_all_15_df = pd.read_csv(os.path.join(cluster_path, 'electronics_clusters_all_15_tables.csv'), index_col=None)
+    clothes_clusters_all_10_df = pd.read_csv(os.path.join(cluster_path, 'clothes_clusters_all_10_tables.csv'), index_col=None)
+
+    # generate lists for final cluster_ids for electronics and clothes
+    electronics_final_entities_df = pd.read_csv(os.path.join(notebook_path, 'electronics_clusters_15_tables.csv'),index_col=None)
+    electronics_final_entities_list = electronics_final_entities_df['cluster_id']
+
+    clothes_final_entities_df = pd.read_csv(os.path.join(notebook_path, 'clothes_clusters_10_tables.csv'),index_col=None)
+    clothes_final_entities_list = clothes_final_entities_df['cluster_id']
+
+    # generate lists for valid electronics and clothes brands
+    with open(os.path.join(product_path, 'brands_dict.json'), 'r', encoding='utf-8') as f:
+        brands_dict = json.load(f)
+
+    electronics_valid_brands = brands_dict['electronics_total']
+    clothes_valid_brands = brands_dict['clothes']
+
+    # lowercase name column for similarity measure
+    electronics_clusters_all_15_df['name'] = electronics_clusters_all_15_df['name'].apply(lambda row: str(row).lower())
+    clothes_clusters_all_10_df['name'] = clothes_clusters_all_10_df['name'].apply(lambda row: str(row).lower())
+
+    # use tokenizer for name column to get tokens for training the model, remove stopwords and punctuation
+    electronics_clusters_all_15_df['tokens'] = electronics_clusters_all_15_df['name'].apply(lambda row: word_tokenize(row))
+    electronics_clusters_all_15_df['tokens'] = remove_stopwords(electronics_clusters_all_15_df['tokens'], stopwords.words())
+    electronics_clusters_all_15_df['tokens'] = remove_punctuation(electronics_clusters_all_15_df['tokens'])
+
+    clothes_clusters_all_10_df['tokens'] = clothes_clusters_all_10_df['name'].apply(lambda row: word_tokenize(row))
+    clothes_clusters_all_10_df['tokens'] = remove_stopwords(clothes_clusters_all_10_df['tokens'],stopwords.words())
+    clothes_clusters_all_10_df['tokens'] = remove_punctuation(clothes_clusters_all_10_df['tokens'])
+
+    # get tagged words
+    tagged_data_electronics = [TaggedDocument(words=_d, tags=[str(i)]) for i, _d in enumerate(electronics_clusters_all_15_df['tokens'])]
+    tagged_data_clothes = [TaggedDocument(words=_d, tags=[str(i)]) for i, _d in enumerate(clothes_clusters_all_10_df['tokens'])]
+
+    # build model and vocabulary for electronics (do same for clothes later)
+    model_electronics = Doc2Vec(vector_size=50, min_count=5, epochs=25, dm=0)
+    model_electronics.build_vocab(tagged_data_electronics)
+    # Train model
+    model_electronics.train(tagged_data_electronics, total_examples=model_electronics.corpus_count, epochs=25)
+
+    # compare for all cluster_ids the similarity between the entries within a cluster_id
+    ## for electronics:
+    print('measure similarity for electronics')
+    count = 0
+    with progressbar.ProgressBar(max_value=len(electronics_final_entities_list)) as bar:
+        for cluster_id in electronics_final_entities_list:
+            electronics_single_cluster_id_df = electronics_clusters_all_15_df[electronics_clusters_all_15_df['cluster_id']==cluster_id]
+
+            # measure similarity with Doc2Vec
+            valid_brands = list(filter(lambda brand: brand in electronics_valid_brands,
+                                       electronics_single_cluster_id_df['brand'].apply(lambda element: str(element).lower())))
+            most_common_brand = max(valid_brands, key=valid_brands.count)
+            index_most_common = electronics_single_cluster_id_df[electronics_single_cluster_id_df['brand'].apply(
+                lambda element: str(element).lower()) == most_common_brand].index[0] # use this as baseline for similarity comparisons within a certain cluster
+
+            # calculate similarity and filter for the ones which are in the current cluster
+            similar_doc = model_electronics.docvecs.most_similar(f'{index_most_common}', topn=electronics_clusters_all_15_df.shape[0])
+            similar_doc_cluster = [tup for tup in similar_doc if int(tup[0]) in list(electronics_single_cluster_id_df.index)] # similarities as tuples with index and similarity measure compared to baseline product
+
+            # measure similarity with Jaccard
+            jaccard_score = electronics_single_cluster_id_df['name'].apply(lambda row: jaccard_similarity_score(
+                row,electronics_single_cluster_id_df['name'].loc[int(index_most_common)]))
+            jaccard_score = jaccard_score.drop(int(index_most_common)).sort_values(ascending=False)
+
+            count += 1
+            bar.update(count)
+
+    ### Auch gleiche table_ids rauswerfen!!!!
+
+    ## for clothes:
+    print('measure similarity for clothes')
+    count = 0
+    with progressbar.ProgressBar(max_value=len(clothes_final_entities_list)) as bar:
+        for cluster_id in clothes_final_entities_list:
+            clothes_single_cluster_id_df = clothes_clusters_all_10_df[clothes_clusters_all_10_df['cluster_id']==cluster_id]
+            # measure similarity with Doc2Vec
+
+            count += 1
+            bar.update(count)
+
+    test =1
+
 
 if __name__ == "__main__":
 
@@ -365,7 +475,8 @@ if __name__ == "__main__":
 
     # run functions
     #clean_clusters()
-    get_keywords() ##
-    clean_keywords()
-    keyword_search(cleaned_top100_path)
-    keyword_search(cleaned_min3_path)
+    #get_keywords() ##
+    #clean_keywords()
+    #keyword_search(cleaned_top100_path)
+    #keyword_search(cleaned_min3_path)
+    post_cleaning()
