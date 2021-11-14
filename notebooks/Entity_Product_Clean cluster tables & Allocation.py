@@ -362,7 +362,7 @@ def post_cleaning():
     """
     # read final dataframes with all cluster_ids left for electronics and clothes
     electronics_clusters_all_15_df = pd.read_csv(os.path.join(cluster_path, 'electronics_clusters_all_10_tables.csv'), index_col=None)
-    clothes_clusters_all_10_df = pd.read_csv(os.path.join(cluster_path, 'clothes_clusters_all_8_tables.csv'), index_col=None)
+    clothes_clusters_all_10_df = pd.read_csv(os.path.join(cluster_path, 'clothes_clusters_all_8_tables_v2.csv'), index_col=None)
 
     # generate lists for final cluster_ids for electronics and clothes
     electronics_final_entities_df = pd.read_csv(os.path.join(notebook_path, 'electronics10.csv'),index_col=None)
@@ -395,6 +395,8 @@ def post_cleaning():
     tagged_data_electronics = [TaggedDocument(words=_d, tags=[str(i)]) for i, _d in enumerate(electronics_clusters_all_15_df['tokens'])]
     tagged_data_clothes = [TaggedDocument(words=_d, tags=[str(i)]) for i, _d in enumerate(clothes_clusters_all_10_df['tokens'])]
 
+
+    """
     # build model and vocabulary for electronics (do same for clothes later)
     model_electronics = Doc2Vec(vector_size=50, min_count=5, epochs=25, dm=0)
     model_electronics.build_vocab(tagged_data_electronics)
@@ -403,8 +405,8 @@ def post_cleaning():
 
     # compare for all cluster_ids the similarity between the entries within a cluster_id
     ## for electronics:
-    print('measure similarity for electronics')
     valid_indices_all = []
+    print('measure similarity for electronics')
     count = 0
     with progressbar.ProgressBar(max_value=len(electronics_final_entities_list)) as bar:
         for cluster_id in electronics_final_entities_list:
@@ -454,6 +456,7 @@ def post_cleaning():
                                               columns=None)
 
     ### Auch gleiche table_ids rauswerfen!!!!
+    """
 
     ## for clothes:
     # build model and vocabulary for clothes (do same for clothes later)
@@ -461,20 +464,22 @@ def post_cleaning():
     model_clothes.build_vocab(tagged_data_clothes)
     # Train model
     model_clothes.train(tagged_data_clothes, total_examples=model_clothes.corpus_count, epochs=25)
+
+    valid_indices_all = []
     print('measure similarity for clothes')
     count = 0
     with progressbar.ProgressBar(max_value=len(clothes_final_entities_list)) as bar:
         for cluster_id in clothes_final_entities_list:
-            clothes_single_cluster_id_df = clothes_clusters_all_15_df[
-                clothes_clusters_all_15_df['cluster_id'] == cluster_id]
+            clothes_single_cluster_id_df = clothes_clusters_all_10_df[
+                clothes_clusters_all_10_df['cluster_id'] == cluster_id]
 
             # measure similarity with Doc2Vec
             valid_brands = list(filter(lambda brand: brand in clothes_valid_brands,
-                                       clothes_single_cluster_id_df['brand'].apply(
+                                       clothes_single_cluster_id_df['brand_y'].apply(
                                            lambda element: str(element).lower())))
             if len(valid_brands) > 0:
                 most_common_brand = max(valid_brands, key=valid_brands.count)
-                index_most_common = clothes_single_cluster_id_df[clothes_single_cluster_id_df['brand'].apply(
+                index_most_common = clothes_single_cluster_id_df[clothes_single_cluster_id_df['brand_y'].apply(
                     lambda element: str(element).lower()) == most_common_brand].index[
                     0]  # use this as baseline for similarity comparisons within a certain cluster
 
@@ -498,7 +503,7 @@ def post_cleaning():
                                          how='left')
 
                 # select valid cluster_ids by setting thresholds for doc2vec and jaccard similarities
-                valid_cluster_id_df = similarity_df[(similarity_df['doc2vec'] > 0.97) | (similarity_df['jaccard'] > 0.5)]
+                valid_cluster_id_df = similarity_df[(similarity_df['doc2vec'] > 0.97) | (similarity_df['jaccard'] > 0.6)]
                 valid_cluster_id_indices = valid_cluster_id_df[
                     'index'].to_list()  # list of valid indices within a cluster_id
 
