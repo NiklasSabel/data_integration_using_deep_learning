@@ -9,7 +9,7 @@ mapping_corpus_path_2 = os.path.join(data_path, 'product/lspc2020_to_tablecorpus
 notebook_path = os.path.join(path_parent, 'notebooks')
 product_path = os.path.join(data_path, 'product')
 
-cluster_df = pd.read_json(os.path.join(mapping_corpus_path_2, 'df_large_matched.json'), compression='gzip', orient='records', lines=True)
+clothes_cluster_df = pd.read_json(os.path.join(mapping_corpus_path_2, 'joined_clothes_v2.json'), compression='gzip', orient='records', lines=True)
 
 electronics_final_entities_df = pd.read_csv(os.path.join(notebook_path, 'electronics10.csv'), index_col=None)
 electronics_final_entities_list = electronics_final_entities_df['cluster_id']
@@ -18,9 +18,9 @@ clothes_final_entities_df = pd.read_csv(os.path.join(notebook_path, 'clothes8.cs
 clothes_final_entities_list = clothes_final_entities_df['cluster_id']
 
 electronics_clusters_all_15_df = cluster_df[cluster_df['cluster_id'].isin(electronics_final_entities_list)]
-clothes_clusters_all_10_df = cluster_df[cluster_df['cluster_id'].isin(clothes_final_entities_list)]
+clothes_clusters_all_10_df = clothes_cluster_df[clothes_cluster_df['cluster_id'].isin(clothes_final_entities_list)]
 
 electronics_clusters_all_15_df.to_csv(os.path.join(mapping_corpus_path_2, 'electronics_clusters_all_15_tables.csv'), columns=None)
-clothes_clusters_all_10_df.to_csv(os.path.join(mapping_corpus_path_2, 'clothes_clusters_all_10_tables.csv'), columns=None)
+clothes_clusters_all_10_df.to_csv(os.path.join(mapping_corpus_path_2, 'clothes_clusters_all_8_tables_v2.csv'), columns=None)
 
 test = 1
