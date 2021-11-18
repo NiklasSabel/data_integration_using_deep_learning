@@ -282,7 +282,7 @@ def keyword_search(data_path):
                       'minimum3/cleaned':{key: [] for key in brands_dict['bikes']}}
 
     count = 0
-    with progressbar.ProgressBar(max_value=len(data_files)) as bar:
+    with progressbar.bar.ProgressBar(max_value=len(data_files)) as bar:
         for data_file in data_files:
             #if data_file == 'Product_3dcartstores.com_September2020.json.gz': ## for testing
             df = pd.read_json(os.path.join(data_path, '{}'.format(data_file)), compression='gzip', lines=True)
