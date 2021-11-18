@@ -190,6 +190,38 @@ def get_keywords():
 
     return brands_dict
 
+def get_bike_keywords():
+    print('get keywords')
+    with open(os.path.join(product_path, 'brands_dict.json'), 'r', encoding='utf-8') as f:
+        brands_dict = json.load(f)
+
+    # search for clothes brands top100
+    bikes_html = urlopen('https://bikesreviewed.com/brands/')
+    bikes_bsObj = BeautifulSoup(bikes_html.read(), 'lxml')
+    bikes_lines = bikes_bsObj.find_all('h3')
+    bikes_list = []
+    for bikes_line in bikes_lines:
+        if len(bikes_line.get_text().split('. ')) > 1:
+            bikes_brand = bikes_line.get_text().split('. ')[1].lower()
+        else:
+            bikes_brand = bikes_line.get_text().lower()
+        bikes_list.append(bikes_brand)
+
+    bikes2_html = urlopen('https://www.globalbrandsmagazine.com/top-bicycle-brands-in-the-world-2020/')
+    bikes2_bsObj = BeautifulSoup(bikes2_html.read(), 'lxml')
+    bikes2_lines = bikes2_bsObj.find_all('h3')
+    for bikes2_line in bikes2_lines:
+        bikes2_brand = bikes2_line.find('a').get_text().lower()
+        if bikes2_brand != 'lifestyle':
+            bikes_list.append(bikes2_brand)
+
+    bikes_list = list(set(bikes_list))
+    brands_dict['bikes'] = bikes_list
+
+    with open(os.path.join(product_path, 'brands_dict.json'), 'w', encoding='utf-8') as f:
+        json.dump(brands_dict, f)
+
+
 def clean_keywords():
 
     print('clean keywords')
@@ -242,6 +274,13 @@ def keyword_search(data_path):
         electronics_dict = {'top100/cleaned':{key: [] for key in brands_dict['electronics_total']},
                             'minimum3/cleaned':{key: [] for key in brands_dict['electronics_total']}}
 
+    if os.path.isfile(os.path.join(product_path,'product_bikes', 'bikes_dict.json')):
+        with open(os.path.join(product_path,'product_bikes', 'bikes_dict.json'), 'r', encoding='utf-8') as f:
+            bikes_dict = json.load(f)
+    else:
+        bikes_dict = {'top100/cleaned':{key: [] for key in brands_dict['bikes']},
+                      'minimum3/cleaned':{key: [] for key in brands_dict['bikes']}}
+
     count = 0
     with progressbar.ProgressBar(max_value=len(data_files)) as bar:
         for data_file in data_files:
@@ -250,9 +289,9 @@ def keyword_search(data_path):
 
             clothes_row_ids = []
             electronics_row_ids = []
+            bikes_row_ids = []
 
             # iterrate over rows and look for keywords
-
             if 'brand' in df.columns: # check whether column 'brand' exists
                 for i in range(df.shape[0]):  # iterate over rows
                     #if i < 1000: # only for testing
@@ -266,6 +305,9 @@ def keyword_search(data_path):
                         elif cell in brands_dict['electronics_total']:
                             electronics_dict[entity][cell].append((data_file, row_id))
                             electronics_row_ids.append(row_id)
+                        elif cell in brands_dict['bikes']:
+                            bikes_dict[entity][cell].append((data_file, row_id))
+                            bikes_row_ids.append(row_id)
             elif 'name' in df.columns: # if column 'brand' does not exist check for first word in name column
                 df['brand'] = ''
                 # iterrate over rows
@@ -284,6 +326,10 @@ def keyword_search(data_path):
                             clothes_dict[entity][cell].append((data_file, row_id))
                             clothes_row_ids.append(row_id)
                             df.at[i,'brand'] = cell
+                        elif cell in brands_dict['bikes']:
+                            bikes_dict[entity][cell].append((data_file, row_id))
+                            bikes_row_ids.append(row_id)
+                            df.at[i,'brand'] = cell
                         elif len(name_split_list)>1:
                             # check for two words (since ngrams brands)
                             cell = cell + ' ' + str(name_split_list[1]).lower()
@@ -295,6 +341,10 @@ def keyword_search(data_path):
                                 clothes_dict[entity][cell].append((data_file, row_id))
                                 clothes_row_ids.append(row_id)
                                 df.at[i,'brand'] = cell
+                            elif cell in brands_dict['bikes']:
+                                bikes_dict[entity][cell].append((data_file, row_id))
+                                bikes_row_ids.append(row_id)
+                                df.at[i, 'brand'] = cell
                             elif len(name_split_list)>2:
                                 # check for three words (since ngrams brands)
                                 cell = cell + ' ' + str(name_split_list[2]).lower()
@@ -306,6 +356,10 @@ def keyword_search(data_path):
                                     clothes_dict[entity][cell].append((data_file, row_id))
                                     clothes_row_ids.append(row_id)
                                     df.at[i,'brand'] = cell
+                                elif cell in brands_dict['bikes']:
+                                    bikes_dict[entity][cell].append((data_file, row_id))
+                                    bikes_row_ids.append(row_id)
+                                    df.at[i, 'brand'] = cell
 
                 count += 1
                 bar.update(count)
@@ -313,6 +367,7 @@ def keyword_search(data_path):
                 # write selected data into seperate folders
                 clothes_df = df[df['row_id'].isin(clothes_row_ids)]
                 electronics_df = df[df['row_id'].isin(electronics_row_ids)]
+                bikes_df = df[df['row_id'].isin(bikes_row_ids)]
 
                 if clothes_df.shape[0] > 0:
                     clothes_df.to_json(os.path.join(product_path, 'product_clothes', data_file), compression='gzip',
@@ -321,6 +376,11 @@ def keyword_search(data_path):
 
                 if electronics_df.shape[0] > 0:
                     electronics_df.to_json(os.path.join(product_path, 'product_electronics', data_file),
+                                           compression='gzip', orient='records',
+                                           lines=True)
+
+                if bikes_df.shape[0] > 0:
+                    bikes_df.to_json(os.path.join(product_path, 'product_bikes', data_file),
                                            compression='gzip', orient='records',
                                            lines=True)
 
@@ -333,12 +393,18 @@ def keyword_search(data_path):
                     with open(os.path.join(product_path,'product_electronics', 'electronics_dict.json'), 'w', encoding='utf-8') as f:
                         json.dump(electronics_dict, f)
 
+                    with open(os.path.join(product_path,'product_bikes', 'bikes_dict.json'), 'w', encoding='utf-8') as f:
+                        json.dump(bikes_dict, f)
+
     # save at the end of running
     with open(os.path.join(product_path, 'product_clothes', 'clothes_dict.json'), 'w', encoding='utf-8') as f:
         json.dump(clothes_dict, f)
 
     with open(os.path.join(product_path, 'product_electronics', 'electronics_dict.json'), 'w', encoding='utf-8') as f:
         json.dump(electronics_dict, f)
+
+    with open(os.path.join(product_path, 'product_bikes', 'bikes_dict.json'), 'w', encoding='utf-8') as f:
+        json.dump(bikes_dict, f)
 
 def remove_stopwords(token_vector, stopwords_list):
     return token_vector.apply(lambda token_list: [word for word in token_list if word not in stopwords_list])
@@ -523,8 +589,6 @@ def post_cleaning():
                                                        'clothes_clusters_all_8_tables_post_processed.csv'),
                                           columns=None)
 
-    test =2
-
 
 if __name__ == "__main__":
 
@@ -559,6 +623,9 @@ if __name__ == "__main__":
     #clean_clusters()
     #get_keywords() ##
     #clean_keywords()
-    #keyword_search(cleaned_top100_path)
-    #keyword_search(cleaned_min3_path)
-    post_cleaning()
+    keyword_search(cleaned_top100_path)
+    keyword_search(cleaned_min3_path)
+    #post_cleaning()
+    #get_bike_keywords()
+
+    test = 2
