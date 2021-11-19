@@ -633,26 +633,58 @@ def post_cleaning():
     Post-processing.
     :return:
     """
-    # read final dataframes with all cluster_ids left for electronics and clothes
-    electronics_clusters_all_15_df = pd.read_csv(os.path.join(cluster_path, 'electronics_clusters_all_10_tables.csv'), index_col=None)
-    clothes_clusters_all_10_df = pd.read_csv(os.path.join(cluster_path, 'clothes_clusters_all_8_tables_v2.csv'), index_col=None)
-
-    # generate lists for final cluster_ids for electronics and clothes
-    electronics_final_entities_df = pd.read_csv(os.path.join(notebook_path, 'electronics10.csv'),index_col=None)
-    electronics_final_entities_list = electronics_final_entities_df['cluster_id']
-
-    clothes_final_entities_df = pd.read_csv(os.path.join(notebook_path, 'clothes8.csv'),index_col=None)
-    clothes_final_entities_list = clothes_final_entities_df['cluster_id']
+    entities = ['Bikes', 'Cars', 'clothes', 'Drugstore', 'Electronics', 'Technology', 'Tools']
 
     # generate lists for valid electronics and clothes brands
     with open(os.path.join(product_path, 'brands_dict.json'), 'r', encoding='utf-8') as f:
         brands_dict = json.load(f)
 
-    electronics_valid_brands = brands_dict['electronics_total']
-    clothes_valid_brands = brands_dict['clothes']
+    # read final dataframes with all cluster_ids left
+    for entity in entities:
+        print('Running post-processing for {}'.format(entity))
+        if entity == 'Electronics':
+            clusters_all_df = pd.read_csv(os.path.join(cluster_path, 'Electronics_clusters_all_10_tables.csv'),
+                                          index_col=None)
+            valid_brands = brands_dict['electronics_total']
 
-    # lowercase name column for similarity measure
-    electronics_clusters_all_15_df['name'] = electronics_clusters_all_15_df['name'].apply(lambda row: str(row).lower())
+        else:
+            clusters_all_df = pd.read_csv(os.path.join(cluster_path, '{}_clusters_all_8_tables.csv'.format(entity)),
+                                                     index_col=None)
+            valid_brands = brands_dict[entity.lower()]
+
+        final_entities_list = clusters_all_df['cluster_id']
+
+        # lowercase name column for similarity measure
+        clusters_all_df['name'] = clusters_all_df['name'].apply(lambda row: str(row).lower())
+    """
+    electronics_clusters_all_15_df = pd.read_csv(os.path.join(cluster_path, 'electronics_clusters_all_10_tables.csv'), index_col=None)
+    clothes_clusters_all_10_df = pd.read_csv(os.path.join(cluster_path, 'clothes_clusters_all_8_tables_v2.csv'), index_col=None)
+    bikes_clusters_all_8_df = pd.read_csv(os.path.join(cluster_path, 'Bikes_clusters_all_8_tables.csv'),index_col=None)
+    cars_clusters_all_8_df = pd.read_csv(os.path.join(cluster_path, 'Cars_clusters_all_8_tables.csv'), index_col=None)
+    drugstore_clusters_all_8_df = pd.read_csv(os.path.join(cluster_path, 'Drugstore_clusters_all_8_tables.csv'), index_col=None)
+    technology_clusters_all_8_df = pd.read_csv(os.path.join(cluster_path, 'Technology_clusters_all_8_tables.csv'),
+                                              index_col=None)
+    tools_clusters_all_8_df = pd.read_csv(os.path.join(cluster_path, 'Tools_clusters_all_8_tables.csv'),
+                                              index_col=None)
+                                              
+    # generate lists for final cluster_ids
+    electronics_final_entities_df = pd.read_csv(os.path.join(cluster_path, 'Electronics_cluster_8_tables.csv'),index_col=None)
+    electronics_final_entities_list = electronics_final_entities_df['cluster_id']
+
+    clothes_final_entities_df = pd.read_csv(os.path.join(notebook_path, 'clothes8.csv'),index_col=None)
+    clothes_final_entities_list = clothes_final_entities_df['cluster_id']
+
+    bikes_final_entities_df = pd.read_csv(os.path.join(notebook_path, 'Bikes_cluster_8_tables.csv'), index_col=None)
+    bikes_final_entities_list = bikes_final_entities_df['cluster_id']
+
+    cars_final_entities_df = pd.read_csv(os.path.join(notebook_path, 'Cars_cluster_8_tables.csv'), index_col=None)
+    cars_final_entities_list = cars_final_entities_df['cluster_id']
+
+    drugstore_final_entities_df = pd.read_csv(os.path.join(notebook_path, 'Drugstore_cluster_8_tables.csv'), index_col=None)
+    drugstore_final_entities_list = drugstore_final_entities_df['cluster_id']
+    """
+
+
     clothes_clusters_all_10_df['name'] = clothes_clusters_all_10_df['name'].apply(lambda row: str(row).lower())
 
     # use tokenizer for name column to get tokens for training the model, remove stopwords and punctuation
@@ -797,6 +829,120 @@ def post_cleaning():
                                           columns=None)
 
 
+def post_cleaning2():
+    """
+    Measures the similarity within a cluster_id of our final electronics and clothes entities and removes ...??
+    Post-processing.
+    :return:
+    """
+    #entities = ['Bikes', 'Cars', 'clothes', 'Drugstore', 'Electronics', 'Technology', 'Tools']
+    entities = ['Electronics', 'Bikes']
+
+    # generate lists for valid electronics and clothes brands
+    with open(os.path.join(product_path, 'brands_dict.json'), 'r', encoding='utf-8') as f:
+        brands_dict = json.load(f)
+
+    # read final dataframes with all cluster_ids left
+    for entity in entities:
+        print('Running post-processing for {}'.format(entity))
+        clusters_all_df = pd.read_csv(
+            os.path.join(cluster_path, '{}_clusters_all_8_tables.csv'.format(entity)),
+            index_col=None)
+
+        final_entities_list = clusters_all_df['cluster_id']
+
+        # lowercase name column for similarity measure
+        clusters_all_df['name'] = clusters_all_df['name'].apply(lambda row: str(row).lower())
+
+        # use tokenizer for name column to get tokens for training the model, remove stopwords and punctuation
+        clusters_all_df['tokens'] = clusters_all_df['name'].apply(lambda row: word_tokenize(row))
+        clusters_all_df['tokens'] = remove_stopwords(clusters_all_df['tokens'],stopwords.words())
+        clusters_all_df['tokens'] = remove_punctuation(clusters_all_df['tokens'])
+
+        # get tagged words
+        tagged_data = [TaggedDocument(words=_d, tags=[str(i)]) for i, _d in
+                       enumerate(clusters_all_df['tokens'])]
+
+        # build model and vocabulary
+        model = Doc2Vec(vector_size=50, min_count=5, epochs=25, dm=0)
+        model.build_vocab(tagged_data)
+        # Train model
+        model.train(tagged_data, total_examples=model.corpus_count, epochs=25)
+
+        # compare for all cluster_ids the similarity between the entries within a cluster_id
+        valid_indices_all = []
+        print('measure similarity')
+        count = 0
+        with progressbar.ProgressBar(max_value=len(final_entities_list)) as bar:
+            for cluster_id in final_entities_list:
+                single_cluster_id_df = clusters_all_df[clusters_all_df['cluster_id']==cluster_id]
+
+                if entity == 'Electronics':
+                    valid_brands = brands_dict['electronics_total']
+                else:
+                    valid_brands = brands_dict[entity.lower()]
+
+                # measure similarity with Doc2Vec
+                valid_brands = list(filter(lambda brand: brand in valid_brands,
+                                           single_cluster_id_df['brand_y'].apply(lambda element: str(element).lower())))
+
+                if len(valid_brands) > 0:
+                    most_common_brand = max(valid_brands, key=valid_brands.count)
+                    index_most_common = single_cluster_id_df[single_cluster_id_df['brand_y'].apply(
+                        lambda element: str(element).lower()) == most_common_brand].index[0] # use this as baseline for similarity comparisons within a certain cluster
+
+                    # calculate similarity and filter for the ones which are in the current cluster
+                    similar_doc = model.docvecs.most_similar(f'{index_most_common}', topn=clusters_all_df.shape[0])
+                    similar_doc_cluster = [tup for tup in similar_doc if int(tup[0]) in list(single_cluster_id_df.index)] # similarities as tuples with index and similarity measure compared to baseline product
+                    similar_doc_cluster_df = pd.DataFrame(list(similar_doc_cluster), columns=['index','doc2vec'])
+                    similar_doc_cluster_df['index'] = [int(i) for i in similar_doc_cluster_df['index']] # change indices to numbers
+
+                    # measure similarity with Jaccard
+                    jaccard_score = single_cluster_id_df['name'].apply(lambda row: jaccard_similarity_score(
+                        row, single_cluster_id_df['name'].loc[int(index_most_common)]))
+                    jaccard_score = jaccard_score.drop(int(index_most_common)).sort_values(ascending=False)
+                    jaccard_score_df = pd.DataFrame({'index':jaccard_score.index, 'jaccard':jaccard_score.values})
+
+                    # merge both similarity measures to one dataframe
+                    similarity_df = pd.merge(similar_doc_cluster_df, jaccard_score_df, left_on='index', right_on='index', how='left')
+
+                    # select valid cluster_ids by setting thresholds for doc2vec and jaccard similarities
+                    if entity == 'Bikes':
+                        doc2vec_threshold = 1
+                        jaccard_theshold = 1
+                    elif entity == 'Cars':
+                        doc2vec_threshold = 1
+                        jaccard_theshold = 1
+                    elif entity == 'Clothes':
+                        doc2vec_threshold = 0.97
+                        jaccard_theshold = 0.6
+                    elif entity == 'Drugstore':
+                        doc2vec_threshold = 1
+                        jaccard_theshold = 1
+                    elif entity == 'Electronics':
+                        doc2vec_threshold = 0.97
+                        jaccard_theshold = 0.5
+                    elif entity == 'Technology':
+                        doc2vec_threshold = 1
+                        jaccard_theshold = 1
+                    elif entity == 'Tools':
+                        doc2vec_threshold = 1
+                        jaccard_theshold = 1
+                    valid_cluster_id_df = similarity_df[(similarity_df['doc2vec'] > doc2vec_threshold) |
+                                                        (similarity_df['jaccard'] > jaccard_theshold)]
+                    valid_cluster_id_indices = valid_cluster_id_df['index'].to_list() # list of valid indices within a cluster_id
+                    valid_indices_all += valid_cluster_id_indices
+
+                count += 1
+                bar.update(count)
+
+        clusters_all_df_new = clusters_all_df[clusters_all_df.index.isin(valid_indices_all)]
+        clusters_all_df_new.to_csv(os.path.join(cluster_path, '{}_clusters_all_10_tables_post_processed.csv'.format(entity)),
+                                                  columns=None)
+
+        ### Auch gleiche table_ids rauswerfen!!!!
+
+
 if __name__ == "__main__":
 
     # for multithreading
@@ -830,9 +976,9 @@ if __name__ == "__main__":
     #clean_clusters()
     #get_keywords() ##
     #clean_keywords()
-    keyword_search(cleaned_top100_path)
-    keyword_search(cleaned_min3_path)
-    #post_cleaning()
+    #keyword_search(cleaned_top100_path)
+    #keyword_search(cleaned_min3_path)
+    post_cleaning2()
     #get_new_keywords()
 
     test = 2
