@@ -1,3 +1,4 @@
+
 import os
 import pandas as pd
 import plotly.express as px
@@ -38,3 +39,4 @@ with progressbar.ProgressBar(max_value=len(df_clothes_filtered.columns)) as bar:
 df_clothes_cleaned=df_clothes_cleaned.reset_index().rename(columns={'index':"brand"})
 df_joined_clothes = df_large.merge(df_clothes_cleaned, left_on=['table_id','row_id'], right_on = ['table_id','row_id'], how='left')
 df_joined_clothes.to_json(mapping_corpus_path_2 + '/joined_clothes_v3.json', compression='gzip', orient='records', lines=True)
+
