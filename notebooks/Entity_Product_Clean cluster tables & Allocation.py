@@ -836,7 +836,7 @@ def post_cleaning2():
     :return:
     """
     #entities = ['Bikes', 'Cars', 'clothes', 'Drugstore', 'Electronics', 'Technology', 'Tools']
-    entities = ['Electronics', 'Bikes']
+    entities = ['Electronics']
 
     # generate lists for valid electronics and clothes brands
     with open(os.path.join(product_path, 'brands_dict.json'), 'r', encoding='utf-8') as f:
