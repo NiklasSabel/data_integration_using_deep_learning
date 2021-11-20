@@ -836,7 +836,7 @@ def post_cleaning2():
     :return:
     """
     #entities = ['Bikes', 'Cars', 'clothes', 'Drugstore', 'Electronics', 'Technology', 'Tools']
-    entities = ['Electronics']
+    entities = ['Electronics', 'Clothes']
 
     # generate lists for valid electronics and clothes brands
     with open(os.path.join(product_path, 'brands_dict.json'), 'r', encoding='utf-8') as f:
@@ -849,7 +849,7 @@ def post_cleaning2():
             os.path.join(cluster_path, '{}_clusters_all_8_tables.csv'.format(entity)),
             index_col=None)
 
-        final_entities_list = clusters_all_df['cluster_id']
+        final_entities_list = list(set(clusters_all_df['cluster_id']))
 
         # lowercase name column for similarity measure
         clusters_all_df['name'] = clusters_all_df['name'].apply(lambda row: str(row).lower())
@@ -870,6 +870,10 @@ def post_cleaning2():
         model.train(tagged_data, total_examples=model.corpus_count, epochs=25)
 
         # compare for all cluster_ids the similarity between the entries within a cluster_id
+        if entity == 'Electronics':
+            all_valid_brands = brands_dict['electronics_total']
+        else:
+            all_valid_brands = brands_dict[entity.lower()]
         valid_indices_all = []
         print('measure similarity')
         count = 0
@@ -877,13 +881,8 @@ def post_cleaning2():
             for cluster_id in final_entities_list:
                 single_cluster_id_df = clusters_all_df[clusters_all_df['cluster_id']==cluster_id]
 
-                if entity == 'Electronics':
-                    valid_brands = brands_dict['electronics_total']
-                else:
-                    valid_brands = brands_dict[entity.lower()]
-
                 # measure similarity with Doc2Vec
-                valid_brands = list(filter(lambda brand: brand in valid_brands,
+                valid_brands = list(filter(lambda brand: brand in all_valid_brands,
                                            single_cluster_id_df['brand_y'].apply(lambda element: str(element).lower())))
 
                 if len(valid_brands) > 0:
@@ -937,7 +936,7 @@ def post_cleaning2():
                 bar.update(count)
 
         clusters_all_df_new = clusters_all_df[clusters_all_df.index.isin(valid_indices_all)]
-        clusters_all_df_new.to_csv(os.path.join(cluster_path, '{}_clusters_all_10_tables_post_processed.csv'.format(entity)),
+        clusters_all_df_new.to_csv(os.path.join(cluster_path, '{}_clusters_all_8_tables_post_processed.csv'.format(entity)),
                                                   columns=None)
 
         ### Auch gleiche table_ids rauswerfen!!!!
