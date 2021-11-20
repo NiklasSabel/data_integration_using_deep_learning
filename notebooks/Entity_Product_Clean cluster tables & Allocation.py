@@ -194,7 +194,7 @@ def get_new_keywords():
     print('get keywords')
     with open(os.path.join(product_path, 'brands_dict.json'), 'r', encoding='utf-8') as f:
         brands_dict = json.load(f)
-
+    """
     # for bikes
     bikes_html = urlopen('https://bikesreviewed.com/brands/')
     bikes_bsObj = BeautifulSoup(bikes_html.read(), 'lxml')
@@ -244,7 +244,7 @@ def get_new_keywords():
                     'stanley', 'stiletto', 'vermont american', 'wener ladder', 'metabo hpt', 'festool', 'mafell',
                     'knipex', 'wiha', 'ingersoll-rand', 'senco', 'greenlee', 'knaack', 'caterpillar']
     tools_list2 = []
-    """
+    
     # only if we want more here
     tools_html = urlopen('https://www.toolup.com/shop-by-brand')
     tools_bsObj = BeautifulSoup(tools_html.read(), 'lxml')
@@ -254,7 +254,7 @@ def get_new_keywords():
         for element in tools_brand:
             tools_br = element.get_text().lower()
             tools_list2.append(tools_br)
-    """
+    
     brands_dict['tools'] = list(set(tools_list1 + tools_list2))
 
     # for cars
@@ -285,6 +285,21 @@ def get_new_keywords():
     brands_dict['electronics_total'] += ['huawei', 'logitech']
     #brands_dict['electronics_total'].remove('samsung')
     brands_dict['electronics_total'] = list(set(brands_dict['electronics_total']))
+    """
+    random_brands = ['2-POWER', '2-Power', 'A&I Parts', 'ANGELIC DIAMONDS', 'Allison Kaufman',
+                     'American Olean', 'Anuradha Art Jewellery', 'Ariat', 'Bijou Brigitte',
+                     'Birkenstock', 'Black Diamond', 'Brilliant Earth', 'Caratlane', 'Carhartt', 'Casio',
+                     'Chekich','DWS Jewellery', 'Dakine', 'Eastpak', 'Emporio Armani', 'Epson',
+                     'Garmin', 'Garrett', 'Hamilton', 'Hopscotch', 'JBL', 'Jordan', 'Kawasaki',
+                     'Kingston', 'LEGO', 'MSI', 'Medline', 'Peacocks', 'Pink Boutique',
+                     'Reebok', 'Rembrandt Charms', 'SanDisk', 'SareesBazaar',
+                     'Select Fashion', 'Toshiba', 'Tumi', 'Unionwear', 'United Colors of Benetton',
+                     'VOYLLA', 'Vera Bradley', 'Wilson', 'Xerox', 'baginning', 'dorothyperkins', 'evans',
+                     'nihaojewelry.com', 'topman']
+
+    random_brands = list(set(brand.lower() for brand in random_brands))
+
+    brands_dict['random'] = random_brands
 
     with open(os.path.join(product_path, 'brands_dict.json'), 'w', encoding='utf-8') as f:
         json.dump(brands_dict, f)
@@ -377,6 +392,13 @@ def keyword_search(data_path):
         cars_dict = {'top100/cleaned':{key: [] for key in brands_dict['cars']},
                       'minimum3/cleaned':{key: [] for key in brands_dict['cars']}}
 
+    if os.path.isfile(os.path.join(product_path,'product_random', 'random_dict.json')):
+        with open(os.path.join(product_path,'product_random', 'random_dict.json'), 'r', encoding='utf-8') as f:
+            random_dict = json.load(f)
+    else:
+        random_dict = {'top100/cleaned':{key: [] for key in brands_dict['random']},
+                      'minimum3/cleaned':{key: [] for key in brands_dict['random']}}
+
     count = 0
     with progressbar.ProgressBar(max_value=len(data_files)) as bar:
         for data_file in data_files:
@@ -390,6 +412,7 @@ def keyword_search(data_path):
             tools_row_ids = []
             technology_row_ids = []
             cars_row_ids = []
+            random_row_ids = []
 
             # iterrate over rows and look for keywords
             if 'brand' in df.columns: # check whether column 'brand' exists
@@ -420,6 +443,9 @@ def keyword_search(data_path):
                         elif cell in brands_dict['drugstore']:
                             drugstore_dict[entity][cell].append((data_file, row_id))
                             drugstore_row_ids.append(row_id)
+                        elif cell in brands_dict['random']:
+                            random_dict[entity][cell].append((data_file, row_id))
+                            random_row_ids.append(row_id)
             elif 'name' in df.columns: # if column 'brand' does not exist check for first word in name column
                 df['brand'] = ''
                 # iterrate over rows
@@ -458,6 +484,10 @@ def keyword_search(data_path):
                             drugstore_dict[entity][cell].append((data_file, row_id))
                             drugstore_row_ids.append(row_id)
                             df.at[i,'brand'] = cell
+                        elif cell in brands_dict['random']:
+                            random_dict[entity][cell].append((data_file, row_id))
+                            random_row_ids.append(row_id)
+                            df.at[i,'brand'] = cell
                         elif len(name_split_list)>1:
                             # check for two words (since ngrams brands)
                             cell = cell + ' ' + str(name_split_list[1]).lower()
@@ -488,6 +518,10 @@ def keyword_search(data_path):
                             elif cell in brands_dict['drugstore']:
                                 drugstore_dict[entity][cell].append((data_file, row_id))
                                 drugstore_row_ids.append(row_id)
+                                df.at[i, 'brand'] = cell
+                            elif cell in brands_dict['random']:
+                                random_dict[entity][cell].append((data_file, row_id))
+                                random_row_ids.append(row_id)
                                 df.at[i, 'brand'] = cell
                             elif len(name_split_list)>2:
                                 # check for three words (since ngrams brands)
@@ -520,6 +554,45 @@ def keyword_search(data_path):
                                     drugstore_dict[entity][cell].append((data_file, row_id))
                                     drugstore_row_ids.append(row_id)
                                     df.at[i, 'brand'] = cell
+                                elif cell in brands_dict['random']:
+                                    random_dict[entity][cell].append((data_file, row_id))
+                                    random_row_ids.append(row_id)
+                                    df.at[i, 'brand'] = cell
+                                elif len(name_split_list) > 3:
+                                    # check for four words (since ngrams brands)
+                                    cell = cell + ' ' + str(name_split_list[2]).lower()
+                                    if cell in brands_dict['electronics_total']:
+                                        electronics_dict[entity][cell].append((data_file, row_id))
+                                        electronics_row_ids.append(row_id)
+                                        df.at[i, 'brand'] = cell
+                                    elif cell in brands_dict['clothes']:
+                                        clothes_dict[entity][cell].append((data_file, row_id))
+                                        clothes_row_ids.append(row_id)
+                                        df.at[i, 'brand'] = cell
+                                    elif cell in brands_dict['bikes']:
+                                        bikes_dict[entity][cell].append((data_file, row_id))
+                                        bikes_row_ids.append(row_id)
+                                        df.at[i, 'brand'] = cell
+                                    elif cell in brands_dict['cars']:
+                                        cars_dict[entity][cell].append((data_file, row_id))
+                                        cars_row_ids.append(row_id)
+                                        df.at[i, 'brand'] = cell
+                                    elif cell in brands_dict['technology']:
+                                        technology_dict[entity][cell].append((data_file, row_id))
+                                        technology_row_ids.append(row_id)
+                                        df.at[i, 'brand'] = cell
+                                    elif cell in brands_dict['tools']:
+                                        tools_dict[entity][cell].append((data_file, row_id))
+                                        tools_row_ids.append(row_id)
+                                        df.at[i, 'brand'] = cell
+                                    elif cell in brands_dict['drugstore']:
+                                        drugstore_dict[entity][cell].append((data_file, row_id))
+                                        drugstore_row_ids.append(row_id)
+                                        df.at[i, 'brand'] = cell
+                                    elif cell in brands_dict['random']:
+                                        random_dict[entity][cell].append((data_file, row_id))
+                                        random_row_ids.append(row_id)
+                                        df.at[i, 'brand'] = cell
 
                 count += 1
                 bar.update(count)
@@ -532,6 +605,7 @@ def keyword_search(data_path):
                 technology_df = df[df['row_id'].isin(technology_row_ids)]
                 tools_df = df[df['row_id'].isin(tools_row_ids)]
                 drugstore_df = df[df['row_id'].isin(drugstore_row_ids)]
+                random_df = df[df['row_id'].isin(random_row_ids)]
 
                 if clothes_df.shape[0] > 0:
                     clothes_df.to_json(os.path.join(product_path, 'product_clothes_v3', data_file), compression='gzip',
@@ -568,6 +642,11 @@ def keyword_search(data_path):
                                            compression='gzip', orient='records',
                                            lines=True)
 
+                if random_df.shape[0] > 0:
+                    random_df.to_json(os.path.join(product_path, 'product_random', data_file),
+                                           compression='gzip', orient='records',
+                                           lines=True)
+
                 ## nur alle paar tausend saven
                 # save dictionaries with selected data
                 if count % 1000 == 0:
@@ -592,6 +671,9 @@ def keyword_search(data_path):
                     with open(os.path.join(product_path,'product_drugstore', 'drugstore_dict.json'), 'w', encoding='utf-8') as f:
                         json.dump(drugstore_dict, f)
 
+                    with open(os.path.join(product_path,'product_random', 'random_dict.json'), 'w', encoding='utf-8') as f:
+                        json.dump(random_dict, f)
+
     # save at the end of running
     with open(os.path.join(product_path, 'product_clothes_v3', 'clothes_dict.json'), 'w', encoding='utf-8') as f:
         json.dump(clothes_dict, f)
@@ -614,6 +696,9 @@ def keyword_search(data_path):
     with open(os.path.join(product_path, 'product_drugstore', 'drugstore_dict.json'), 'w', encoding='utf-8') as f:
         json.dump(drugstore_dict, f)
 
+    with open(os.path.join(product_path, 'product_random', 'random_dict.json'), 'w', encoding='utf-8') as f:
+        json.dump(random_dict, f)
+
 def remove_stopwords(token_vector, stopwords_list):
     return token_vector.apply(lambda token_list: [word for word in token_list if word not in stopwords_list])
 
@@ -635,7 +720,7 @@ def post_cleaning():
     Post-processing.
     :return:
     """
-    entities = ['Bikes', 'Cars', 'Clothes', 'Drugstore', 'Electronics', 'Technology', 'Tools']
+    entities = ['Bikes', 'Cars', 'Clothes', 'Drugstore', 'Electronics', 'Technology', 'Tools', 'Random']
     #entities = ['Tools']
 
     # generate lists for valid electronics and clothes brands
@@ -775,9 +860,9 @@ if __name__ == "__main__":
     #clean_clusters()
     #get_keywords() ##
     #clean_keywords()
-    #keyword_search(cleaned_top100_path)
-    #keyword_search(cleaned_min3_path)
-    post_cleaning()
+    keyword_search(cleaned_top100_path)
+    keyword_search(cleaned_min3_path)
+    #post_cleaning()
     #get_new_keywords()
 
     test = 2
