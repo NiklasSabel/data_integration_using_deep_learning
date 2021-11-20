@@ -24,3 +24,6 @@ electronics_clusters_all_15_df.to_csv(os.path.join(mapping_corpus_path_2, 'elect
 clothes_clusters_all_10_df.to_csv(os.path.join(mapping_corpus_path_2, 'clothes_clusters_all_8_tables_v2.csv'), columns=None)
 
 test = 1
+
+
+
