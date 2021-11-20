@@ -190,6 +190,105 @@ def get_keywords():
 
     return brands_dict
 
+def get_new_keywords():
+    print('get keywords')
+    with open(os.path.join(product_path, 'brands_dict.json'), 'r', encoding='utf-8') as f:
+        brands_dict = json.load(f)
+
+    # for bikes
+    bikes_html = urlopen('https://bikesreviewed.com/brands/')
+    bikes_bsObj = BeautifulSoup(bikes_html.read(), 'lxml')
+    bikes_lines = bikes_bsObj.find_all('h3')
+    bikes_list = []
+    for bikes_line in bikes_lines:
+        if len(bikes_line.get_text().split('. ')) > 1:
+            bikes_brand = bikes_line.get_text().split('. ')[1].lower()
+        else:
+            bikes_brand = bikes_line.get_text().lower()
+        bikes_list.append(bikes_brand)
+    bikes_list.append('nonch')
+
+    bikes2_html = urlopen('https://www.globalbrandsmagazine.com/top-bicycle-brands-in-the-world-2020/')
+    bikes2_bsObj = BeautifulSoup(bikes2_html.read(), 'lxml')
+    bikes2_lines = bikes2_bsObj.find_all('h3')
+    for bikes2_line in bikes2_lines:
+        bikes2_brand = bikes2_line.find('a').get_text().lower()
+        bikes_list.append(bikes2_brand)
+
+    bikes_list = [element.split('\u00a0')[1] if element.startswith('\u00a0') else element for element in bikes_list]
+    bikes_list = [element for element in bikes_list if element not in [
+        ' 8 thoughts on “the best bike brands for 2021 – the top 60 road, mountain, hybrid and bmx bike manufacturers ranked”',
+        'lifestyle', '11.  huffy bikes', 'leave a reply cancel reply', 'all-around brands', 'hybrid', 'road ']]
+    bikes_list.append('huffy bikes')
+    bikes_list = list(set(bikes_list))
+    brands_dict['bikes'] = bikes_list
+
+
+
+    # for drugstore
+    brands_dict['drugstore'] = ['avène', 'dove', 'jergens', 'mele', 'vichy', 'e.l.f.', 'bevel', 'eucerin', 'acnefree',
+                                'maybelline', 'la roche-posay', 'odele', 'neutrogena', 'flamingo', 'inm', 'shea moisture',
+                                'sheamoisture', 'olay', 'cerave', 'nyx', "pond’s", "pond's", 'ponds', 'pacifica',
+                                'aquaphor', 'schick', 'differin', 'garnier', 'l’oréal paris', "l'oréal paris", 'revlon',
+                                'cetaphil','roc', "burt's bees", "burt’s bees", 'sonia kashuk', 'pantene', 'aveeno', 'no7',
+                                'rimell', 'wet n wild']
+    brands_dict['drugstore'] = list(set(brands_dict['drugstore']))
+
+    # for tools
+    tools_list1 = ['makita', 'bosch', 'dewalt', 'craftsman', 'stanley black & decker', 'ridgid tools', 'ridgid',
+                    'kobalt', 'skil', 'husky tools', 'irwin', 'ryobi', 'milwaukee', 'ames', 'arrow', 'bostitch',
+                    'channellock', 'cmt', 'dremel', 'duo-fast', 'estwing', 'freud', 'grip-rite', 'hilti',
+                    'hitachi', 'irwin tools', 'leatherman', 'little giant ladder', 'marshalltown',
+                    'master magnetics', 'paslode', 'porter-cable', 'red devil', 'rockwell automation', 'stabila',
+                    'stanley', 'stiletto', 'vermont american', 'wener ladder', 'metabo hpt', 'festool', 'mafell',
+                    'knipex', 'wiha', 'ingersoll-rand', 'senco', 'greenlee', 'knaack', 'caterpillar']
+    tools_list2 = []
+    """
+    # only if we want more here
+    tools_html = urlopen('https://www.toolup.com/shop-by-brand')
+    tools_bsObj = BeautifulSoup(tools_html.read(), 'lxml')
+    tools_lines = tools_bsObj.find_all('div', {'class':'brand-group'})
+    for tools_line in tools_lines:
+        tools_brand = tools_line.find_all('li')
+        for element in tools_brand:
+            tools_br = element.get_text().lower()
+            tools_list2.append(tools_br)
+    """
+    brands_dict['tools'] = list(set(tools_list1 + tools_list2))
+
+    # for cars
+    cars_list = []
+    req = Request('https://www.thetrendspotter.net/popular-car-brands/', headers={'User-Agent': 'Mozilla/5.0'})
+    cars_html = urlopen(req)
+    cars_bsObj = BeautifulSoup(cars_html.read(), 'lxml')
+    cars_lines = cars_bsObj.find_all('h2')
+    for cars_line in cars_lines:
+        if len(cars_line.get_text().split('. ')) > 1:
+            cars_brand = cars_line.get_text().split('. ')[1].lower()
+            cars_list.append(cars_brand)
+    cars_list += ['mercedes benz', 'vw', 'yamaha', 'ferrari', 'bentley', 'ram trucks', 'pontiac', 'oldsmobile', 'maserati',
+                  'aston martin', 'bugatti', 'fiat', 'saab', 'suzuki', 'renault', 'peugeot', 'daewoo', 'studebaker',
+                  'hudson', 'citroen', 'mg']
+    brands_dict['cars'] = list(set(cars_list))
+
+    # for technology
+    brands_dict['technology'] = ['samsung', '3m', 'abb', 'philips', 'schneider electric', 'sennheiser', 'siemens']
+
+
+
+    # modify in general manually
+    brands_dict['clothes'] += ['billabong', 'breitling', 'fila', 'hilfiger', 'pandora', 'ray-ban', 'rayban',
+                               'timberland', 'new era', 'bosch']
+    brands_dict['clothes'] = list(set(brands_dict['clothes']))
+
+    brands_dict['electronics_total'] += ['huawei', 'logitech']
+    #brands_dict['electronics_total'].remove('samsung')
+    brands_dict['electronics_total'] = list(set(brands_dict['electronics_total']))
+
+    with open(os.path.join(product_path, 'brands_dict.json'), 'w', encoding='utf-8') as f:
+        json.dump(brands_dict, f)
+
+
 def clean_keywords():
 
     print('clean keywords')
@@ -228,19 +327,54 @@ def keyword_search(data_path):
     entity = data_path.split('product_')[1]
     print(entity)
     # check whether dictionaries already exist
-    if os.path.isfile(os.path.join(product_path,'product_clothes', 'clothes_dict.json')):
-        with open(os.path.join(product_path,'product_clothes', 'clothes_dict.json'), 'r', encoding='utf-8') as f:
+    if os.path.isfile(os.path.join(product_path,'product_clothes_v3', 'clothes_dict.json')):
+        with open(os.path.join(product_path,'product_clothes_v3', 'clothes_dict.json'), 'r', encoding='utf-8') as f:
             clothes_dict = json.load(f)
     else:
         clothes_dict = {'top100/cleaned':{key: [] for key in brands_dict['clothes']},
                         'minimum3/cleaned':{key: [] for key in brands_dict['clothes']}}
 
-    if os.path.isfile(os.path.join(product_path,'product_electronics', 'electronics_dict.json')):
-        with open(os.path.join(product_path,'product_electronics', 'electronics_dict.json'), 'r', encoding='utf-8') as f:
+    if os.path.isfile(os.path.join(product_path,'product_electronics_v3', 'electronics_dict.json')):
+        with open(os.path.join(product_path,'product_electronics_v3', 'electronics_dict.json'), 'r', encoding='utf-8') as f:
             electronics_dict = json.load(f)
     else:
         electronics_dict = {'top100/cleaned':{key: [] for key in brands_dict['electronics_total']},
                             'minimum3/cleaned':{key: [] for key in brands_dict['electronics_total']}}
+
+    if os.path.isfile(os.path.join(product_path,'product_bikes', 'bikes_dict.json')):
+        with open(os.path.join(product_path,'product_bikes', 'bikes_dict.json'), 'r', encoding='utf-8') as f:
+            bikes_dict = json.load(f)
+    else:
+        bikes_dict = {'top100/cleaned':{key: [] for key in brands_dict['bikes']},
+                      'minimum3/cleaned':{key: [] for key in brands_dict['bikes']}}
+
+    if os.path.isfile(os.path.join(product_path,'product_drugstore', 'drugstore_dict.json')):
+        with open(os.path.join(product_path,'product_drugstore', 'drugstore_dict.json'), 'r', encoding='utf-8') as f:
+            drugstore_dict = json.load(f)
+    else:
+        drugstore_dict = {'top100/cleaned':{key: [] for key in brands_dict['drugstore']},
+                      'minimum3/cleaned':{key: [] for key in brands_dict['drugstore']}}
+
+    if os.path.isfile(os.path.join(product_path,'product_tools', 'tools_dict.json')):
+        with open(os.path.join(product_path,'product_tools', 'tools_dict.json'), 'r', encoding='utf-8') as f:
+            tools_dict = json.load(f)
+    else:
+        tools_dict = {'top100/cleaned':{key: [] for key in brands_dict['tools']},
+                      'minimum3/cleaned':{key: [] for key in brands_dict['tools']}}
+
+    if os.path.isfile(os.path.join(product_path,'product_technology', 'technology_dict.json')):
+        with open(os.path.join(product_path,'product_technology', 'technology_dict.json'), 'r', encoding='utf-8') as f:
+            technology_dict = json.load(f)
+    else:
+        technology_dict = {'top100/cleaned':{key: [] for key in brands_dict['technology']},
+                      'minimum3/cleaned':{key: [] for key in brands_dict['technology']}}
+
+    if os.path.isfile(os.path.join(product_path,'product_cars', 'cars_dict.json')):
+        with open(os.path.join(product_path,'product_cars', 'cars_dict.json'), 'r', encoding='utf-8') as f:
+            cars_dict = json.load(f)
+    else:
+        cars_dict = {'top100/cleaned':{key: [] for key in brands_dict['cars']},
+                      'minimum3/cleaned':{key: [] for key in brands_dict['cars']}}
 
     count = 0
     with progressbar.ProgressBar(max_value=len(data_files)) as bar:
@@ -250,9 +384,13 @@ def keyword_search(data_path):
 
             clothes_row_ids = []
             electronics_row_ids = []
+            bikes_row_ids = []
+            drugstore_row_ids = []
+            tools_row_ids = []
+            technology_row_ids = []
+            cars_row_ids = []
 
             # iterrate over rows and look for keywords
-
             if 'brand' in df.columns: # check whether column 'brand' exists
                 for i in range(df.shape[0]):  # iterate over rows
                     #if i < 1000: # only for testing
@@ -266,6 +404,21 @@ def keyword_search(data_path):
                         elif cell in brands_dict['electronics_total']:
                             electronics_dict[entity][cell].append((data_file, row_id))
                             electronics_row_ids.append(row_id)
+                        elif cell in brands_dict['bikes']:
+                            bikes_dict[entity][cell].append((data_file, row_id))
+                            bikes_row_ids.append(row_id)
+                        elif cell in brands_dict['cars']:
+                            cars_dict[entity][cell].append((data_file, row_id))
+                            cars_row_ids.append(row_id)
+                        elif cell in brands_dict['technology']:
+                            technology_dict[entity][cell].append((data_file, row_id))
+                            technology_row_ids.append(row_id)
+                        elif cell in brands_dict['tools']:
+                            tools_dict[entity][cell].append((data_file, row_id))
+                            tools_row_ids.append(row_id)
+                        elif cell in brands_dict['drugstore']:
+                            drugstore_dict[entity][cell].append((data_file, row_id))
+                            drugstore_row_ids.append(row_id)
             elif 'name' in df.columns: # if column 'brand' does not exist check for first word in name column
                 df['brand'] = ''
                 # iterrate over rows
@@ -284,6 +437,26 @@ def keyword_search(data_path):
                             clothes_dict[entity][cell].append((data_file, row_id))
                             clothes_row_ids.append(row_id)
                             df.at[i,'brand'] = cell
+                        elif cell in brands_dict['bikes']:
+                            bikes_dict[entity][cell].append((data_file, row_id))
+                            bikes_row_ids.append(row_id)
+                            df.at[i,'brand'] = cell
+                        elif cell in brands_dict['cars']:
+                            cars_dict[entity][cell].append((data_file, row_id))
+                            cars_row_ids.append(row_id)
+                            df.at[i,'brand'] = cell
+                        elif cell in brands_dict['technology']:
+                            technology_dict[entity][cell].append((data_file, row_id))
+                            technology_row_ids.append(row_id)
+                            df.at[i,'brand'] = cell
+                        elif cell in brands_dict['tools']:
+                            tools_dict[entity][cell].append((data_file, row_id))
+                            tools_row_ids.append(row_id)
+                            df.at[i,'brand'] = cell
+                        elif cell in brands_dict['drugstore']:
+                            drugstore_dict[entity][cell].append((data_file, row_id))
+                            drugstore_row_ids.append(row_id)
+                            df.at[i,'brand'] = cell
                         elif len(name_split_list)>1:
                             # check for two words (since ngrams brands)
                             cell = cell + ' ' + str(name_split_list[1]).lower()
@@ -295,6 +468,26 @@ def keyword_search(data_path):
                                 clothes_dict[entity][cell].append((data_file, row_id))
                                 clothes_row_ids.append(row_id)
                                 df.at[i,'brand'] = cell
+                            elif cell in brands_dict['bikes']:
+                                bikes_dict[entity][cell].append((data_file, row_id))
+                                bikes_row_ids.append(row_id)
+                                df.at[i, 'brand'] = cell
+                            elif cell in brands_dict['cars']:
+                                cars_dict[entity][cell].append((data_file, row_id))
+                                cars_row_ids.append(row_id)
+                                df.at[i, 'brand'] = cell
+                            elif cell in brands_dict['technology']:
+                                technology_dict[entity][cell].append((data_file, row_id))
+                                technology_row_ids.append(row_id)
+                                df.at[i, 'brand'] = cell
+                            elif cell in brands_dict['tools']:
+                                tools_dict[entity][cell].append((data_file, row_id))
+                                tools_row_ids.append(row_id)
+                                df.at[i, 'brand'] = cell
+                            elif cell in brands_dict['drugstore']:
+                                drugstore_dict[entity][cell].append((data_file, row_id))
+                                drugstore_row_ids.append(row_id)
+                                df.at[i, 'brand'] = cell
                             elif len(name_split_list)>2:
                                 # check for three words (since ngrams brands)
                                 cell = cell + ' ' + str(name_split_list[2]).lower()
@@ -306,6 +499,26 @@ def keyword_search(data_path):
                                     clothes_dict[entity][cell].append((data_file, row_id))
                                     clothes_row_ids.append(row_id)
                                     df.at[i,'brand'] = cell
+                                elif cell in brands_dict['bikes']:
+                                    bikes_dict[entity][cell].append((data_file, row_id))
+                                    bikes_row_ids.append(row_id)
+                                    df.at[i, 'brand'] = cell
+                                elif cell in brands_dict['cars']:
+                                    cars_dict[entity][cell].append((data_file, row_id))
+                                    cars_row_ids.append(row_id)
+                                    df.at[i, 'brand'] = cell
+                                elif cell in brands_dict['technology']:
+                                    technology_dict[entity][cell].append((data_file, row_id))
+                                    technology_row_ids.append(row_id)
+                                    df.at[i, 'brand'] = cell
+                                elif cell in brands_dict['tools']:
+                                    tools_dict[entity][cell].append((data_file, row_id))
+                                    tools_row_ids.append(row_id)
+                                    df.at[i, 'brand'] = cell
+                                elif cell in brands_dict['drugstore']:
+                                    drugstore_dict[entity][cell].append((data_file, row_id))
+                                    drugstore_row_ids.append(row_id)
+                                    df.at[i, 'brand'] = cell
 
                 count += 1
                 bar.update(count)
@@ -313,14 +526,44 @@ def keyword_search(data_path):
                 # write selected data into seperate folders
                 clothes_df = df[df['row_id'].isin(clothes_row_ids)]
                 electronics_df = df[df['row_id'].isin(electronics_row_ids)]
+                bikes_df = df[df['row_id'].isin(bikes_row_ids)]
+                cars_df = df[df['row_id'].isin(cars_row_ids)]
+                technology_df = df[df['row_id'].isin(technology_row_ids)]
+                tools_df = df[df['row_id'].isin(tools_row_ids)]
+                drugstore_df = df[df['row_id'].isin(drugstore_row_ids)]
 
                 if clothes_df.shape[0] > 0:
-                    clothes_df.to_json(os.path.join(product_path, 'product_clothes', data_file), compression='gzip',
+                    clothes_df.to_json(os.path.join(product_path, 'product_clothes_v3', data_file), compression='gzip',
                                        orient='records',
                                        lines=True)
 
                 if electronics_df.shape[0] > 0:
-                    electronics_df.to_json(os.path.join(product_path, 'product_electronics', data_file),
+                    electronics_df.to_json(os.path.join(product_path, 'product_electronics_v3', data_file),
+                                           compression='gzip', orient='records',
+                                           lines=True)
+
+                if bikes_df.shape[0] > 0:
+                    bikes_df.to_json(os.path.join(product_path, 'product_bikes', data_file),
+                                           compression='gzip', orient='records',
+                                           lines=True)
+
+                if cars_df.shape[0] > 0:
+                    cars_df.to_json(os.path.join(product_path, 'product_cars', data_file),
+                                           compression='gzip', orient='records',
+                                           lines=True)
+
+                if technology_df.shape[0] > 0:
+                    technology_df.to_json(os.path.join(product_path, 'product_technology', data_file),
+                                           compression='gzip', orient='records',
+                                           lines=True)
+
+                if tools_df.shape[0] > 0:
+                    tools_df.to_json(os.path.join(product_path, 'product_tools', data_file),
+                                           compression='gzip', orient='records',
+                                           lines=True)
+
+                if drugstore_df.shape[0] > 0:
+                    drugstore_df.to_json(os.path.join(product_path, 'product_drugstore', data_file),
                                            compression='gzip', orient='records',
                                            lines=True)
 
@@ -333,12 +576,42 @@ def keyword_search(data_path):
                     with open(os.path.join(product_path,'product_electronics', 'electronics_dict.json'), 'w', encoding='utf-8') as f:
                         json.dump(electronics_dict, f)
 
+                    with open(os.path.join(product_path,'product_bikes', 'bikes_dict.json'), 'w', encoding='utf-8') as f:
+                        json.dump(bikes_dict, f)
+
+                    with open(os.path.join(product_path,'product_cars', 'cars_dict.json'), 'w', encoding='utf-8') as f:
+                        json.dump(cars_dict, f)
+
+                    with open(os.path.join(product_path,'product_technology', 'technology_dict.json'), 'w', encoding='utf-8') as f:
+                        json.dump(technology_dict, f)
+
+                    with open(os.path.join(product_path,'product_tools', 'tools_dict.json'), 'w', encoding='utf-8') as f:
+                        json.dump(tools_dict, f)
+
+                    with open(os.path.join(product_path,'product_drugstore', 'drugstore_dict.json'), 'w', encoding='utf-8') as f:
+                        json.dump(drugstore_dict, f)
+
     # save at the end of running
-    with open(os.path.join(product_path, 'product_clothes', 'clothes_dict.json'), 'w', encoding='utf-8') as f:
+    with open(os.path.join(product_path, 'product_clothes_v3', 'clothes_dict.json'), 'w', encoding='utf-8') as f:
         json.dump(clothes_dict, f)
 
-    with open(os.path.join(product_path, 'product_electronics', 'electronics_dict.json'), 'w', encoding='utf-8') as f:
+    with open(os.path.join(product_path, 'product_electronics_v3', 'electronics_dict.json'), 'w', encoding='utf-8') as f:
         json.dump(electronics_dict, f)
+
+    with open(os.path.join(product_path, 'product_bikes', 'bikes_dict.json'), 'w', encoding='utf-8') as f:
+        json.dump(bikes_dict, f)
+
+    with open(os.path.join(product_path, 'product_cars', 'cars_dict.json'), 'w', encoding='utf-8') as f:
+        json.dump(cars_dict, f)
+
+    with open(os.path.join(product_path, 'product_technology', 'technology_dict.json'), 'w', encoding='utf-8') as f:
+        json.dump(technology_dict, f)
+
+    with open(os.path.join(product_path, 'product_tools', 'tools_dict.json'), 'w', encoding='utf-8') as f:
+        json.dump(tools_dict, f)
+
+    with open(os.path.join(product_path, 'product_drugstore', 'drugstore_dict.json'), 'w', encoding='utf-8') as f:
+        json.dump(drugstore_dict, f)
 
 def remove_stopwords(token_vector, stopwords_list):
     return token_vector.apply(lambda token_list: [word for word in token_list if word not in stopwords_list])
@@ -523,8 +796,6 @@ def post_cleaning():
                                                        'clothes_clusters_all_8_tables_post_processed.csv'),
                                           columns=None)
 
-    test =2
-
 
 if __name__ == "__main__":
 
@@ -559,6 +830,9 @@ if __name__ == "__main__":
     #clean_clusters()
     #get_keywords() ##
     #clean_keywords()
-    #keyword_search(cleaned_top100_path)
-    #keyword_search(cleaned_min3_path)
-    post_cleaning()
+    keyword_search(cleaned_top100_path)
+    keyword_search(cleaned_min3_path)
+    #post_cleaning()
+    #get_new_keywords()
+
+    test = 2
