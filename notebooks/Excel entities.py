@@ -102,7 +102,7 @@ with progressbar.ProgressBar(max_value=len(index_top_clusters_list)) as bar:
         jaccard_score = df_compare['product_tokes'].apply(lambda row: jaccard_similarity_score(row,df_compare.iloc[int(i)]['product_tokes']) )
         indizes=sorted(range(len(jaccard_score)), key=lambda i: jaccard_score[i])[-20:]
         for index in indizes:
-            if df_compare.iloc[int(index)]['Amount']>:
+            if df_compare.iloc[int(index)]['Amount']>7:
                 if df_compare.iloc[int(index)]['category']==df_compare.iloc[int(i)]['category']:
                     clusters_search.append(int(index))
         count=count+1
