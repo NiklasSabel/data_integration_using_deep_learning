@@ -46,13 +46,12 @@ def download_all_sites(sites):
 
 
 path_parent = os.path.dirname(os.getcwd())
-product_path = os.path.join(path_parent, 'src/data/product')
+product_path = os.path.join(path_parent, '../../../src/data/product')
 
 cleaned_top100_path = os.path.join(product_path, 'product_top100/cleaned')
 cleaned_min3_path = os.path.join(product_path, 'product_minimum3/cleaned')
 
 cluster_path = os.path.join(product_path, 'lspc2020_to_tablecorpus/Cleaned')
-notebook_path = os.path.join(path_parent,'notebooks')
 
 def clean_clusters():
     """
@@ -883,7 +882,7 @@ if __name__ == "__main__":
     #clean_keywords()
     #keyword_search(cleaned_top100_path)
     #keyword_search(cleaned_min3_path)
-    #post_cleaning()
+    post_cleaning()
     #get_new_keywords()
     test()
 

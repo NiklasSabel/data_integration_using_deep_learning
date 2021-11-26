@@ -6,7 +6,7 @@ import gzip
 import shutil
 
 path_parent = os.path.dirname(os.getcwd())
-data_path = os.path.join(path_parent, 'src/data')
+data_path = os.path.join(path_parent, '../../../src/data')
 
 def add_cluster_id_column():
     print('add cluster id column')
