@@ -19,20 +19,21 @@ def remove_irrelevant_tlds():
     """
     files = [file for file in os.listdir(data_path) if file.endswith('.json.gz')]
 
-    valid_tld = ['.com', '.net', '.org', '.uk', '.gov', '.edu', '.us', '.biz', '.au']
+    #valid_tld = ['.com', '.net', '.org', '.uk', '.gov', '.edu', '.us', '.biz', '.au']
     valid_files = []
-    file_valid = 'false'
+    #file_valid = 'false'
+    file_valid = "true"
 
     print('run tlds cleaning')
 
     count = 0
     with progressbar.ProgressBar(max_value=len(files)) as bar:
         for file in files:
-            file_valid = 'false'
-            for tld in valid_tld:
-                if tld in file:
-                    file_valid = 'true'
-            if file_valid == 'true':
+            #file_valid = 'false'
+            #for tld in valid_tld:
+            #    if tld in file:
+            #        file_valid = 'true'
+            if file_valid == "true":
                 valid_files.append(file)
                 # copy only files with valid tlds to cleaned path
                 shutil.copy(os.path.join(data_path, '{}'.format(file)), cleaned_data_path, follow_symlinks=True)
@@ -41,7 +42,6 @@ def remove_irrelevant_tlds():
             bar.update(count)
 
     print('tlds cleaning done')
-
 
 def remove_with_fasttext():
     """
@@ -63,7 +63,7 @@ def remove_with_fasttext():
         df = pd.read_json(os.path.join(cleaned_data_path, '{}'.format(file)), compression='gzip', lines=True)
         # if df.shape[0] > 20: # for top100 & min3
         # if df.shape[0] > 0: # for rest only
-        if df.shape[0] > 10: # LB only
+        if df.shape[0] >= 15:  # LB only
             df['concat'] = ''
 
             for j in range(df.shape[1]):  # iterate over columns
@@ -98,7 +98,7 @@ def remove_with_fasttext():
             # write to gzip compressed json file
             # if df_cleaned.shape[0] > 20: # for top100 & min3
             # if df_cleaned.shape[0] > 0: # for rest only
-            if df_cleaned.shape[0] > 10:  # for LB only
+            if df_cleaned.shape[0] >= 15:  # for LB only
                 df_cleaned.to_json(os.path.join(cleaned_data_path, '{}'.format(file)), compression='gzip', orient='records', lines=True)
             else:
                 os.remove(os.path.join(cleaned_data_path, '{}'.format(file)))
@@ -115,7 +115,7 @@ def remove_with_fasttext():
     with open(os.path.join(cleaned_data_path, 'removed_rows_dict.json'), 'w', encoding='utf-8') as f:
         json.dump(removed_rows_dict, f)
 
-    print('removed_rows_dict saved')
+    print('removed_rows_dict save')
 
 
 # run functions
@@ -149,7 +149,7 @@ for entity in entities:
     elif entity == 'Hotel_rest':
         data_path = os.path.join(path_parent, 'src/data/Hotel/Hotel_rest')
 
-    cleaned_data_path = os.path.join(data_path, 'cleaned_new_threshold')
+    cleaned_data_path = os.path.join(data_path, 'no_tld_filter_low_threshold')
 
     print('running {} path'.format(entity))
 
