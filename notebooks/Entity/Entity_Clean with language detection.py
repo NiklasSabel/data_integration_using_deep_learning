@@ -121,27 +121,27 @@ entities = ['LocalBusiness_rest', 'Restaurant_rest', 'Hotel_rest']
 
 for entity in entities:
     if entity == 'product_top100':
-        data_path = os.path.join(path_parent, 'src/data/product/product_top100')
+        data_path = os.path.join(path_parent, '../src/data/product/product_top100')
     elif entity == 'product_minimum3':
-        data_path = os.path.join(path_parent, 'src/data/product/product_minimum3')
+        data_path = os.path.join(path_parent, '../src/data/product/product_minimum3')
     elif entity == 'LocalBusiness_top100':
-        data_path = os.path.join(path_parent, 'src/data/LocalBusiness/LocalBusiness_top100')
+        data_path = os.path.join(path_parent, '../src/data/LocalBusiness/LocalBusiness_top100')
     elif entity == 'LocalBusiness_minimum3':
-        data_path = os.path.join(path_parent, 'src/data/LocalBusiness/LocalBusiness_minimum3')
+        data_path = os.path.join(path_parent, '../src/data/LocalBusiness/LocalBusiness_minimum3')
     elif entity == 'LocalBusiness_rest':
-        data_path = os.path.join(path_parent, 'src/data/LocalBusiness/LocalBusiness_rest')
+        data_path = os.path.join(path_parent, '../src/data/LocalBusiness/LocalBusiness_rest')
     elif entity == 'Restaurant_top100':
-        data_path = os.path.join(path_parent, 'src/data/Restaurant/Restaurant_top100')
+        data_path = os.path.join(path_parent, '../src/data/Restaurant/Restaurant_top100')
     elif entity == 'Restaurant_minimum3':
-        data_path = os.path.join(path_parent, 'src/data/Restaurant/Restaurant_minimum3')
+        data_path = os.path.join(path_parent, '../src/data/Restaurant/Restaurant_minimum3')
     elif entity == 'Restaurant_rest':
-        data_path = os.path.join(path_parent, 'src/data/Restaurant/Restaurant_rest')
+        data_path = os.path.join(path_parent, '../src/data/Restaurant/Restaurant_rest')
     elif entity == 'Hotel_top100':
-        data_path = os.path.join(path_parent, 'src/data/Hotel/Hotel_top100')
+        data_path = os.path.join(path_parent, '../src/data/Hotel/Hotel_top100')
     elif entity == 'Hotel_minimum3':
-        data_path = os.path.join(path_parent, 'src/data/Hotel/Hotel_minimum3')
+        data_path = os.path.join(path_parent, '../src/data/Hotel/Hotel_minimum3')
     elif entity == 'Hotel_rest':
-        data_path = os.path.join(path_parent, 'src/data/Hotel/Hotel_rest')
+        data_path = os.path.join(path_parent, '../src/data/Hotel/Hotel_rest')
 
     cleaned_data_path = os.path.join(data_path, 'cleaned')
 
