@@ -100,7 +100,5 @@ notebooks/Results
 notebooks/Entity/RoBERTa_Results
 notebooks/Entity/RoBERTa_logs
 notebooks/Entity/wandb
-notebooks/Entity/LocalBusiness/Splitting
-notebooks/Entity/LocalBusiness/Clustering/New_Concatenated_MatchingFile
 
 
