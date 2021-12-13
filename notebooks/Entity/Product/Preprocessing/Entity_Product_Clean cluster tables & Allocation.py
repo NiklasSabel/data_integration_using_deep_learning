@@ -46,12 +46,13 @@ def download_all_sites(sites):
 
 
 path_parent = os.path.dirname(os.getcwd())
-product_path = os.path.join(path_parent, '../../../src/data/product')
+product_path = os.path.join(path_parent, 'src/data/product')
 
 cleaned_top100_path = os.path.join(product_path, 'product_top100/cleaned')
 cleaned_min3_path = os.path.join(product_path, 'product_minimum3/cleaned')
 
 cluster_path = os.path.join(product_path, 'lspc2020_to_tablecorpus/Cleaned')
+notebook_path = os.path.join(path_parent,'notebooks')
 
 def clean_clusters():
     """
@@ -649,10 +650,10 @@ def keyword_search(data_path):
                 ## nur alle paar tausend saven
                 # save dictionaries with selected data
                 if count % 1000 == 0:
-                    with open(os.path.join(product_path,'product_clothes_v3', 'clothes_dict.json'), 'w', encoding='utf-8') as f:
+                    with open(os.path.join(product_path,'product_clothes', 'clothes_dict.json'), 'w', encoding='utf-8') as f:
                         json.dump(clothes_dict, f)
 
-                    with open(os.path.join(product_path,'product_electronics_v3', 'electronics_dict.json'), 'w', encoding='utf-8') as f:
+                    with open(os.path.join(product_path,'product_electronics', 'electronics_dict.json'), 'w', encoding='utf-8') as f:
                         json.dump(electronics_dict, f)
 
                     with open(os.path.join(product_path,'product_bikes', 'bikes_dict.json'), 'w', encoding='utf-8') as f:
@@ -791,30 +792,27 @@ def post_cleaning():
 
                     # select valid cluster_ids by setting thresholds for doc2vec and jaccard similarities
                     if entity == 'Bikes':
-                        doc2vec_threshold = 0.97 #0.96
-                        jaccard_theshold = 0.6 #0.5
+                        doc2vec_threshold = 0.97
+                        jaccard_theshold = 0.6
                     elif entity == 'Cars':
-                        doc2vec_threshold = 0.97 #0.96
-                        jaccard_theshold = 0.6 #0.5
+                        doc2vec_threshold = 0.97
+                        jaccard_theshold = 0.6
                     elif entity == 'Clothes':
-                        doc2vec_threshold = 0.97 #0.96
-                        jaccard_theshold = 0.6 #0.5
+                        doc2vec_threshold = 0.97
+                        jaccard_theshold = 0.6
                     elif entity == 'Drugstore':
-                        doc2vec_threshold = 0.98 #0.96
-                        jaccard_theshold = 0.6 #0.5
+                        doc2vec_threshold = 0.98
+                        jaccard_theshold = 0.6
                     elif entity == 'Electronics':
-                        doc2vec_threshold = 0.97 #0.96
-                        jaccard_theshold = 0.5 #0.4
+                        doc2vec_threshold = 0.97
+                        jaccard_theshold = 0.5
                     elif entity == 'Technology':
-                        doc2vec_threshold = 0.98 #0.96
-                        jaccard_theshold = 0.6 #0.5
+                        doc2vec_threshold = 0.98
+                        jaccard_theshold = 0.6
                     elif entity == 'Tools':
-                        doc2vec_threshold = 0.97 #0.96
-                        jaccard_theshold = 0.6 #0.5
-                    elif entity == 'Random':
-                        doc2vec_threshold = 0.96 #0.95
-                        jaccard_theshold = 0.5 #0.4
-                    valid_cluster_id_df = similarity_df[(similarity_df['doc2vec'] >= doc2vec_threshold) |
+                        doc2vec_threshold = 0.97
+                        jaccard_theshold = 0.6
+                    valid_cluster_id_df = similarity_df[(similarity_df['doc2vec'] > doc2vec_threshold) |
                                                         (similarity_df['jaccard'] >= jaccard_theshold)]
                     valid_cluster_id_indices = valid_cluster_id_df['index'].to_list() # list of valid indices within a cluster_id
                     valid_indices_all += valid_cluster_id_indices
@@ -823,29 +821,11 @@ def post_cleaning():
                 bar.update(count)
 
         clusters_all_df_new = clusters_all_df[clusters_all_df.index.isin(valid_indices_all)]
-        clusters_all_df_new.to_csv(
-            os.path.join(cluster_path, '{}_clusters_all_8_tables_post_processed.csv'.format(entity)),
-            columns=None)
-        #clusters_all_df_new.to_csv(os.path.join(cluster_path, '{}_clusters_all_8_tables_post_processed_lower_threshold.csv'.format(entity)),
-         #                                         columns=None)
+        clusters_all_df_new.to_csv(os.path.join(cluster_path, '{}_clusters_all_8_tables_post_processed.csv'.format(entity)),
+                                                  columns=None)
 
         ### Auch gleiche table_ids rauswerfen!!!!
 
-def test():
-    entities = ['Bikes', 'Cars', 'Clothes', 'Drugstore', 'Electronics', 'Technology', 'Tools', 'Random']
-    count = 0
-    for entity in entities:
-        df_category1 = pd.read_csv(os.path.join(cluster_path,
-                                                '{}_clusters_all_8_tables_post_processed_lower_threshold.csv'.format(
-                                                    entity)))
-        df_category1['category'] = entity.lower()
-        if count == 0:
-            df_concat = df_category1
-        if count > 0:
-            df_concat = pd.concat([df_category1, df_category2]).drop(columns=['Unnamed: 0', 'Unnamed: 0.1', 'Valid'])
-        df_category2 = df_concat
-        count += 1
-    test2=1
 
 if __name__ == "__main__":
 
@@ -880,10 +860,9 @@ if __name__ == "__main__":
     #clean_clusters()
     #get_keywords() ##
     #clean_keywords()
-    #keyword_search(cleaned_top100_path)
-    #keyword_search(cleaned_min3_path)
-    post_cleaning()
+    keyword_search(cleaned_top100_path)
+    keyword_search(cleaned_min3_path)
+    #post_cleaning()
     #get_new_keywords()
-    test()
 
     test = 2
