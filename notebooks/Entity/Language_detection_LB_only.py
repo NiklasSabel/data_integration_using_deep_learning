@@ -11,7 +11,6 @@ fasttext.FastText.eprint = lambda x: None # avoid Warning : `load_model` does no
 
 path_parent = os.path.dirname(os.getcwd())
 
-
 def remove_irrelevant_tlds():
     """
     moves all files with valid tlds to a new path called "cleaned"
@@ -48,7 +47,7 @@ def remove_with_fasttext():
     reads all files from cleaned data path and removes non-english products from the data tables
     :return:
     """
-    pretrained_fasttext_path = os.path.join(path_parent, 'src/models/lid.176.bin')
+    pretrained_fasttext_path = os.path.join(path_parent, 'data_integration_using_deep_learning/src/models/lid.176.bin')
     model = fasttext.load_model(pretrained_fasttext_path)
 
     # list all top 100 product files
@@ -63,7 +62,7 @@ def remove_with_fasttext():
         df = pd.read_json(os.path.join(cleaned_data_path, '{}'.format(file)), compression='gzip', lines=True)
         # if df.shape[0] > 20: # for top100 & min3
         # if df.shape[0] > 0: # for rest only
-        if df.shape[0] > 5:  # LB only
+        if df.shape[0] >= 5:  # LB only
             df['concat'] = ''
 
             for j in range(df.shape[1]):  # iterate over columns
@@ -77,12 +76,16 @@ def remove_with_fasttext():
                 for i in range(df.shape[0]):  # iterate over rows
                     row_id = int(df['row_id'][i])
                     cell = df['concat'][i]
-                    cell_clean = re.sub('[^A-Za-z_\s]', ' ', cell)
-                    cell_pred = model.predict([cell_clean])[0]
-                    if cell_pred == [['__label__en']]:
+                    # cell_clean = re.sub('[^A-Za-z_\s]', ' ', cell)  # regex cleaning removed for now
+                    cell_pred_lab = model.predict([cell])[0]
+                    cell_pred_prob = model.predict([cell])[1][0]
+                    if cell_pred_lab == [['__label__en']]:
                         english_products.append(row_id)
                     else:
-                        non_english_products.append(row_id)
+                        if cell_pred_prob < 0.5:
+                            english_products.append(row_id)
+                        else:
+                            non_english_products.append(row_id)
                     count += 1
                     bar.update(count)
 
@@ -98,7 +101,7 @@ def remove_with_fasttext():
             # write to gzip compressed json file
             # if df_cleaned.shape[0] > 20: # for top100 & min3
             # if df_cleaned.shape[0] > 0: # for rest only
-            if df_cleaned.shape[0] > 5:  # for LB only
+            if df_cleaned.shape[0] >= 1:  # for LB only
                 df_cleaned.to_json(os.path.join(cleaned_data_path, '{}'.format(file)), compression='gzip', orient='records', lines=True)
             else:
                 os.remove(os.path.join(cleaned_data_path, '{}'.format(file)))
@@ -127,29 +130,29 @@ entities = ['LocalBusiness_top100', 'LocalBusiness_minimum3','Restaurant_top100'
 
 for entity in entities:
     if entity == 'product_top100':
-        data_path = os.path.join(path_parent, 'src/data/product/product_top100')
+        data_path = os.path.join(path_parent, '/data_integration_using_deep_learning/src/data/product/product_top100')
     elif entity == 'product_minimum3':
-        data_path = os.path.join(path_parent, 'src/data/product/product_minimum3')
+        data_path = os.path.join(path_parent, 'data_integration_using_deep_learning/src/data/product/product_minimum3')
     elif entity == 'LocalBusiness_top100':
-        data_path = os.path.join(path_parent, 'src/data/LocalBusiness/LocalBusiness_top100')
+        data_path = os.path.join(path_parent, 'data_integration_using_deep_learning/src/data/LocalBusiness/LocalBusiness_top100')
     elif entity == 'LocalBusiness_minimum3':
-        data_path = os.path.join(path_parent, 'src/data/LocalBusiness/LocalBusiness_minimum3')
+        data_path = os.path.join(path_parent, 'data_integration_using_deep_learning/src/data/LocalBusiness/LocalBusiness_minimum3')
     elif entity == 'LocalBusiness_rest':
-        data_path = os.path.join(path_parent, 'src/data/LocalBusiness/LocalBusiness_rest')
+        data_path = os.path.join(path_parent, 'data_integration_using_deep_learning/src/data/LocalBusiness/LocalBusiness_rest')
     elif entity == 'Restaurant_top100':
-        data_path = os.path.join(path_parent, 'src/data/Restaurant/Restaurant_top100')
+        data_path = os.path.join(path_parent, 'data_integration_using_deep_learning/src/data/Restaurant/Restaurant_top100')
     elif entity == 'Restaurant_minimum3':
-        data_path = os.path.join(path_parent, 'src/data/Restaurant/Restaurant_minimum3')
+        data_path = os.path.join(path_parent, 'data_integration_using_deep_learning/src/data/Restaurant/Restaurant_minimum3')
     elif entity == 'Restaurant_rest':
-        data_path = os.path.join(path_parent, 'src/data/Restaurant/Restaurant_rest')
+        data_path = os.path.join(path_parent, 'data_integration_using_deep_learning/src/data/Restaurant/Restaurant_rest')
     elif entity == 'Hotel_top100':
-        data_path = os.path.join(path_parent, 'src/data/Hotel/Hotel_top100')
+        data_path = os.path.join(path_parent, 'data_integration_using_deep_learning/src/data/Hotel/Hotel_top100')
     elif entity == 'Hotel_minimum3':
-        data_path = os.path.join(path_parent, 'src/data/Hotel/Hotel_minimum3')
+        data_path = os.path.join(path_parent, 'data_integration_using_deep_learning/src/data/Hotel/Hotel_minimum3')
     elif entity == 'Hotel_rest':
-        data_path = os.path.join(path_parent, 'src/data/Hotel/Hotel_rest')
+        data_path = os.path.join(path_parent, 'data_integration_using_deep_learning/src/data/Hotel/Hotel_rest')
 
-    cleaned_data_path = os.path.join(data_path, 'final_iteration')
+    cleaned_data_path = os.path.join(data_path, 'iteration_next')
 
     print('running {} path'.format(entity))
 
