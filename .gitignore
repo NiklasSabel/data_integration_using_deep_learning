@@ -93,7 +93,11 @@ target/
 #venv
 venv
 
+#src
 src/
+!src/models/Entity/TURL/run_table_CT_finetuning.py
+
+
 notebooks/bizer-tp2021
 notebooks/Results
 .idea/data_integration_using_deep_learning.iml
