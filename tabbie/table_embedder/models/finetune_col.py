@@ -16,7 +16,7 @@ from allennlp.modules.token_embedders import Embedding
 from allennlp.modules import FeedForward, TextFieldEmbedder, Seq2VecEncoder
 from allennlp.nn import InitializerApplicator, RegularizerApplicator
 from allennlp.training.metrics.categorical_accuracy import CategoricalAccuracy
-from allennlp.training.metrics.f1_measure import F1Measure
+from allennlp.training.metrics.fbeta_measure import FBetaMeasure
 # from allennlp.modules.token_embedders import PretrainedBertEmbedder
 from table_embedder.models.lib.bert_token_embedder import PretrainedBertEmbedder
 
@@ -103,7 +103,7 @@ class TableEmbedder(Model):
             "accuracy": CategoricalAccuracy(),
             "haccuracy": CategoricalAccuracy(),
             "caccuracy": CategoricalAccuracy(),
-            "f1": F1Measure()
+            "f1": FBetaMeasure(average="micro")
         }
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.loss_func = torch.nn.BCELoss()
@@ -213,10 +213,10 @@ class TableEmbedder(Model):
     @overrides
     def get_metrics(self, reset: bool = False) -> Dict[str, float]:
         accuracy = self.metrics["accuracy"].get_metric(reset=reset)
-        f1 = self.metrics["f1"].get_metric(reset=reset)["f1"]
+        f1 = self.metrics["f1"].get_metric(reset=reset)["fscore"] 
         # h_accuracy = self.metrics["haccuracy"].get_metric(reset=reset)
         # c_accuracy = self.metrics["caccuracy"].get_metric(reset=reset)
-        return {'accuracy': accuracy, 'f1': f1}
+        return {'accuracy': accuracy, "f1": f1}
         # return {'accuracy': accuracy, 'h_acc': h_accuracy, 'c_acc': c_accuracy}
 
     def get_meta(self, table_info):
@@ -270,6 +270,7 @@ class TableEmbedder(Model):
         prob_headers_acc = torch.stack([prob_headers_nega_1d, prob_headers_pos_1d], dim=1)
         prob_cells_acc = torch.stack([prob_cells_nega_1d, prob_cells_pos_1d], dim=1)
         # self.metrics['accuracy'](prob_cells, cell_labels_1d, mask=cell_mask_1d)
+        self.metrics['f1'](prob_headers_acc, header_labels_1d, mask=header_mask_1d.bool())
         self.metrics['accuracy'](prob_headers_acc, header_labels_1d, mask=header_mask_1d)
 
         # h_loss_weight = 0.0
