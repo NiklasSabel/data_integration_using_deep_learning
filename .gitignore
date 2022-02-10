@@ -213,3 +213,11 @@ notebooks/Entity/RoBERTa_Results
 notebooks/Entity/RoBERTa_logs
 notebooks/Entity/wandb
 notebooks/Schema/tabbie/evaluation
+
+# Tabbie
+
+Subfolder_Tabbie/
+
+# TURL
+
+Subfolder_TURL/
