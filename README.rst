@@ -65,7 +65,7 @@ To use this code you have to follow these steps:
 .. code-block::
 
     $  conda create -n data_integration_using_deep_learning python=3.8
-    $  conda activate crosslingual-information-retrieval
+    $  conda activate data_integration_using_deep_learning
 
 3. Install the dependencies:
 
