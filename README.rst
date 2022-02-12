@@ -88,8 +88,9 @@ License
 
 This repository is licenced under the MIT License. If you have any enquiries concerning the use of our code, do not hesitate to contact us.
 
-<p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p>
+Project based on the  `cookiecutter data science project template <https://drivendata.github.io/cookiecutter-data-science/>`__ #cookiecutterdatascience
 
-<p><small><a target="_blank" href="https://github.com/sunlab-osu/TURL">TURL repository</a></small></p>
+`TURL repository<https://github.com/sunlab-osu/TURL>`_
 
-<p><small><a target="_blank" href="https://github.com/SFIG611/tabbie">Tabbie repository</a></small></p>
+`Tabbie repository<https://github.com/SFIG611/tabbie>`_
+
