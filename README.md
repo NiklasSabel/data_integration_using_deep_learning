@@ -1,6 +1,3 @@
-.. image:: https://img.shields.io/github/repo-size/J4K08L4N63N84HN/crosslingual-information-retrieval?style=social   :alt: GitHub repo size
-
-
 
 Data Integration using Deep Learning
 ==============================
@@ -13,12 +10,12 @@ The team consists of Jennifer Hahn, Jannik Reißfelder,  Kim-Carolin Lindner, Ni
 
 
 Table of Contents
-#################
+==============================
 
 .. contents::
 
 Description
-#################
+==============================
 
 We make all our code availabe that were used for this project. It contains the data preprocessing, inducing cross-lingual word embeddings, training and evaluating all models. You can find the code for each part in the following table: 
 
@@ -27,14 +24,10 @@ We make all our code availabe that were used for this project. It contains the d
 *  `Inducing CLWE <https://github.com/J4K08L4N63N84HN/crosslingual-information-retrieval/tree/main/src/embeddings>`__
 *  `Training and Evaluating Supervised Models <https://github.com/J4K08L4N63N84HN/crosslingual-information-retrieval/tree/main/src/models>`__
 
-All Experiments done were written in Jupyter Notebooks, which can be found in this `Folder <https://github.com/J4K08L4N63N84HN/crosslingual-information-retrieval/tree/main/notebooks>`__
+All Experiments done were written in Jupyter Notebooks, which can be found in this `Folder https://github.com/NiklasSabel/data_integration_using_deep_learning/tree/main/notebooks`__
 
 Furthermore, we make all models available `Drive <https://drive.google.com/drive/folders/1r0UExZMI46dbYx_zfdVCmbPNJC3O8yU9?usp=sharing/>`__. All raw and preprocessed data can be downloaded in the following `Drive <https://drive.google.com/drive/folders/1EuDDZSmv2DWgw3itdGSDwKz3UYIcLVmT?usp=sharing/>`__. 
 
-Our results are summarized in the following table:
-
-
-.. image:: https://github.com/J4K08L4N63N84HN/crosslingual-information-retrieval/blob/main/reports/figures/final_results.png
 
 How to Install
 ##############
