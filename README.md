@@ -24,7 +24,9 @@ We make all our code availabe that were used for this project. It contains the d
 *  `Inducing CLWE <https://github.com/J4K08L4N63N84HN/crosslingual-information-retrieval/tree/main/src/embeddings>`__
 *  `Training and Evaluating Supervised Models <https://github.com/J4K08L4N63N84HN/crosslingual-information-retrieval/tree/main/src/models>`__
 
-All Experiments done were written in Jupyter Notebooks, which can be found in this `Folder https://github.com/NiklasSabel/data_integration_using_deep_learning/tree/main/notebooks`__
+All Experiments done were written in Jupyter Notebooks, which can be found in this  `Folder <https://github.com/NiklasSabel/data_integration_using_deep_learning/tree/main/notebooks>`__
+
+`Folder <https://github.com/J4K08L4N63N84HN/crosslingual-information-retrieval/tree/main/notebooks>`__
 
 Furthermore, we make all models available `Drive <https://drive.google.com/drive/folders/1r0UExZMI46dbYx_zfdVCmbPNJC3O8yU9?usp=sharing/>`__. All raw and preprocessed data can be downloaded in the following `Drive <https://drive.google.com/drive/folders/1EuDDZSmv2DWgw3itdGSDwKz3UYIcLVmT?usp=sharing/>`__. 
 
