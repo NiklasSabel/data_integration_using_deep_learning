@@ -16,6 +16,12 @@ Description Entity
 
 We make all our code availabe that were used for this project. In the following we will shortly describe the project setup and our approach. By first cleaning the corpus data via tld-based approach (filter on english internet domain endings) and using fast-text we made sure to focus on tables that are mainly english. Via keyword search on brands with the strongest revenue in different product categories we created our dataset from the corpus and made sure that enough entities are included that are hard to distinguish (Doc2Vec and Jaccard similarity). Using a multilabel stratified shuffle approach we split our remaining data into train-validation-test sets by using 3/8 for training, 2/8 for validation and 3/8 for testing. After a manual check of the test data and then discarding noise (~10%) we remain with 1,345 train, 855 validation and 1,331 test tables.
 
+Baseline results:
+
+TURL results:
+
+Tabbie results:
+
 You can find the code for each part in the following table: 
 
 *  `Data set generation >`__
