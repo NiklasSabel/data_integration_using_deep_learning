@@ -90,7 +90,7 @@ This repository is licenced under the MIT License. If you have any enquiries con
 
 Project based on the  `cookiecutter data science project template <https://drivendata.github.io/cookiecutter-data-science/>`__ #cookiecutterdatascience
 
-`TURL repository<https://github.com/sunlab-osu/TURL>`_
+`TURL repository <https://github.com/sunlab-osu/TURL>`__
 
-`Tabbie repository<https://github.com/SFIG611/tabbie>`_
+`Tabbie repository <https://github.com/SFIG611/tabbie>`__
 
