@@ -43,7 +43,7 @@ Furthermore, we make all models available `Drive <url>`__. All raw and preproces
 
 
 How to Install
-##############
+==============================
 
 To use this code you have to follow these steps:
 
@@ -68,7 +68,7 @@ To use this code you have to follow these steps:
     $ pip install -r requirements.txt
 
 Credits
-#######
+==============================
 
 The project started in October 2021 as a team project at the University of Mannheim and ended in March 2022. The project team consists of:
 
@@ -84,7 +84,7 @@ The project started in October 2021 as a team project at the University of Mannh
 
 
 License
-#######
+==============================
 
 This repository is licenced under the MIT License. If you have any enquiries concerning the use of our code, do not hesitate to contact us.
 
