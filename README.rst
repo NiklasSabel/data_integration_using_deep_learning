@@ -3,7 +3,7 @@ Data Integration using Deep Learning
 ==============================
 
 Data Integration using Deep Learning
-This github-repository provides the code for our Team Project in the fall semester 2021 at the University of Mannheim with the topic of Data Integration using Deep Learning. We will try to investigate how Transformer Models like BERT work on tasks in data integration with special focus on entity and schema matching.
+This github-repository provides the code for our Team Project in the fall semester 2021 at the University of Mannheim with the topic of Data Integration using Deep Learning. We are investigating the performance of table transformer frameworks on the tasks of matching entities (entity matching) and schemes (schema matching) across tables. The task will be presented as a multi-class classification problem of characterising if an row (entity) or a column (schema) belongs to a predefined cluster/has a specific label. Table transformer models use whole table representations as input to enrich the classification problem with metadata and surrounding information. We investigate whether these enriched models, in particular TURL and Tabbie, will perform better than our two baselines: RandomForest based on tf-idf and word count representations and RoBERTa/TinyBert as embedding based transformer models.
 
 
 Table of Contents
@@ -14,7 +14,9 @@ Table of Contents
 Description Entity
 ==============================
 
-We make all our code availabe that were used for this project. It contains the . You can find the code for each part in the following table: 
+We make all our code availabe that were used for this project. In the following we will shortly describe the project setup and our approach.
+
+You can find the code for each part in the following table: 
 
 *  `Data set generation >`__
 *  `Baselines <>`__
