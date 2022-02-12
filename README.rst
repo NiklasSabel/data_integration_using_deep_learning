@@ -70,7 +70,7 @@ To use this code you have to follow these steps:
 Credits
 #######
 
-The project started in October 2021 as a team project at the University of Mannheim. The project team consists of:
+The project started in October 2021 as a team project at the University of Mannheim and ended in March 2022. The project team consists of:
 
 * `Cheng Chen <https://github.com/chengc823>`__
 * `Jennifer Hahn <https://github.com/JenniferHahn>`__
