@@ -54,11 +54,14 @@ Results:
 
 You can find the code for each part in the following table: 
 
-*  `Data set generation >`__
-*  `Baselines <>`__
-*  `TURL Experiments <>`__
-*  `Tabbie Experiments <>`__
+*  `Data set generation <https://github.com/NiklasSabel/data_integration_using_deep_learning/tree/main/notebooks/Entity/LocalBusiness/Preprocessing>`__
+*  `Train test split <https://github.com/NiklasSabel/data_integration_using_deep_learning/tree/main/notebooks/Entity/LocalBusiness/train_test_split>`__
+*  `Baselines <https://github.com/NiklasSabel/data_integration_using_deep_learning/tree/main/notebooks/Entity/LocalBusiness/Baseline>`__
+*  `TURL Experiments <https://github.com/NiklasSabel/data_integration_using_deep_learning/tree/main/notebooks/Entity/LocalBusiness/TURL>`__
+*  `Tabbie Experiments <https://github.com/NiklasSabel/data_integration_using_deep_learning/tree/main/notebooks/Entity/LocalBusiness/tabbie>`__
 *  `Visualizations <https://github.com/NiklasSabel/data_integration_using_deep_learning/tree/main/visualizations>`__
+*  `TURL models <>`__
+*  `Tabbie models <>`__
 
 All Experiments done were written in Jupyter Notebooks, which can be found in this  `Folder <https://github.com/NiklasSabel/data_integration_using_deep_learning/tree/main/notebooks/Entity>`__
 
@@ -77,11 +80,14 @@ Results:
 
 You can find the code for each part in the following table: 
 
-*  `Data set generation >`__
-*  `Baselines <>`__
-*  `TURL Experiments <>`__
-*  `Tabbie Experiments <>`__
-*  `Visualizations <>`__
+*  `Data set generation <https://github.com/NiklasSabel/data_integration_using_deep_learning/tree/main/notebooks/Schema/Preprocessing>`__
+*  `Train test split <https://github.com/NiklasSabel/data_integration_using_deep_learning/tree/main/notebooks/Schema/Train_Test_Split>`__
+*  `Baselines <https://github.com/NiklasSabel/data_integration_using_deep_learning/tree/main/notebooks/Schema/Baseline>`__
+*  `TURL Experiments <https://github.com/NiklasSabel/data_integration_using_deep_learning/tree/main/notebooks/Schema/TURL>`__
+*  `Tabbie Experiments <https://github.com/NiklasSabel/data_integration_using_deep_learning/tree/main/notebooks/Schema/tabbie>`__
+*  `Visualizations <https://github.com/NiklasSabel/data_integration_using_deep_learning/tree/main/visualizations>`__
+*  `TURL models <>`__
+*  `Tabbie models <>`__
 
 All Experiments done were written in Jupyter Notebooks, which can be found in this  `Folder <https://github.com/NiklasSabel/data_integration_using_deep_learning/tree/main/notebooks/Schema>`__
 
