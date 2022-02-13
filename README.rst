@@ -10,10 +10,31 @@ Table of Contents
 
 .. contents::
 
-Description Entity
+Description Entity - Product
 ==============================
 
 We make all our code availabe that were used for this project. In the following we will shortly describe the project setup and our approach. By first cleaning the corpus data via tld-based approach (filter on english internet domain endings) and using fast-text we made sure to focus on tables that are mainly english. Via keyword search on brands with the strongest revenue in different product categories we created our dataset from the corpus and made sure that enough entities are included that are hard to distinguish (Doc2Vec and Jaccard similarity). Using a multilabel stratified shuffle approach we split our remaining data into train-validation-test sets by using 3/8 for training, 2/8 for validation and 3/8 for testing. After a manual check of the test data and then discarding noise (~10%) we remain with 1,345 train, 855 validation and 1,331 test tables.
+
+Baseline results:
+
+TURL results:
+
+Tabbie results:
+
+You can find the code for each part in the following table: 
+
+*  `Data set generation >`__
+*  `Baselines <>`__
+*  `TURL Experiments <>`__
+*  `Tabbie Experiments <>`__
+*  `Visualizations <https://github.com/NiklasSabel/data_integration_using_deep_learning/tree/main/visualizations>`__
+
+All Experiments done were written in Jupyter Notebooks, which can be found in this  `Folder <https://github.com/NiklasSabel/data_integration_using_deep_learning/tree/main/notebooks/Entity>`__
+
+Description Entity - LocalBusiness
+==============================
+
+We make all our code availabe that were used for this project. In the following we will shortly describe the project setup and our approach. By first cleaning the corpus data via tld-based approach (filter on english internet domain endings) and using fast-text we made sure to focus on tables that are mainly english. ?
 
 Baseline results:
 
