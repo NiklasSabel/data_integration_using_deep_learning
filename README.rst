@@ -19,7 +19,6 @@ As we are trying to beat those base lines with the mentioned table transformers,
 
 Results: 
 
-*  Random Forest: 0.8684 F1  
 * Random Forest: 0.8684 F1  
 * TinyBert: 
 * RoBERTa: 0,8958 F1
@@ -43,6 +42,7 @@ Description Entity - LocalBusiness
 We make all our code availabe that were used for this project. In the following we will shortly describe the project setup and our approach. By first cleaning the corpus data via tld-based approach (filter on english internet domain endings) and using fast-text we made sure to focus on tables that are mainly english. ?
 
 Results: 
+
 * Random Forest: 
 * TinyBert: 
 * RoBERTa:
@@ -65,6 +65,7 @@ Description Schema
 We make all our code availabe that were used for this project. It contains the data preprocessing for all use cases, the baseline generation, experiments for both TURL and Tabbie and the consequent error analysis. 
 
 Results: 
+
 * Random Forest: 
 * TinyBert: 
 * RoBERTa:
