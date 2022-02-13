@@ -1,9 +1,6 @@
 import pandas as pd
 import os
 import progressbar
-import json
-import gzip
-import shutil
 
 path_parent = os.path.dirname(os.getcwd())
 data_path = os.path.join(path_parent, '../../../src/data')

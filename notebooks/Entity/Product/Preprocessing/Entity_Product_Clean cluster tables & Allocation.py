@@ -1,30 +1,23 @@
 import pandas as pd
 import os
 import progressbar
-import json
-import gzip
-import shutil
 from urllib.request import urlopen, Request
 from bs4 import BeautifulSoup
 import json
-import re
 import logging
 import threading
 import time
-import requests
-import multiprocessing
-import time
-
-import nltk
 from nltk.corpus import stopwords
 import string
 from gensim.models.doc2vec import Doc2Vec, TaggedDocument
 from nltk.tokenize import word_tokenize
 
+
 def thread_function(name):
     logging.info("Thread %s: starting", name)
     time.sleep(2)
     logging.info("Thread %s: finishing", name)
+
 
 """
 session = None
@@ -44,7 +37,6 @@ def download_all_sites(sites):
         pool.map(download_site, sites)
 """
 
-
 path_parent = os.path.dirname(os.getcwd())
 product_path = os.path.join(path_parent, 'src/data/product')
 
@@ -52,7 +44,8 @@ cleaned_top100_path = os.path.join(product_path, 'product_top100/cleaned')
 cleaned_min3_path = os.path.join(product_path, 'product_minimum3/cleaned')
 
 cluster_path = os.path.join(product_path, 'lspc2020_to_tablecorpus/Cleaned')
-notebook_path = os.path.join(path_parent,'notebooks')
+notebook_path = os.path.join(path_parent, 'notebooks')
+
 
 def clean_clusters():
     """
@@ -110,10 +103,12 @@ def clean_clusters():
                 cluster_id = df_cleaned['cluster_id'][i]
                 table_id = df_cleaned['table_id'][i]
 
-                allocation_with_table_ids_total_dict[cluster_id].append(table_id) # write every table_id inside
-                allocation_amount_only_total_dict[cluster_id] += 1 # increment for every table_id
-                allocation_with_table_ids_set_dict[cluster_id] = list(set(allocation_with_table_ids_total_dict[cluster_id])) # write only unique table_ids inside
-                allocation_amount_only_set_dict[cluster_id] = len(allocation_with_table_ids_set_dict[cluster_id]) # increment only for unique table_ids
+                allocation_with_table_ids_total_dict[cluster_id].append(table_id)  # write every table_id inside
+                allocation_amount_only_total_dict[cluster_id] += 1  # increment for every table_id
+                allocation_with_table_ids_set_dict[cluster_id] = list(
+                    set(allocation_with_table_ids_total_dict[cluster_id]))  # write only unique table_ids inside
+                allocation_amount_only_set_dict[cluster_id] = len(
+                    allocation_with_table_ids_set_dict[cluster_id])  # increment only for unique table_ids
 
                 count += 1
                 bar.update(count)
@@ -123,7 +118,8 @@ def clean_clusters():
         print('{} out of {} cluster files done'.format(count_files, len(cluster_files)))
 
         # write to gzip compressed json file
-        df_cleaned.to_json(os.path.join(cluster_path, '{}'.format(cluster_file)), compression='gzip', orient='records', lines=True)
+        df_cleaned.to_json(os.path.join(cluster_path, '{}'.format(cluster_file)), compression='gzip', orient='records',
+                           lines=True)
 
     # save dictionaries with allocation of products
     with open(os.path.join(cluster_path, 'allocation_with_table_ids_total_dict.json'), 'w', encoding='utf-8') as f:
@@ -159,7 +155,7 @@ def get_keywords():
 
     # search for top electronic brands
     req = Request('https://companiesmarketcap.com/electronics/largest-electronic-manufacturing-by-market-cap/',
-        headers={'User-Agent': 'Mozilla/5.0'})
+                  headers={'User-Agent': 'Mozilla/5.0'})
     electronics_html = urlopen(req)
     electronics_bsObj = BeautifulSoup(electronics_html.read(), 'lxml')
     electronics_lines = electronics_bsObj.find_all('tr')
@@ -172,16 +168,19 @@ def get_keywords():
             electronics_list.append(electronics_brand)
 
     # second page
-    electronics_list2 = ['intel', 'taiwan semiconductor manufacturing', 'samsung electronics', 'hon hai precision industry',
-                         'hitachi', 'sony', 'panasonic', 'lg electronics', 'pegatron', 'mitsubishi electric', 'midea group',
-                         'honeywell international', 'apple', 'dell technologies', 'hp', 'lenovo', 'quanta computer', 'canon',
+    electronics_list2 = ['intel', 'taiwan semiconductor manufacturing', 'samsung electronics',
+                         'hon hai precision industry',
+                         'hitachi', 'sony', 'panasonic', 'lg electronics', 'pegatron', 'mitsubishi electric',
+                         'midea group',
+                         'honeywell international', 'apple', 'dell technologies', 'hp', 'lenovo', 'quanta computer',
+                         'canon',
                          'compal eLectronics', 'hewlett packard enterprise']
 
     # only top 10
     clothes_top10 = []
 
-    brands_dict = {'clothes': clothes_list, 'electronics1':electronics_list, 'electronics2':electronics_list2,
-                   'electronics_total':list(set(electronics_list + electronics_list2))}
+    brands_dict = {'clothes': clothes_list, 'electronics1': electronics_list, 'electronics2': electronics_list2,
+                   'electronics_total': list(set(electronics_list + electronics_list2))}
 
     with open(os.path.join(product_path, 'brands_dict.json'), 'w', encoding='utf-8') as f:
         json.dump(brands_dict, f)
@@ -189,6 +188,7 @@ def get_keywords():
     print('getting keywords done')
 
     return brands_dict
+
 
 def get_new_keywords():
     print('get keywords')
@@ -289,7 +289,7 @@ def get_new_keywords():
     random_brands = ['2-POWER', '2-Power', 'A&I Parts', 'ANGELIC DIAMONDS', 'Allison Kaufman',
                      'American Olean', 'Anuradha Art Jewellery', 'Ariat', 'Bijou Brigitte',
                      'Birkenstock', 'Black Diamond', 'Brilliant Earth', 'Caratlane', 'Carhartt', 'Casio',
-                     'Chekich','DWS Jewellery', 'Dakine', 'Eastpak', 'Emporio Armani', 'Epson',
+                     'Chekich', 'DWS Jewellery', 'Dakine', 'Eastpak', 'Emporio Armani', 'Epson',
                      'Garmin', 'Garrett', 'Hamilton', 'Hopscotch', 'JBL', 'Jordan', 'Kawasaki',
                      'Kingston', 'LEGO', 'MSI', 'Medline', 'Peacocks', 'Pink Boutique',
                      'Reebok', 'Rembrandt Charms', 'SanDisk', 'SareesBazaar',
@@ -306,17 +306,18 @@ def get_new_keywords():
 
 
 def clean_keywords():
-
     print('clean keywords')
     with open(os.path.join(product_path, 'brands_dict.json'), 'r', encoding='utf-8') as f:
         brands_dict = json.load(f)
 
-    brands_dict['clothes_cleaned'] = ['prada','calvin klein','louis vuitton','under armour','the north face',
-                                      'tommy hilfiger','dolce & gabbana','adidas','puma','oakley','dior','chanel','gap',
-                                      'gucci','michael kors','patagonia','moncler','armani','burberry','nike']
-    brands_dict['electronics_cleaned'] = ['lenovo','canon','hitachi','resonant','sony','nvidia','nintendo','apple',
-                                          'samsung','yaskawa','asus','dell','hp','amd','nikon','xiaomi','cisco',
-                                          'panasonic','intel','flex']
+    brands_dict['clothes_cleaned'] = ['prada', 'calvin klein', 'louis vuitton', 'under armour', 'the north face',
+                                      'tommy hilfiger', 'dolce & gabbana', 'adidas', 'puma', 'oakley', 'dior', 'chanel',
+                                      'gap',
+                                      'gucci', 'michael kors', 'patagonia', 'moncler', 'armani', 'burberry', 'nike']
+    brands_dict['electronics_cleaned'] = ['lenovo', 'canon', 'hitachi', 'resonant', 'sony', 'nvidia', 'nintendo',
+                                          'apple',
+                                          'samsung', 'yaskawa', 'asus', 'dell', 'hp', 'amd', 'nikon', 'xiaomi', 'cisco',
+                                          'panasonic', 'intel', 'flex']
 
     with open(os.path.join(product_path, 'brands_dict.json'), 'w', encoding='utf-8') as f:
         json.dump(brands_dict, f)
@@ -337,72 +338,73 @@ def keyword_search(data_path):
     data_files = [file for file in os.listdir(data_path) if file.endswith('.json.gz')]
 
     # for testing
-    #brands_dict['clothes_cleaned'].append('nejron')  ##
-    #brands_dict['electronics_cleaned'].append('arip santoso')  ##
+    # brands_dict['clothes_cleaned'].append('nejron')  ##
+    # brands_dict['electronics_cleaned'].append('arip santoso')  ##
 
     entity = data_path.split('product_')[1]
     print(entity)
     # check whether dictionaries already exist
-    if os.path.isfile(os.path.join(product_path,'product_clothes_v3', 'clothes_dict.json')):
-        with open(os.path.join(product_path,'product_clothes_v3', 'clothes_dict.json'), 'r', encoding='utf-8') as f:
+    if os.path.isfile(os.path.join(product_path, 'product_clothes_v3', 'clothes_dict.json')):
+        with open(os.path.join(product_path, 'product_clothes_v3', 'clothes_dict.json'), 'r', encoding='utf-8') as f:
             clothes_dict = json.load(f)
     else:
-        clothes_dict = {'top100/cleaned':{key: [] for key in brands_dict['clothes']},
-                        'minimum3/cleaned':{key: [] for key in brands_dict['clothes']}}
+        clothes_dict = {'top100/cleaned': {key: [] for key in brands_dict['clothes']},
+                        'minimum3/cleaned': {key: [] for key in brands_dict['clothes']}}
 
-    if os.path.isfile(os.path.join(product_path,'product_electronics_v3', 'electronics_dict.json')):
-        with open(os.path.join(product_path,'product_electronics_v3', 'electronics_dict.json'), 'r', encoding='utf-8') as f:
+    if os.path.isfile(os.path.join(product_path, 'product_electronics_v3', 'electronics_dict.json')):
+        with open(os.path.join(product_path, 'product_electronics_v3', 'electronics_dict.json'), 'r',
+                  encoding='utf-8') as f:
             electronics_dict = json.load(f)
     else:
-        electronics_dict = {'top100/cleaned':{key: [] for key in brands_dict['electronics_total']},
-                            'minimum3/cleaned':{key: [] for key in brands_dict['electronics_total']}}
+        electronics_dict = {'top100/cleaned': {key: [] for key in brands_dict['electronics_total']},
+                            'minimum3/cleaned': {key: [] for key in brands_dict['electronics_total']}}
 
-    if os.path.isfile(os.path.join(product_path,'product_bikes', 'bikes_dict.json')):
-        with open(os.path.join(product_path,'product_bikes', 'bikes_dict.json'), 'r', encoding='utf-8') as f:
+    if os.path.isfile(os.path.join(product_path, 'product_bikes', 'bikes_dict.json')):
+        with open(os.path.join(product_path, 'product_bikes', 'bikes_dict.json'), 'r', encoding='utf-8') as f:
             bikes_dict = json.load(f)
     else:
-        bikes_dict = {'top100/cleaned':{key: [] for key in brands_dict['bikes']},
-                      'minimum3/cleaned':{key: [] for key in brands_dict['bikes']}}
+        bikes_dict = {'top100/cleaned': {key: [] for key in brands_dict['bikes']},
+                      'minimum3/cleaned': {key: [] for key in brands_dict['bikes']}}
 
-    if os.path.isfile(os.path.join(product_path,'product_drugstore', 'drugstore_dict.json')):
-        with open(os.path.join(product_path,'product_drugstore', 'drugstore_dict.json'), 'r', encoding='utf-8') as f:
+    if os.path.isfile(os.path.join(product_path, 'product_drugstore', 'drugstore_dict.json')):
+        with open(os.path.join(product_path, 'product_drugstore', 'drugstore_dict.json'), 'r', encoding='utf-8') as f:
             drugstore_dict = json.load(f)
     else:
-        drugstore_dict = {'top100/cleaned':{key: [] for key in brands_dict['drugstore']},
-                      'minimum3/cleaned':{key: [] for key in brands_dict['drugstore']}}
+        drugstore_dict = {'top100/cleaned': {key: [] for key in brands_dict['drugstore']},
+                          'minimum3/cleaned': {key: [] for key in brands_dict['drugstore']}}
 
-    if os.path.isfile(os.path.join(product_path,'product_tools', 'tools_dict.json')):
-        with open(os.path.join(product_path,'product_tools', 'tools_dict.json'), 'r', encoding='utf-8') as f:
+    if os.path.isfile(os.path.join(product_path, 'product_tools', 'tools_dict.json')):
+        with open(os.path.join(product_path, 'product_tools', 'tools_dict.json'), 'r', encoding='utf-8') as f:
             tools_dict = json.load(f)
     else:
-        tools_dict = {'top100/cleaned':{key: [] for key in brands_dict['tools']},
-                      'minimum3/cleaned':{key: [] for key in brands_dict['tools']}}
+        tools_dict = {'top100/cleaned': {key: [] for key in brands_dict['tools']},
+                      'minimum3/cleaned': {key: [] for key in brands_dict['tools']}}
 
-    if os.path.isfile(os.path.join(product_path,'product_technology', 'technology_dict.json')):
-        with open(os.path.join(product_path,'product_technology', 'technology_dict.json'), 'r', encoding='utf-8') as f:
+    if os.path.isfile(os.path.join(product_path, 'product_technology', 'technology_dict.json')):
+        with open(os.path.join(product_path, 'product_technology', 'technology_dict.json'), 'r', encoding='utf-8') as f:
             technology_dict = json.load(f)
     else:
-        technology_dict = {'top100/cleaned':{key: [] for key in brands_dict['technology']},
-                      'minimum3/cleaned':{key: [] for key in brands_dict['technology']}}
+        technology_dict = {'top100/cleaned': {key: [] for key in brands_dict['technology']},
+                           'minimum3/cleaned': {key: [] for key in brands_dict['technology']}}
 
-    if os.path.isfile(os.path.join(product_path,'product_cars', 'cars_dict.json')):
-        with open(os.path.join(product_path,'product_cars', 'cars_dict.json'), 'r', encoding='utf-8') as f:
+    if os.path.isfile(os.path.join(product_path, 'product_cars', 'cars_dict.json')):
+        with open(os.path.join(product_path, 'product_cars', 'cars_dict.json'), 'r', encoding='utf-8') as f:
             cars_dict = json.load(f)
     else:
-        cars_dict = {'top100/cleaned':{key: [] for key in brands_dict['cars']},
-                      'minimum3/cleaned':{key: [] for key in brands_dict['cars']}}
+        cars_dict = {'top100/cleaned': {key: [] for key in brands_dict['cars']},
+                     'minimum3/cleaned': {key: [] for key in brands_dict['cars']}}
 
-    if os.path.isfile(os.path.join(product_path,'product_random', 'random_dict.json')):
-        with open(os.path.join(product_path,'product_random', 'random_dict.json'), 'r', encoding='utf-8') as f:
+    if os.path.isfile(os.path.join(product_path, 'product_random', 'random_dict.json')):
+        with open(os.path.join(product_path, 'product_random', 'random_dict.json'), 'r', encoding='utf-8') as f:
             random_dict = json.load(f)
     else:
-        random_dict = {'top100/cleaned':{key: [] for key in brands_dict['random']},
-                      'minimum3/cleaned':{key: [] for key in brands_dict['random']}}
+        random_dict = {'top100/cleaned': {key: [] for key in brands_dict['random']},
+                       'minimum3/cleaned': {key: [] for key in brands_dict['random']}}
 
     count = 0
     with progressbar.ProgressBar(max_value=len(data_files)) as bar:
         for data_file in data_files:
-            #if data_file == 'Product_3dcartstores.com_September2020.json.gz': ## for testing
+            # if data_file == 'Product_3dcartstores.com_September2020.json.gz': ## for testing
             df = pd.read_json(os.path.join(data_path, '{}'.format(data_file)), compression='gzip', lines=True)
 
             clothes_row_ids = []
@@ -415,9 +417,9 @@ def keyword_search(data_path):
             random_row_ids = []
 
             # iterrate over rows and look for keywords
-            if 'brand' in df.columns: # check whether column 'brand' exists
+            if 'brand' in df.columns:  # check whether column 'brand' exists
                 for i in range(df.shape[0]):  # iterate over rows
-                    #if i < 1000: # only for testing
+                    # if i < 1000: # only for testing
                     row_id = int(df['row_id'][i])
                     cell = df['brand'][i]
                     if cell != None:
@@ -446,7 +448,7 @@ def keyword_search(data_path):
                         elif cell in brands_dict['random']:
                             random_dict[entity][cell].append((data_file, row_id))
                             random_row_ids.append(row_id)
-            elif 'name' in df.columns: # if column 'brand' does not exist check for first word in name column
+            elif 'name' in df.columns:  # if column 'brand' does not exist check for first word in name column
                 df['brand'] = ''
                 # iterrate over rows
                 for i in range(df.shape[0]):
@@ -459,36 +461,36 @@ def keyword_search(data_path):
                         if cell in brands_dict['electronics_total']:
                             electronics_dict[entity][cell].append((data_file, row_id))
                             electronics_row_ids.append(row_id)
-                            df.at[i,'brand'] = cell
+                            df.at[i, 'brand'] = cell
                         elif cell in brands_dict['clothes']:
                             clothes_dict[entity][cell].append((data_file, row_id))
                             clothes_row_ids.append(row_id)
-                            df.at[i,'brand'] = cell
+                            df.at[i, 'brand'] = cell
                         elif cell in brands_dict['bikes']:
                             bikes_dict[entity][cell].append((data_file, row_id))
                             bikes_row_ids.append(row_id)
-                            df.at[i,'brand'] = cell
+                            df.at[i, 'brand'] = cell
                         elif cell in brands_dict['cars']:
                             cars_dict[entity][cell].append((data_file, row_id))
                             cars_row_ids.append(row_id)
-                            df.at[i,'brand'] = cell
+                            df.at[i, 'brand'] = cell
                         elif cell in brands_dict['technology']:
                             technology_dict[entity][cell].append((data_file, row_id))
                             technology_row_ids.append(row_id)
-                            df.at[i,'brand'] = cell
+                            df.at[i, 'brand'] = cell
                         elif cell in brands_dict['tools']:
                             tools_dict[entity][cell].append((data_file, row_id))
                             tools_row_ids.append(row_id)
-                            df.at[i,'brand'] = cell
+                            df.at[i, 'brand'] = cell
                         elif cell in brands_dict['drugstore']:
                             drugstore_dict[entity][cell].append((data_file, row_id))
                             drugstore_row_ids.append(row_id)
-                            df.at[i,'brand'] = cell
+                            df.at[i, 'brand'] = cell
                         elif cell in brands_dict['random']:
                             random_dict[entity][cell].append((data_file, row_id))
                             random_row_ids.append(row_id)
-                            df.at[i,'brand'] = cell
-                        elif len(name_split_list)>1:
+                            df.at[i, 'brand'] = cell
+                        elif len(name_split_list) > 1:
                             # check for two words (since ngrams brands)
                             cell = cell + ' ' + str(name_split_list[1]).lower()
                             if cell in brands_dict['electronics_total']:
@@ -498,7 +500,7 @@ def keyword_search(data_path):
                             elif cell in brands_dict['clothes']:
                                 clothes_dict[entity][cell].append((data_file, row_id))
                                 clothes_row_ids.append(row_id)
-                                df.at[i,'brand'] = cell
+                                df.at[i, 'brand'] = cell
                             elif cell in brands_dict['bikes']:
                                 bikes_dict[entity][cell].append((data_file, row_id))
                                 bikes_row_ids.append(row_id)
@@ -523,7 +525,7 @@ def keyword_search(data_path):
                                 random_dict[entity][cell].append((data_file, row_id))
                                 random_row_ids.append(row_id)
                                 df.at[i, 'brand'] = cell
-                            elif len(name_split_list)>2:
+                            elif len(name_split_list) > 2:
                                 # check for three words (since ngrams brands)
                                 cell = cell + ' ' + str(name_split_list[2]).lower()
                                 if cell in brands_dict['electronics_total']:
@@ -533,7 +535,7 @@ def keyword_search(data_path):
                                 elif cell in brands_dict['clothes']:
                                     clothes_dict[entity][cell].append((data_file, row_id))
                                     clothes_row_ids.append(row_id)
-                                    df.at[i,'brand'] = cell
+                                    df.at[i, 'brand'] = cell
                                 elif cell in brands_dict['bikes']:
                                     bikes_dict[entity][cell].append((data_file, row_id))
                                     bikes_row_ids.append(row_id)
@@ -619,66 +621,74 @@ def keyword_search(data_path):
 
                 if bikes_df.shape[0] > 0:
                     bikes_df.to_json(os.path.join(product_path, 'product_bikes', data_file),
-                                           compression='gzip', orient='records',
-                                           lines=True)
+                                     compression='gzip', orient='records',
+                                     lines=True)
 
                 if cars_df.shape[0] > 0:
                     cars_df.to_json(os.path.join(product_path, 'product_cars', data_file),
-                                           compression='gzip', orient='records',
-                                           lines=True)
+                                    compression='gzip', orient='records',
+                                    lines=True)
 
                 if technology_df.shape[0] > 0:
                     technology_df.to_json(os.path.join(product_path, 'product_technology', data_file),
-                                           compression='gzip', orient='records',
-                                           lines=True)
+                                          compression='gzip', orient='records',
+                                          lines=True)
 
                 if tools_df.shape[0] > 0:
                     tools_df.to_json(os.path.join(product_path, 'product_tools', data_file),
-                                           compression='gzip', orient='records',
-                                           lines=True)
+                                     compression='gzip', orient='records',
+                                     lines=True)
 
                 if drugstore_df.shape[0] > 0:
                     drugstore_df.to_json(os.path.join(product_path, 'product_drugstore', data_file),
-                                           compression='gzip', orient='records',
-                                           lines=True)
+                                         compression='gzip', orient='records',
+                                         lines=True)
 
                 if random_df.shape[0] > 0:
                     random_df.to_json(os.path.join(product_path, 'product_random', data_file),
-                                           compression='gzip', orient='records',
-                                           lines=True)
+                                      compression='gzip', orient='records',
+                                      lines=True)
 
                 ## nur alle paar tausend saven
                 # save dictionaries with selected data
                 if count % 1000 == 0:
-                    with open(os.path.join(product_path,'product_clothes', 'clothes_dict.json'), 'w', encoding='utf-8') as f:
+                    with open(os.path.join(product_path, 'product_clothes', 'clothes_dict.json'), 'w',
+                              encoding='utf-8') as f:
                         json.dump(clothes_dict, f)
 
-                    with open(os.path.join(product_path,'product_electronics', 'electronics_dict.json'), 'w', encoding='utf-8') as f:
+                    with open(os.path.join(product_path, 'product_electronics', 'electronics_dict.json'), 'w',
+                              encoding='utf-8') as f:
                         json.dump(electronics_dict, f)
 
-                    with open(os.path.join(product_path,'product_bikes', 'bikes_dict.json'), 'w', encoding='utf-8') as f:
+                    with open(os.path.join(product_path, 'product_bikes', 'bikes_dict.json'), 'w',
+                              encoding='utf-8') as f:
                         json.dump(bikes_dict, f)
 
-                    with open(os.path.join(product_path,'product_cars', 'cars_dict.json'), 'w', encoding='utf-8') as f:
+                    with open(os.path.join(product_path, 'product_cars', 'cars_dict.json'), 'w', encoding='utf-8') as f:
                         json.dump(cars_dict, f)
 
-                    with open(os.path.join(product_path,'product_technology', 'technology_dict.json'), 'w', encoding='utf-8') as f:
+                    with open(os.path.join(product_path, 'product_technology', 'technology_dict.json'), 'w',
+                              encoding='utf-8') as f:
                         json.dump(technology_dict, f)
 
-                    with open(os.path.join(product_path,'product_tools', 'tools_dict.json'), 'w', encoding='utf-8') as f:
+                    with open(os.path.join(product_path, 'product_tools', 'tools_dict.json'), 'w',
+                              encoding='utf-8') as f:
                         json.dump(tools_dict, f)
 
-                    with open(os.path.join(product_path,'product_drugstore', 'drugstore_dict.json'), 'w', encoding='utf-8') as f:
+                    with open(os.path.join(product_path, 'product_drugstore', 'drugstore_dict.json'), 'w',
+                              encoding='utf-8') as f:
                         json.dump(drugstore_dict, f)
 
-                    with open(os.path.join(product_path,'product_random', 'random_dict.json'), 'w', encoding='utf-8') as f:
+                    with open(os.path.join(product_path, 'product_random', 'random_dict.json'), 'w',
+                              encoding='utf-8') as f:
                         json.dump(random_dict, f)
 
     # save at the end of running
     with open(os.path.join(product_path, 'product_clothes_v3', 'clothes_dict.json'), 'w', encoding='utf-8') as f:
         json.dump(clothes_dict, f)
 
-    with open(os.path.join(product_path, 'product_electronics_v3', 'electronics_dict.json'), 'w', encoding='utf-8') as f:
+    with open(os.path.join(product_path, 'product_electronics_v3', 'electronics_dict.json'), 'w',
+              encoding='utf-8') as f:
         json.dump(electronics_dict, f)
 
     with open(os.path.join(product_path, 'product_bikes', 'bikes_dict.json'), 'w', encoding='utf-8') as f:
@@ -699,11 +709,14 @@ def keyword_search(data_path):
     with open(os.path.join(product_path, 'product_random', 'random_dict.json'), 'w', encoding='utf-8') as f:
         json.dump(random_dict, f)
 
+
 def remove_stopwords(token_vector, stopwords_list):
     return token_vector.apply(lambda token_list: [word for word in token_list if word not in stopwords_list])
 
+
 def remove_punctuation(token_vector):
     return token_vector.apply(lambda token_list: [word for word in token_list if word not in string.punctuation])
+
 
 def jaccard_similarity_score(original, translation):
     intersect = set(original).intersection(set(translation))
@@ -721,7 +734,7 @@ def post_cleaning():
     :return:
     """
     entities = ['Bikes', 'Cars', 'Clothes', 'Drugstore', 'Electronics', 'Technology', 'Tools', 'Random']
-    #entities = ['Tools']
+    # entities = ['Tools']
 
     # generate lists for valid electronics and clothes brands
     with open(os.path.join(product_path, 'brands_dict.json'), 'r', encoding='utf-8') as f:
@@ -741,7 +754,7 @@ def post_cleaning():
 
         # use tokenizer for name column to get tokens for training the model, remove stopwords and punctuation
         clusters_all_df['tokens'] = clusters_all_df['name'].apply(lambda row: word_tokenize(row))
-        clusters_all_df['tokens'] = remove_stopwords(clusters_all_df['tokens'],stopwords.words())
+        clusters_all_df['tokens'] = remove_stopwords(clusters_all_df['tokens'], stopwords.words())
         clusters_all_df['tokens'] = remove_punctuation(clusters_all_df['tokens'])
 
         # get tagged words
@@ -764,7 +777,7 @@ def post_cleaning():
         count = 0
         with progressbar.ProgressBar(max_value=len(final_entities_list)) as bar:
             for cluster_id in final_entities_list:
-                single_cluster_id_df = clusters_all_df[clusters_all_df['cluster_id']==cluster_id]
+                single_cluster_id_df = clusters_all_df[clusters_all_df['cluster_id'] == cluster_id]
 
                 # measure similarity with Doc2Vec
                 valid_brands = list(filter(lambda brand: brand in all_valid_brands,
@@ -773,22 +786,26 @@ def post_cleaning():
                 if len(valid_brands) > 0:
                     most_common_brand = max(valid_brands, key=valid_brands.count)
                     index_most_common = single_cluster_id_df[single_cluster_id_df['brand_y'].apply(
-                        lambda element: str(element).lower()) == most_common_brand].index[0] # use this as baseline for similarity comparisons within a certain cluster
+                        lambda element: str(element).lower()) == most_common_brand].index[
+                        0]  # use this as baseline for similarity comparisons within a certain cluster
 
                     # calculate similarity and filter for the ones which are in the current cluster
                     similar_doc = model.docvecs.most_similar(f'{index_most_common}', topn=clusters_all_df.shape[0])
-                    similar_doc_cluster = [tup for tup in similar_doc if int(tup[0]) in list(single_cluster_id_df.index)] # similarities as tuples with index and similarity measure compared to baseline product
-                    similar_doc_cluster_df = pd.DataFrame(list(similar_doc_cluster), columns=['index','doc2vec'])
-                    similar_doc_cluster_df['index'] = [int(i) for i in similar_doc_cluster_df['index']] # change indices to numbers
+                    similar_doc_cluster = [tup for tup in similar_doc if int(tup[0]) in list(
+                        single_cluster_id_df.index)]  # similarities as tuples with index and similarity measure compared to baseline product
+                    similar_doc_cluster_df = pd.DataFrame(list(similar_doc_cluster), columns=['index', 'doc2vec'])
+                    similar_doc_cluster_df['index'] = [int(i) for i in
+                                                       similar_doc_cluster_df['index']]  # change indices to numbers
 
                     # measure similarity with Jaccard
                     jaccard_score = single_cluster_id_df['name'].apply(lambda row: jaccard_similarity_score(
                         row, single_cluster_id_df['name'].loc[int(index_most_common)]))
                     jaccard_score = jaccard_score.drop(int(index_most_common)).sort_values(ascending=False)
-                    jaccard_score_df = pd.DataFrame({'index':jaccard_score.index, 'jaccard':jaccard_score.values})
+                    jaccard_score_df = pd.DataFrame({'index': jaccard_score.index, 'jaccard': jaccard_score.values})
 
                     # merge both similarity measures to one dataframe
-                    similarity_df = pd.merge(similar_doc_cluster_df, jaccard_score_df, left_on='index', right_on='index', how='left')
+                    similarity_df = pd.merge(similar_doc_cluster_df, jaccard_score_df, left_on='index',
+                                             right_on='index', how='left')
 
                     # select valid cluster_ids by setting thresholds for doc2vec and jaccard similarities
                     if entity == 'Bikes':
@@ -814,21 +831,22 @@ def post_cleaning():
                         jaccard_theshold = 0.6
                     valid_cluster_id_df = similarity_df[(similarity_df['doc2vec'] > doc2vec_threshold) |
                                                         (similarity_df['jaccard'] >= jaccard_theshold)]
-                    valid_cluster_id_indices = valid_cluster_id_df['index'].to_list() # list of valid indices within a cluster_id
+                    valid_cluster_id_indices = valid_cluster_id_df[
+                        'index'].to_list()  # list of valid indices within a cluster_id
                     valid_indices_all += valid_cluster_id_indices
 
                 count += 1
                 bar.update(count)
 
         clusters_all_df_new = clusters_all_df[clusters_all_df.index.isin(valid_indices_all)]
-        clusters_all_df_new.to_csv(os.path.join(cluster_path, '{}_clusters_all_8_tables_post_processed.csv'.format(entity)),
-                                                  columns=None)
+        clusters_all_df_new.to_csv(
+            os.path.join(cluster_path, '{}_clusters_all_8_tables_post_processed.csv'.format(entity)),
+            columns=None)
 
         ### Auch gleiche table_ids rauswerfen!!!!
 
 
 if __name__ == "__main__":
-
     # for multithreading
     os.environ['NUMEXPR_MAX_THREADS'] = '24'
     format = "%(asctime)s: %(message)s"
@@ -843,7 +861,6 @@ if __name__ == "__main__":
     # x.join()
     logging.info("Main    : all done")
 
-
     """
     # for multiprocessing
     sites = [
@@ -857,12 +874,12 @@ if __name__ == "__main__":
     """
 
     # run functions
-    #clean_clusters()
-    #get_keywords() ##
-    #clean_keywords()
+    # clean_clusters()
+    # get_keywords() ##
+    # clean_keywords()
     keyword_search(cleaned_top100_path)
     keyword_search(cleaned_min3_path)
-    #post_cleaning()
-    #get_new_keywords()
+    # post_cleaning()
+    # get_new_keywords()
 
     test = 2
