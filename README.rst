@@ -20,10 +20,6 @@ As we are trying to beat those base lines with the mentioned table transformers,
 Results: 
 
 *  Random Forest: 0.8684 F1  
-*  `TinyBert:`__
-*  `TURL Experiments <>`__
-*  `Tabbie Experiments <>`__
-*  `Visualizations <https://github.com/NiklasSabel/data_integration_using_deep_learning/tree/main/visualizations>`__
 * Random Forest: 0.8684 F1  
 * TinyBert: 
 * RoBERTa: 0,8958 F1
