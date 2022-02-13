@@ -13,13 +13,17 @@ Table of Contents
 Description Entity - Product
 ==============================
 
-We make all our code availabe that were used for this project. In the following we will shortly describe the project setup and our approach. By first cleaning the corpus data via tld-based approach (filter on english internet domain endings) and using fast-text we made sure to focus on tables that are mainly english. Via keyword search on brands with the strongest revenue in different product categories we created our dataset from the corpus and made sure that enough entities are included that are hard to distinguish (Doc2Vec and Jaccard similarity). Using a multilabel stratified shuffle approach we split our remaining data into train-validation-test sets by using 3/8 for training, 2/8 for validation and 3/8 for testing. After a manual check of the test data and then discarding noise (~10%) we remain with 1,345 train, 855 validation and 1,331 test tables.
+We make all our code availabe that were used for this project. In the following we will shortly describe the project setup and our approach. For the product data the corpus already provided a clustering that we could make use of as labels. By first cleaning the corpus data via tld-based approach (filter on english internet domain endings) and using fast-text we made sure to focus on tables that are mainly english. Via keyword search on brands with the strongest revenue in different product categories we created our dataset from the corpus and made sure that enough entities are included that are hard to distinguish (Doc2Vec and Jaccard similarity). Using a multilabel stratified shuffle approach we split our remaining data into train-validation-test sets by using 3/8 for training, 2/8 for validation and 3/8 for testing. After a manual check of the test data and then discarding noise (~10%) we remain with 1,345 train, 855 validation and 1,331 test tables. As baselines we use on the one hand a tf-idf and tf based random forest algorithm and one the other hand two bert based approaches with TinyBert and RoBERTa. The results can be seen below.
+As we are trying to beat those base lines with the mentioned table transformers, we will provide in the following the results of TURL and tabbie for comparison with best settings respectively.
 
-Baseline results:
 
-TURL results:
+Results: 
+* Random Forest: 0.8684 F1  
+* TinyBert: 
+* RoBERTa: 0,8958 F1
+* TURL: 
+* Tabbie: 
 
-Tabbie results:
 
 You can find the code for each part in the following table: 
 
@@ -36,11 +40,12 @@ Description Entity - LocalBusiness
 
 We make all our code availabe that were used for this project. In the following we will shortly describe the project setup and our approach. By first cleaning the corpus data via tld-based approach (filter on english internet domain endings) and using fast-text we made sure to focus on tables that are mainly english. ?
 
-Baseline results:
-
-TURL results:
-
-Tabbie results:
+Results: 
+* Random Forest: 
+* TinyBert: 
+* RoBERTa:
+* TURL: 
+* Tabbie: 
 
 You can find the code for each part in the following table: 
 
@@ -55,7 +60,16 @@ All Experiments done were written in Jupyter Notebooks, which can be found in th
 Description Schema
 ==============================
 
-We make all our code availabe that were used for this project. It contains the data preprocessing for all use cases, the baseline generation, experiments for both TURL and Tabbie and the consequent error analysis. You can find the code for each part in the following table: 
+We make all our code availabe that were used for this project. It contains the data preprocessing for all use cases, the baseline generation, experiments for both TURL and Tabbie and the consequent error analysis. 
+
+Results: 
+* Random Forest: 
+* TinyBert: 
+* RoBERTa:
+* TURL: 
+* Tabbie: 
+
+You can find the code for each part in the following table: 
 
 *  `Data set generation >`__
 *  `Baselines <>`__
