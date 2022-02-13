@@ -72,6 +72,8 @@ To use this code you have to follow these steps:
 .. code-block::
 
     $ pip install -r requirements.txt
+    
+4. For running TURL please use the provided turl.yml file.
 
 Credits
 ==============================
