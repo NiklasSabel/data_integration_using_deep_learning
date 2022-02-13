@@ -35,7 +35,7 @@ All Experiments done were written in Jupyter Notebooks, which can be found in th
 Description Schema
 ==============================
 
-We make all our code availabe that were used for this project. It contains the . You can find the code for each part in the following table: 
+We make all our code availabe that were used for this project. It contains the data preprocessing for all use cases, the baseline generation, experiments for both TURL and Tabbie and the consequent error analysis. You can find the code for each part in the following table: 
 
 *  `Data set generation >`__
 *  `Baselines <>`__
