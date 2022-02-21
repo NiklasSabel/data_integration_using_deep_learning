@@ -67,13 +67,20 @@ All Experiments done were written in Jupyter Notebooks, which can be found in th
 Description Schema
 ==============================
 
-We make all our code availabe that were used for this project. It contains the data preprocessing for all use cases, the baseline generation, experiments for both TURL and Tabbie and the consequent error analysis. 
+We make all our code availabe that were used for this project. It contains the data preprocessing for all use cases, the baseline generation, experiments for both TURL and Tabbie and the consequent error analysis. At first, the data from the named web page was downloaded and explored. Hereby, statistics and technical characteristics of the tables were recorded to choose a subsample of the data. Also, similar to the Entity task, only English data is considered by filtering out non-English data. By comparing the frequency and density of column labels such as name, duration, price etc. about 200 labels are selected as the database from about 13 categories such as Book, Creative Work etc. (TODO: INSERT FILTERING PROCESS, Therefore,… ) Hereby, large, midsize and small tables are considered. Additionally, it was important to keep a variety of datatypes including string, date, integer, float and geolocation. Hereby, the inclusion of hard cases is possible. A hard case would be for example different types of gtin numbers of a product or best rating vs worst rating vs average rating. Furthermore, while not possible to represent all categories evenly distributed, every category has enough representatives to be trained and tested on. Overall, there are three training sets and one test built. The large training set contains 44,345 tables, the mid-size training set contains 9,776 training set and the small training set contains 2,444 tables. Hereby the small set is included in the mid and large and the mid-size set is contained in the large. The test set contains 8,912 tables. 
+
+Both bert-based models and regular models serve as a baseline for the final table transformer models. To prep the data for the bert-based models, the entries of the selected target columns are concatenated. Hereby, the context and the structure within the data is lost and not fully comparable with the to be tested table transformer models.
+
+The final tests are done on the models TURL and Tabbie.
+
 
 Results: 
 
-* Random Forest: 
+* Random Forest: 0.35 F1
 * TinyBert: 
-* RoBERTa:
+* Bert: 0.8 F1
+* Distilbert: 0.8 F1
+* RoBERTa: 0.8 F1
 * TURL: 
 * Tabbie: 
 
