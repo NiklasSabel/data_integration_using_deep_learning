@@ -213,9 +213,14 @@ notebooks/Entity/RoBERTa_Results
 notebooks/Entity/RoBERTa_logs
 notebooks/Entity/wandb
 notebooks/Schema/tabbie/evaluation
+notebooks/Schema/Baseline/Data/
 
 # Tabbie
 Subfolder_Tabbie/
 
 # TURL
 Subfolder_TURL/ 
+
+
+# Contrastive learning
+Subfolder_contrastive_learning/
