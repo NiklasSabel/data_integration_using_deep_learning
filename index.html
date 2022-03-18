@@ -173,16 +173,19 @@
         href="http://dws.informatik.uni-mannheim.de"><img src="images/ma-logo.gif"
                                                           alt="University of Mannheim - Logo"></a></div>
 <div id="header">
-    <h1 style="font-size: 250%;">Cross-lingual Product Matching using Transformers</h1>
+    <h1 style="font-size: 250%;">Data Integration using Deep Learning</h1>
 </div>
 <div id="authors">
-    <a>Andreas Küpfer</a><br/>
-    <a>Benedikt Ebing</a><br/>
     <a>Christian Bizer</a></br>
-    <a>Daniel Schweimer</a><br/>
-    <a>Fritz Niesel</a><br/>
-    <a>Jakob Gutmann</a><br/>
+    <a>Cheng Chen</a><br/>
+    <a>Jennifer Hahn</a><br/>
+    <a>Kim-Carolin Lindner</a></br>
     <a>Ralph Peeters</a></br>
+    <a>Jannik Reißfelder</a><br/>
+    <a>Marvin Rösel</a><br/>
+    <a>Niklas Sabel</a><br/>
+    <a>Luisa Theobald</a></br>
+    <a>Estelle Weinstock</a></br>
 </div>
 <div id="content">
     <p>
@@ -1674,11 +1677,13 @@ hyperparameter setup.
 <span id="toc8"></span>
 <h2>8 References</h2>
 <ol>
-    <li>Pradap Konda, et al.:
-        <a href="https://doi.org/10.14778/3007263.3007314" target="_blank">Magellan: toward building entity matching
-            management systems over data science
-            stacks</a>. In:
-        Proc. VLDB Endow. 9, 13 (September 2016), 1581–1584 (2016).
+    <li>Deng, X. et al.:
+        <a href="https://doi.org/10.48550/arXiv.2006.14806" target="_blank">TURL: Table Understanding through Representation Learning</a>. In:
+       Proceedings of the VLDB Endowment 14, 3, 307--319 (2020).
+    </li>
+    <li>Iida, H. et al.:
+        <a href="http://arxiv.org/abs/2105.02584" target="_blank">TABBIE: Pretrained Representations of Tabular Data</a>.
+       arXiv:2105.02584 [cs] (2021).
     </li>
     <li>Devlin, J. et al.: <a
             href="http://dblp.uni-trier.de/db/conf/naacl/naacl2019-1.html#DevlinCLT19"
@@ -1687,39 +1692,50 @@ hyperparameter setup.
         Jill Burstein; Christy Doran & Thamar Solorio, ed., 'NAACL-HLT (1)', Association for Computational Linguistics,
         , pp. 4171-4186 (2019).
     </li>
-    <li>Peeters, R., Bizer, C., Glavaš, G.: <a
-            href="http://ceur-ws.org/Vol-2726/paper1.pdf"
-            target="_blank">Intermediate training of BERT for product matching</a>.
-        Piai, Federico (Hg.). CEUR Workshop Proceedings.
-        In: DI2KG 2020: Proceedings of the 2nd International Workshop on Challenges and Experiences from Data
-        Integration to Knowledge Graphs co-located
-        with 46th International Conference on Very Large Data Bases (VLDB 2020), Tokyo, Japan, August 31, 2020. 2726
-        Aachen: RWTH: 1-2 (2020).
+    <li>Peeters, R., Bizer, C.: <a
+            href="https://arxiv.org/abs/2202.02098"
+            target="_blank">Supervised Contrastive Learning for Product Matching</a>.
+       arXiv:2202.02098 [cs] (2022).
     </li>
-    <li>Brunner, U., Stockinger K.: <a
-            href="https://doi.org/10.5441/002%2Fedbt.2020.58"
-            target="_blank">Entity Matching with Transformer Architectures - a Step Forward in Data Integration</a>.
-        Piai, Federico (Hg.). CEUR Workshop Proceedings.
-        In: Proceedings of the International
-        Conference on Extending Database Technology, 2020. 463–473 (2020).
+    <li>Christophides, V. et al.: <a
+            href="https://doi.org/10.2200/S00655ED1V01Y201507WBE013"
+            target="_blank">Entity Resolution in the Web of Data</a>.
+        In: Synthesis Lectures on the Semantic Web: Theory and Technology, 5(3):1–122, (2015).
     </li>
-    <li>Tracz, J. et al.: <a
-            href="https://www.aclweb.org/anthology/2020.ecomnlp-1.7.pdf"
-            target="_blank">BERT-based similarity learning for product matching</a>.
-        Piai, Federico (Hg.). CEUR Workshop Proceedings.
-        In: Proceedings of Workshop on Natural Language Processing in E-Commerce, 2020. 66-75. Association for
-        Computational Linguistics (2020).
+    <li>Vaswani, A. et al.: <a
+            href="https://arxiv.org/abs/1706.03762"
+            target="_blank">Attention Is All You Need</a>.
+        In: NIPS'17: Proceedings of the 31st International Conference on Neural Information Processing Systems, 6000-6010 (2017).
     </li>
-    <li>Conneau, A. et al.: <a
-            href="https://arxiv.org/pdf/1911.02116"
-            target="_blank">Unsupervised Cross-lingual Representation Learning at Scale</a>.
-        In: Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics (pp. 8440–8451).
-        Association for Computational Linguistics (2020).
+    <li>Jiao, X. et al.: <a
+            href="https://arxiv.org/abs/1909.10351"
+            target="_blank">TinyBERT: Distilling BERT for Natural Language Understanding</a>.
+        In: Findings of the Association for Computational Linguistics: EMNLP 2020, 4163--4174, (2020).
     </li>
-    <li>Li, Y. et al.: <a
-            href="https://arxiv.org/pdf/2004.00584"
-            target="_blank">Deep entity matching with pre-trained language models</a>.
-        In: Deep entity matching with pre-trained language models (2020).
+    <li>Liu, Y. et al.: <a
+            href="http://arxiv.org/abs/1907.11692"
+            target="_blank">RoBERTa: A Robustly Optimized BERT Pretraining Approach</a>.
+        arXiv:1907.11692 [cs], (2019).
+    </li>
+    <li>Joulin, A. et al.: <a
+            href="https://arxiv.org/abs/1612.03651"
+            target="_blank">FastText.zip: Compressing text classification models</a>.
+        arXiv:1612.03651 [cs], (2016).
+    </li>
+    <li>Primpeli, A. et al.: <a
+            href="https://dl.acm.org/doi/10.1145/3308560.3316609"
+            target="_blank">The WDC Training Dataset and Gold Standard for Large-Scale Product Matching</a>.
+        In:Proceedings of The 2019 World Wide Web Conference, 381–-386, San Francisco USA, (2019).
+    </li>
+    <li>Le, Quoc V., Mikolov, T.: <a
+            href="https://arxiv.org/abs/1405.4053"
+            target="_blank">Distributed Representations of Sentences and Documents</a>.
+        arXiv:1405.4053 [cs], (2014).
+    </li>
+    <li>Yin, P. et al.: <a
+            href="https://aclanthology.org/2020.acl-main.745"
+            target="_blank">TaBERT: Pretraining for Joint Understanding of Textual and Tabular Data</a>.
+        In: Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics, 8413–8426, (2020)
     </li>
 
 
