@@ -239,7 +239,20 @@
 
     <!--CONTENT-->
     <p>
-       Insert Introduction
+        According to estimations of the International Data Corporation, the amount of data created in 2025 will be around 180 zettabytes with increasing tendency. 
+        Two reasons are the increasing connection and information flow due to the world wide web. The web contains a massive amount of data in all forms, for example pages 
+        like Wikipedia collect all kinds of information about various subjects in the form of tabular data.
+    </p>
+    <span id="toc2.1"></span>
+    <h3>1.1 Problem Statement</h3>
+    <p>
+        The problem is that the same information will have different representations and characteristics across pages due to countless sources and contributors.
+        Therefore, merging heterogeneous information for further usage becomes quite challenging due to the overwhelming mass of differences. To meet those challenges,
+         this project deals with different methods for both schema and entity matching.
+    </p>
+    Also, information in other forms can be aggregated in tables such as the derivation of tables through annotated entities.
+        <a style="color:#FF0000";>(verstehe letzten satz nicht?)</a>
+      
     <p>
         All of our datasets can be requested by mail at <a href="mailto:ralph@informatik.uni-mannheim.de">ralph@informatik.uni-mannheim.de</a>,
         but are available for
@@ -255,38 +268,96 @@
     <h2>2 Theoretical Framework </h2>
     <!--CONTENT-->
     <p>
-       Insert Theoretical Framework
+        This chapter provides an overview of the theoretical underpinnings and specific information required for the traceability of our work. For this reason, we will
+         introduce the main tasks we are trying to solve: Schema and Entity Matching. We also give a brief introduction to transformer models, especially BERT-based implementations,
+          as they form the basis for the algorithms we use. 
     <p>
     <span id="toc2.1"></span>
     <h3>2.1 Schema Matching</h3>
     <p>
-       Insert Schema Matching
+        The task schema matching is about the matching of columns which describe the same attribute. Therefore, correspondences between 
+        the schemes should be detected in an automated or semi-automated manner. The main challenges are large schemata, semantic 
+        heterogeneity, generic names, esoteric naming conventions and different languages. Although 1:n and n:1 approaches are possible, 
+        the scope of the object is reduced and only 1:1 matching is considered. <a style="color:#FF0000";>(some reference?)</a>
     <p>
     <span id="toc2.2"></span>
     <h3>2.2 Entity Matching</h3>
     <p>
-       Insert Entity Matching
+        Identity resolution refers to the task of finding all records that refer to the same entity, e.g., when integrating data from
+        different source systems. Unfortunately, entity representations in real-world environments are in general not identical and have
+        to be processed at massive scale. Therefore, identity resolution becomes quite challenging.   
+        One solution is offered by comparing multiple attributes of different record representations with attribute-specific similarity
+        measures like Levenshtein distance, TF-IDF or advanced techniques like BERT. Entity Resolution or Entity Matching tries to 
+        allocate entities with different representations under the assumption that the higher the similarity is, the more likely two 
+        entity representations are a match <cite><a href="https://doi.org/10.2200/S00655ED1V01Y201507WBE013">[1]</a></cite> 
+        <body>
+            <p style="color:#FF0000";>(note:add more information?)</p>
+          </body> 
+    <p>
+        
+        In recent years, the usage of Transformer models in Schema and Entity Matching became more and more popular due to limitations 
+        of standard algorithms and measures.
     <p>
     <span id="toc2.3"></span>
     <h3>2.3 Transformer Models</h3>
     <p>
-       Transformer Models may be left out, to be discussed
+        In 2017, Google Brain proposed the Transformer model, that based on a encoder-decoder structure and an attention mechanism showed 
+        impressive improvements over state-of-the-art methods and simplicity in adoption to a wide range of machine learning tasks,
+         especially in the context of NLP <cite><a href="https://doi.org/10.2200/S00655ED1V01Y201507WBE013">[6]</a></cite>.
+        As a result, a new language representation model named BERT was introduced in 2019 to pre-train deep bidirectional 
+        representations from unlabeled text. That resulted in a lot of possibilities as a "pre-trained BERT model can be finetuned with 
+        just one additional output layer to create state-of-the art methods for a wide range of tasks"<cite><a href="https://doi.org/10.2200/S00655ED1V01Y201507WBE013">[3]</a></cite>. In the 
+        following, we will use algorithms that are pre-trained on different BERT extensions, in particular TinyBERT and RoBERTa. 
+        
+        TinyBERT is a 7.5x smaller BERT-Version that performs knowledge distillation with BERT as teacher model on both pre-training and 
+        task-specific learning stages. Therefore, it achieves 9.4x faster inference still keeping competitive performance <cite><a href="https://doi.org/10.2200/S00655ED1V01Y201507WBE013">[7]</a></cite>.
+        In contrast, RoBERTa is a more robust variety of BERT that modifies key hyperparameters and is exposed to a larger amount of training data 
+        with a prolonged training time and bigger batches compared to BERT itself. This leads to substantial improvements <cite><a href="https://doi.org/10.2200/S00655ED1V01Y201507WBE013">[8]</a></cite>.
     <p>
 
     <span id="toc3"></span>
     <span id="toc3.1"></span>
     <h2>3 Algorithms</h2>
     <p>
-        Insert description of algorithms, maybe leave completely out?
+        In the following, we present different algorithms namely TURL and Tabbie from a class of Table Transformers. Table Transformers 
+        are models that not only incorporate data from individual entries, but include information from their surroundings inside the table
+        as well. This results in models which take a whole table representation of a website or a knowledge base as input instead of only 
+        single entries like normal BERT-based models do. 
     </p>
     <h3>3.1 TURL</h3>
     <p>
-       Insert TURL
+        Table Understanding through Representation Learning (TURL) is a "novel framework that introduces pre-training/finetuning paradigm to 
+        relational Web tables". TURL is a TinyBERT based extension model that was pre-trained on around 600,000 Wikipedia tables such that it
+         can be applied to different tasks with "minimal task-specific fine-tuning". The authors show that the model generalizes well and 
+         outperforms existing methods for example in column type annotation <cite><a href="https://doi.org/10.2200/S00655ED1V01Y201507WBE013">[1]</a></cite>. 
+    <figcaption style="margin-bottom:1em;">
+        <strong>Figure 3.1: Overview TURL architecture [2]
+        </strong>
+    </figcaption>
+    <figure style="margin-top:3em">
+        <img src="./images/TURL framework.JPG" style="margin-bottom:2em;"/>
+    </figure>
+                                             
+    <p>
+        The architecture that can be seen in Figure \ref{fig:Overview TURL framework} consists of three modules. A first embedding layer 
+        that is used to convert the different components of an input table into embeddings. The second layer is a structure-aware stacked 
+        transformer to capture textual and relational knowledge, as introduced in \ref{sec:trans}. On top of receiving the embeddings from 
+        the first layer, the transformer layer also obtains a visibility matrix that models the row-column structure of a table. It acts as
+         an attention mask such that each input token can only use information from other "visible" tokens, e.g. the header of its column 
+         or another entry in the same row. At the end follows a final projection layer including a masked language model (MLM) that trains 
+         the model to capture semantic and contextual information and a masked entity recovery (MER) to capture the factual knowledge in 
+         the table content for pre-training. <a style="color:#FF0000";>(@Kim and Jen: more information?)</a>
     </p>
+    </p>
+
     <span id="toc3.2"></span>
     <h3>3.2 TABBIE</h3>
     <p>
-        Insert TABBIE
+        Tabular Information Embedding or TABBIE is a "pretraining methodology specifically for tabeles [...] that resembles several core
+        tasks in table extraction" <cite><a href="https://doi.org/10.2200/S00655ED1V01Y201507WBE013">[2]</a></cite>. Tabbie is a BERT based Transformer models pretrained on around 26 million
+        tables to better compare it with TaBERT which is "a pretraining approach for joint understanding of tabular data" <cite><a href="https://doi.org/10.2200/S00655ED1V01Y201507WBE013">[12]</a></cite>.
+        It can be shown that Tabbie reaches better performance than comparative methods like Tabert while
+        reducing the computational costs for training the model <cite><a href="https://doi.org/10.2200/S00655ED1V01Y201507WBE013">[2]</a></cite>.
     </p>
     <span id="toc3.3"></span>
     <h3>3.3 Constrastive Learning</h3>
@@ -297,111 +368,75 @@
     <h2>4 Datasets and Preprocessing </h2>
     <!--CONTENT-->
     <p>
-    INSERT Datasets and Preprocssing
-    Table is an example
-    <table class="Multi-class">
-        <caption style="margin-top: 1em">Table 1: Dataset Statistics Multi-class</caption>
-        <tr>
-            <th>Category</th>
-            <th>Dataset</th>
-            <th>Lang</th>
-            <th>Size</th>
-            <th># Products</th>
-            <th># Products incl. <br>'Other'-Class</th>
-            <th>Average <br>Cluster Size</th>
-        </tr>
-        <tr>
-            <td rowspan="6" style='text-align:center; vertical-align:middle'>Toy</td>
-            <td rowspan="2" style='text-align:center; vertical-align:middle'>Training</td>
-            <td>EN</td>
-            <td>10,630</td>
-            <td>150</td>
-            <td>685</td>
-            <td>46.87</td>
-        </tr>
-        <tr>
-            <td>DE</td>
-            <td>5,315</td>
-            <td>150</td>
-            <td>506</td>
-            <td>23.43</td>
-        </tr>
-        <tr>
-            <td rowspan="4" style='text-align:center; vertical-align:middle'>Test</td>
-            <td>EN</td>
-            <td>1,694</td>
-            <td>150</td>
-            <td>423</td>
-            <td>7.44</td>
-        </tr>
-        <tr>
-            <td>DE</td>
-            <td>1,716</td>
-            <td>150</td>
-            <td>387</td>
-            <td>7.48</td>
-        </tr>
-        <tr>
-            <td>ES</td>
-            <td>1,728</td>
-            <td>150</td>
-            <td>438</td>
-            <td>7.52</td>
-        </tr>
-        <tr>
-            <td>FR</td>
-            <td>1,642</td>
-            <td>150</td>
-            <td>442</td>
-            <td>6.89</td>
-        </tr>
-        <tr style="border-top:2px solid grey">
-            <td rowspan="6" style='text-align:center; vertical-align:middle'>Phone</td>
-            <td rowspan="2" style='text-align:center; vertical-align:middle'>Training</td>
-            <td>EN</td>
-            <td>10,177</td>
-            <td>150</td>
-            <td>725</td>
-            <td>44.85</td>
-        </tr>
-        <tr>
-            <td>DE</td>
-            <td>5,163</td>
-            <td>150</td>
-            <td>421</td>
-            <td>22.42</td>
-        </tr>
-        <tr>
-            <td rowspan="4" style='text-align:center; vertical-align:middle'>Test</td>
-            <td>EN</td>
-            <td>1,706</td>
-            <td>150</td>
-            <td>421</td>
-            <td>7.4</td>
-        </tr>
-        <tr>
-            <td>DE</td>
-            <td>1,696</td>
-            <td>150</td>
-            <td>361</td>
-            <td>7.42</td>
-        </tr>
-        <tr>
-            <td>ES</td>
-            <td>1,692</td>
-            <td>150</td>
-            <td>371</td>
-            <td>7.49</td>
-        </tr>
-        <tr>
-            <td>FR</td>
-            <td>1,698</td>
-            <td>150</td>
-            <td>383</td>
-            <td>7.39</td>
-        </tr>
-    </table>
+        <!-- Concept Explanation-->
+        Chapter 4 gives an overview on our approaches and their respective results. We start by introducing our dataset and 
+        the preprocessing steps conducted. Furthermore, we briefly state some baselines with which we compare our implemented 
+        concepts and provide our experiments afterwards. The section is concluded by our results and an associated error 
+        analysis.
+        Our dataset is based on the Web Data Commons - Schema.org Table Corpus <cite><a href="https://doi.org/10.2200/S00655ED1V01Y201507WBE013">[10]</a></cite> maintained by the Data
+        and Web Science Research Group at the University of Mannheim. In a first action, the tables were cleaned using a two-step
+        approach in order to focus on English data. We used a TLD-based method to first filter our data on English internet domain
+        endings (e.g., ".com",or ".uk") and afterwards applied the fastText language detection algorithm on each single row in
+        the remaining tables to check whether it belongs to the English language and if not we discarded 
+        them <cite><a href="https://doi.org/10.2200/S00655ED1V01Y201507WBE013">[9]</a></cite>. We proceeded with the remaining cleaned rows and subsequently carried out different 
+        further preprocessing approaches which are specific for either schema or entity matching.
+        <a style="color:#FF0000";>(i know this applies to both/all groups but this mixes up the order a bit since we first selected 
+            specific classes, tables etc.?)</a>
+    
+        Within entity matching we focused on two specific parts of the corpus, namely the Product data and a combination of 
+        LocalBusiness, Hotel \& Restaurant data. The Product corpus already provided a clustering for the entities, so, no 
+        further annotation was needed. Focusing on clusters with at least 8 tables, we used the most common brands for different 
+        chosen categories, in particular \textit{bikes}, \textit{cars}, \textit{clothes}, \textit{drugstore}, \textit{electronics},
+        and \textit{technology} as keywords to get relevant clusters for our final dataset. To further enhance our data, we 
+        searched for brands with at least 1,000 distinct clusters and established another category "random". In order, to 
+        make the final matching for the algorithms not too easy, we browsed the selected clusters for homogeneous entities 
+        using Doc2Vec <cite><a href="https://doi.org/10.2200/S00655ED1V01Y201507WBE013">[11]</a></cite> and Jaccard similarity to include hard-to-distinguish clusters in our dataset.
+        Here, we based our selection on the balance between both, Jaccard and Doc2Vec score, by manually validating the best
+        results for each of the defined domains.     <a style="color:#FF0000";>(@Estelle postpreprocessing der gesamten tabellen einfügen)</a> 
+        With a multilabel stratified shuffle-split <a style="color:#FF0000";>(@Kim/Jen: Ref?</a> we distributed the remaining clusters 
+        into $\frac{3}{8}$ train, $\frac{2}{8}$ validation and $\frac{3}{8}$ test data. With this approach we ensured that 
+        tables were distributed equally across size and selected clusters. Furthermore, in order to not distort the results
+        we cleaned the test set manually and discarded around 10\% of noise. Thereby, we end up with an amount of 
+        1,410 clusters that are used for training the algorithms. The final set sizes can be seen in Table <a style="color:#FF0000";>(x.x)</a>.
+        <a style="color:#FF0000";>(idea: insert screenshot of one final cluster as example?)</a>.
+    
+       
+    </p>
+    <table class="Data sizes">
+        <caption style="margin-top: 1em">Table 4.1: Final product data set sizes for entity matching.</caption>
+        <thead>
+          <tr>
+            <th></th>
+            <th>Number of Tables</th>
+            <th>Number of Entities</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Train</td>
+            <td>1.345</td>
+            <td>11.121</td>
+          </tr>
+          <tr>
+            <td>Validation</td>
+            <td>885</td>
+            <td>7.154</td>
+          </tr>
+          <tr>
+            <td>Test</td>
+            <td>1.331</td>
+            <td>10.655</td>
+          </tr>
+        </tbody>
+        </table>
 
+
+        <p>
+            <a style="color:#FF0000";>(@Team LB: insert datset prep)</a>  
+        </p>
+        <p>
+            <a style="color:#FF0000";>(@Team Schema: finish datset prep)</a>  
+        </p>
     <p>
         Images are examples
     </p>
@@ -422,14 +457,93 @@
 <span id="toc5"></span>
 <h2>5 Experimental Setup</h2>
 <p>
-    <!-- Concept Explanation-->
-    Insert Experimental Setup
+    Insert Setup
 </p>
 <span id="toc5.1"></span>
 <h3>5.1 Baseline Experiments</h3>
 <!--CONTENT-->
 <p>
-    Baseline Experiments
+    In the case of entity matching, we use three different baseline models to be able to compare the results of our algorithms.
+    We include one tree-based model in Random Forest, and two BERT-based models in TinyBERT and RoBERTa, because, as mentioned
+    in section \ref{cha:alg}, TURL is based on TinyBERT and Tabbie on RoBERTa 
+        <a style="color:#FF0000";>(@Team Tabbie: is that true?)</a>.
+    All the baselines were modelled as multi-class classification that were presented a concatentation of the entity name and
+    a description in case of the product dataset respectively the name of the  entity in case of the LocalBusiness dataset.
+    The results are presented in Table <a style="color:#FF0000";>(x.x)</a>.
+    <table class="Data sizes">
+        <caption style="margin-top: 1em">Table 4.2: F1-scores for different baselines models in entity matching.</caption>
+        <thead>
+          <tr>
+            <th></th>
+            <th>Random Forest</th>
+            <th>TinyBert</th>
+            <th>RoBERTa</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Product</td>
+            <td>0,8684</td>
+            <td>0,8329</td>
+            <td>0,8958</td>
+          </tr>
+          <tr>
+            <td>LocalBusiness</td>
+            <td>0,8793</td>
+            <td>0,9457</td>
+            <td>/</td>
+          </tr>
+        </tbody>
+        </table>
+<p>
+    Due to the fact, that the baseline models were already to good for the LocalBusiness dataset with only being presented the
+    name of the entity, we decided to discard the dataset for our experiments and focus solely on the product dataset.
+<p>
+    <a style="color:#FF0000";>(@Team Schema:finish baselines with further description of text concatenation etc? @Estelle?)</a>.
+</p>
+<p>
+    Within the task of schema matching, we initially applied a random forest with TF-IDF, binary as well as metadata approaches
+    as a tree-based model yielding an F1-Score of 0.35. Further, we used bert based models such as Bert, RoBERTa, TinyBert and
+    Distilbert as baseline models for the respective small, medium as well as large training data set. 
+
+    <table class="Data sizes">
+        <caption style="margin-top: 1em">Table 4.3: F1-scores for different baselines models in schema matching.</caption>
+            <thead>
+              <tr>
+                <th></th>
+                <th>Random Forest using TF-IDF</th>
+                <th>Bert</th>
+                <th>TinyBert</th>
+                <th>RoBERTa</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Small</td>
+                <td>0,35</td>
+                <td>0,73</td>
+                <td>0,69</td>
+                <td>0,66</td>
+              </tr>
+              <tr>
+                <td>Medium</td>
+                <td>0,35</td>
+                <td>0,76</td>
+                <td>0,70</td>
+                <td>0,77</td>
+              </tr>
+              <tr>
+                <td>Large</td>
+                <td>0,35</td>
+                <td>0,80</td>
+                <td>0,76</td>
+                <td>0,80</td>
+              </tr>
+            </tbody>
+            </table>
+<p>
+    As mentioned earlier, TURL is based on TinyBert so that this represents a feasable baseline model and is mainly used
+    for comparison and evaluation of the results later on. 
 </p>
 
     <!-- include pair-wise trainsizes?-->
