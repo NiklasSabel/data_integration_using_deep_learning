@@ -12,7 +12,7 @@ Table of Contents
 Description Entity - Product
 ==============================
 
-We make all our code availabe that were used for this project. In the following, we will shortly describe the project setup and our approach. For the product data, the corpus already provided a clustering that we could make use of as labels. By first cleaning the corpus data via a tld-based approach (filter on english internet domain endings) and using fast-text we made sure to focus on tables that are mainly english. Via keyword search on brands with the strongest revenue in different product categories, we created our dataset from the corpus and made sure that enough entities are included that are hard to distinguish (Doc2Vec and Jaccard similarity). Using a multilabel stratified shuffle approach we split our remaining data into train-validation-test sets by using 3/8 for training, 2/8 for validation and 3/8 for testing. After a manual check of the test data and then discarding noise (~10%), we remain with 1,345 train, 855 validation and 1,331 test tables. As baselines we use on the one hand a tf-idf and tf based random forest algorithm and one the other hand two bert based approaches with TinyBert and RoBERTa. The results can be seen below.
+We make all our code availabe that was used for this project. In the following, we will shortly describe the project setup and our approach. For the product data, the corpus already provided a clustering that we could make use of as labels. By first cleaning the corpus data via a tld-based approach (filter on english internet domain endings) and using fast-text we made sure to focus on tables that are mainly english. Via keyword search on brands with the strongest revenue in different product categories, we created our dataset from the corpus and made sure that enough entities are included that are hard to distinguish (Doc2Vec and Jaccard similarity). Using a multilabel stratified shuffle approach we split our remaining data into train-validation-test sets by using 3/8 for training, 2/8 for validation and 3/8 for testing. After a manual check of the test data and then discarding noise (~10%), we remain with 1,345 train, 855 validation and 1,331 test tables. As baselines we use on the one hand a tf-idf and tf based random forest algorithm and one the other hand two bert based approaches with TinyBert and RoBERTa. The results can be seen below.
 As we are trying to beat those baselines with the mentioned table transformers, we will provide in the following the results of TURL and tabbie for comparison with best settings respectively.
 
 
@@ -67,9 +67,9 @@ All Experiments done were written in Jupyter Notebooks, which can be found in th
 Description Schema
 ==============================
 
-We make all our code availabe that were used for this project. It contains the data preprocessing for all use cases, the baseline generation, experiments for both TURL and Tabbie and the consequent error analysis. At first, the data from the named web page was downloaded and explored. Hereby, statistics and technical characteristics of the tables were recorded to choose a subsample of the data. Also, similar to the Entity task, only English data is considered by filtering out non-English data. By comparing the frequency and density of column labels such as name, duration, price etc. about 200 labels are selected as the database from about 13 categories such as Book, Creative Work etc. (TODO: INSERT FILTERING PROCESS, Therefore,… ) Hereby, large, midsize and small tables are considered. Additionally, it was important to keep a variety of datatypes including string, date, integer, float and geolocation. Hereby, the inclusion of hard cases is possible. A hard case would be for example different types of gtin numbers of a product or best rating vs worst rating vs average rating. Furthermore, while not possible to represent all categories evenly distributed, every category has enough representatives to be trained and tested on. Overall, there are three training sets and one test built. The large training set contains 44,345 tables, the mid-size training set contains 9,776 training set and the small training set contains 2,444 tables. Hereby the small set is included in the mid and large and the mid-size set is contained in the large. The test set contains 8,912 tables. 
+We make all our code availabe that was used for this project. It contains the data preprocessing for all use cases, the baseline generation, experiments for both TURL, Tabbie as well as Construstive Learning and the consequent error analysis. At first, the data from the named web page was downloaded and explored. Hereby, statistics and technical characteristics of the tables were recorded to choose a subsample of the data. Also, similar to the Entity task, only English data is considered by filtering out non-English data. By comparing the frequency and density of column labels such as name, duration, price etc. roughly 200 labels are selected as the database from about 13 categories such as Book, Creative Work etc. The biggest categories, i.e. comprising the most tables, were chosen and respective tables were selected based on the number of relevant selected columns, a minium amount of rows and a maximum amount of NAs that they comprise of. Hereby, large, midsize and small tables are considered. Additionally, it was important to keep a variety of datatypes including string, date, integer, float and geolocation. Hereby, the inclusion of hard cases is possible. A hard case would be for example different types of gtin numbers of a product or best rating vs worst rating vs average rating. Furthermore, while not possible to represent all categories evenly distributed, every category has enough representatives to be trained and tested on. Overall, there are three training sets and one test built. The large training set contains 44,345 tables, the mid-size training set contains 9,776 training set and the small training set contains 2,444 tables. Hereby the small set is included in the mid and large and the mid-size set is contained in the large while the proportion of columns was held equal. The test set contains 8,912 tables. 
 
-Both bert-based models and regular models serve as a baseline for the final table transformer models. To prep the data for the bert-based models, the entries of the selected target columns are concatenated. Hereby, the context and the structure within the data is lost and not fully comparable with the to be tested table transformer models.
+Both bert-based models and regular models serve as a baseline for the final table transformer models. To prepare the data for the bert-based models, the entries of the selected target columns are concatenated. Hereby, the context and the structure within the data is lost and not fully comparable with the to be tested table transformer models.
 
 The final tests are done on the models TURL and Tabbie.
 
@@ -77,12 +77,12 @@ The final tests are done on the models TURL and Tabbie.
 Results: 
 
 * Random Forest: 0.35 F1
-* TinyBert: 
+* TinyBert: 0.76 F1
 * Bert: 0.8 F1
 * Distilbert: 0.8 F1
 * RoBERTa: 0.8 F1
-* TURL: 
-* Tabbie: 
+* TURL: 0.86 F1
+* Tabbie: - 
 
 You can find the code for each part in the following table: 
 
@@ -141,7 +141,7 @@ The project started in October 2021 as a team project at the University of Mannh
 * `Luisa Theobald <https://github.com/LuThe17>`__
 * `Estelle Weinstock <https://github.com/estelleweinstock>`__
 
-
+Feel free to raise an issue in this github repository if you have questions to the project team.
 
 License
 ==============================
