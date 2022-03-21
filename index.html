@@ -1,0 +1,1422 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Cross-lingual Product Matching using Transformers</title>
+    <link rel='stylesheet' href='http://webdatacommons.org/style.css' type='text/css' media='screen'/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <style>
+        .tar {
+            text-align: right;
+        }
+
+        .rtable {
+            float: right;
+            padding-left: 10px;
+        }
+
+        .smalltable,
+        .smalltable TD,
+        .smalltable TH {
+            font-size: 9pt;
+        }
+
+        .tab {
+            overflow: hidden;
+            border: 1px solid #ccc;
+            background-color: #eaf3fa;
+            clear: both;
+            padding-left: 25px;
+            width: 650px;
+        }
+
+        .tab button {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 15px 60px;
+            transition: 0.3s;
+        }
+
+        .tab button:hover {
+            background-color: #ddd;
+        }
+
+        .tab button.active {
+            background-color: #ccc;
+        }
+
+        .tabcontent {
+            display: none;
+            padding: 6px 12px;
+            border-top: none;
+            animation: fadeEffect 1s;
+            width: 500px
+        }
+
+        .show {
+            display: block;
+        }
+
+        .no-show {
+            display: none;
+        }
+
+        caption {
+            caption-side: top;
+            font-style: italic;
+        }
+
+        td[scope="mergedcol"] {
+            text-align: center;
+        }
+
+        hr {
+            width: 50%;
+            margin: 20px 0;
+            /* This leaves 10px margin on left and right. If only right margin is needed try margin-right: 10px; */
+        }
+
+        @keyframes fadeEffect {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+        google.load('visualization', '1', {
+            packages: ['bar', 'line', 'corechart']
+        });
+
+
+    </script>
+
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="../../jquery.toc.min.js"></script>
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-30248817-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function () {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+
+        function openExpResult(evt, expName) {
+            // Declare all variables
+            var i, tabcontent, tablinks;
+
+            // Get all elements with class="tabcontent" and hide them
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+
+            // Get all elements with class="tablinks" and remove the class "active"
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+
+            // Show the current tab, and add an "active" class to the button that opened the tab
+            document.getElementById(expName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+    </script>
+
+    <script type="application/ld+json">
+        {
+            "@context": "http://schema.org/",
+            "@type": "Dataset",
+            "name": "XXXXXXXX",
+            "description": "XXXXXXXXXXX",
+            "url": "XXXXXXX",
+            "keywords": [
+                "XXXXXX",
+                "XXXXXX"
+            ],
+            "creator": [
+                {
+                    "@type": "Person",
+                    "url": "XXXXXXX",
+                    "name": "XXXXXXXX"
+                },
+                {
+                    "@type": "Person",
+                    "url": "XXXXXX",
+                    "name": "XXXXXXX"
+                }
+            ],
+            "citation": [
+            ]
+        }
+
+
+    </script>
+
+</head>
+
+<body>
+<div id="logo" style="text-align:right; background-color: white;">&nbsp;&nbsp;<a
+        href="http://dws.informatik.uni-mannheim.de"><img src="images/ma-logo.gif"
+                                                          alt="University of Mannheim - Logo"></a></div>
+<div id="header">
+    <h1 style="font-size: 250%;">Data Integration using Deep Learning</h1>
+</div>
+<div id="authors">
+    <a>Christian Bizer</a></br>
+    <a>Cheng Chen</a><br/>
+    <a>Jennifer Hahn</a><br/>
+    <a>Kim-Carolin Lindner</a></br>
+    <a>Ralph Peeters</a></br>
+    <a>Jannik Reißfelder</a><br/>
+    <a>Marvin Rösel</a><br/>
+    <a>Niklas Sabel</a><br/>
+    <a>Luisa Theobald</a></br>
+    <a>Estelle Weinstock</a></br>
+</div>
+<div id="content">
+    <p>
+        Insert Task And Experiment Description/Abstract
+        <br>
+    </p>
+    <h2>Contents</h2>
+    <ul>
+        <li class="toc-h2 toc-active">
+            <a href="#toc1"> 1 Introduction</a>
+        </li>
+        <li class="toc-h2 toc-active">
+            <a href="#toc2"> 2 Theoretical Framework</a>
+            <ul>
+                <li><a href="#toc2.1">2.1 Schema Matching</a></li>
+                <li><a href="#toc2.2">2.2 Entity Matching</a></li>
+                <li><a href="#toc2.3">2.3 Transformer Models</a></li>
+            </ul>
+        </li>
+        <li class="toc-h2 toc-active">
+            <a href="#toc3"> 3 Algorithms</a>
+            <ul>
+                <li><a href="#toc3.1">3.1 TURL</a></li>
+                <li><a href="#toc3.2">3.2 TABBIE</a></li>
+                <li><a href="#toc3.3">3.3 Constrastive Learning</a></li>
+            </ul>
+        </li>
+        <li class="toc-h2 toc-active">
+            <a href="#toc4"> 4 Datasets and Preprocessing</a>
+        </li>
+        <li class="toc-h2 toc-active">
+            <a href="#toc5"> 5 Experimental Setup</a>
+            <ul>
+                <li><a href="#toc5.1">5.1 Baseline Experiments</a></li>
+                <li><a href="#toc5.2">5.2 Experiments</a></li>
+            </ul>
+        </li>
+        <li class="toc-h2 toc-active">
+            <a href="#toc6"> 6 Experimental Results and Error Analyis</a>
+        </li>
+        <li class="toc-h2 toc-active">
+            <a href="#toc7"> 7 Discussion and Outlook</a>
+        </li>
+        <li class="toc-h2 toc-active">
+            <a href="#toc8"> 8 References </a>
+        </li>
+    </ul>
+
+    <span id="toc1"></span>
+    <h2>1 Introduction</h2>
+
+    <!--CONTENT-->
+    <p>
+        According to estimations of the International Data Corporation, the amount of data created in 2025 will be around 180 zettabytes with increasing tendency.
+        Two reasons are the increasing connection and information flow due to the world wide web. The web contains a massive amount of data in all forms, for example pages
+        like Wikipedia collect all kinds of information about various subjects in the form of tabular data.
+    </p>
+    <span id="toc2.1"></span>
+    <h3>1.1 Problem Statement</h3>
+    <p>
+        The problem is that the same information will have different representations and characteristics across pages due to countless sources and contributors.
+        Therefore, merging heterogeneous information for further usage becomes quite challenging due to the overwhelming mass of differences. To meet those challenges,
+         this project deals with different methods for both schema and entity matching.
+    </p>
+    Also, information in other forms can be aggregated in tables such as the derivation of tables through annotated entities.
+        <a style="color:#FF0000";>(verstehe letzten satz nicht?)</a>
+
+    <p>
+        All of our datasets can be requested by mail at <a href="mailto:ralph@informatik.uni-mannheim.de">ralph@informatik.uni-mannheim.de</a>,
+        but are available for
+        research purposes only.
+    <p>
+        <i>Note:</i> The authors acknowledge support by the state of Baden-Württemberg through bwHPC.
+
+        <!-- Outtakes-->
+        <!-- and can be considered as a special type
+        of <i>entity matching</i>.-->
+
+        <span id="toc2"></span>
+    <h2>2 Theoretical Framework </h2>
+    <!--CONTENT-->
+    <p>
+        This chapter provides an overview of the theoretical underpinnings and specific information required for the traceability of our work. For this reason, we will
+         introduce the main tasks we are trying to solve: Schema and Entity Matching. We also give a brief introduction to transformer models, especially BERT-based implementations,
+          as they form the basis for the algorithms we use.
+    <p>
+    <span id="toc2.1"></span>
+    <h3>2.1 Schema Matching</h3>
+    <p>
+        Schema Matching describes the task of matching, as the name already suggests, similar or rather the same schemata and finding agreement and unity between schemata.
+        Database instances, for example, comprise of schemata and respective (table) columns describing the same attribute can be matched.
+        The main challenges are large schemata, semantic heterogeneity, generic names, esoteric naming conventions and different languages.
+        Therefore, correspondences between the schemes should be detected in an automated or semi-automated manner. Although 1:n and n:1 approaches are possible,
+        the scope of the object is reduced and only 1:1 matching is considered. <a style="color:#FF0000";>(some reference?)</a>
+    <p>
+    <span id="toc2.2"></span>
+    <h3>2.2 Entity Matching</h3>
+    <p>
+        Identity resolution refers to the task of finding all records that refer to the same entity, e.g., when integrating data from
+        different source systems. Unfortunately, entity representations in real-world environments are in general not identical and have
+        to be processed at massive scale. Therefore, identity resolution becomes quite challenging.
+        One solution is offered by comparing multiple attributes of different record representations with attribute-specific similarity
+        measures like Levenshtein distance, TF-IDF or advanced techniques like BERT. Entity Resolution or Entity Matching tries to
+        allocate entities with different representations under the assumption that the higher the similarity is, the more likely two
+        entity representations are a match <cite><a href="https://doi.org/10.2200/S00655ED1V01Y201507WBE013">[1]</a></cite>
+        <body>
+            <p style="color:#FF0000";>(note:add more information?)</p>
+          </body>
+    <p>
+
+        In recent years, the usage of Transformer models in Schema and Entity Matching became more and more popular due to limitations
+        of standard algorithms and measures.
+    <p>
+    <span id="toc2.3"></span>
+    <h3>2.3 Transformer Models</h3>
+    <p>
+        In 2017, Google Brain proposed the Transformer model, that based on a encoder-decoder structure and an attention mechanism showed
+        impressive improvements over state-of-the-art methods and simplicity in adoption to a wide range of machine learning tasks,
+         especially in the context of NLP <cite><a href="https://doi.org/10.2200/S00655ED1V01Y201507WBE013">[6]</a></cite>.
+        As a result, a new language representation model named BERT was introduced in 2019 to pre-train deep bidirectional
+        representations from unlabeled text. That resulted in a lot of possibilities as a "pre-trained BERT model can be finetuned with
+        just one additional output layer to create state-of-the art methods for a wide range of tasks"<cite><a href="https://doi.org/10.2200/S00655ED1V01Y201507WBE013">[3]</a></cite>. In the
+        following, we will use algorithms that are pre-trained on different BERT extensions, in particular TinyBERT and RoBERTa.
+
+        TinyBERT is a 7.5x smaller BERT-Version that performs knowledge distillation with BERT as teacher model on both pre-training and
+        task-specific learning stages. Therefore, it achieves 9.4x faster inference still keeping competitive performance <cite><a href="https://doi.org/10.2200/S00655ED1V01Y201507WBE013">[7]</a></cite>.
+        In contrast, RoBERTa is a more robust variety of BERT that modifies key hyperparameters and is exposed to a larger amount of training data
+        with a prolonged training time and bigger batches compared to BERT itself. This leads to substantial improvements <cite><a href="https://doi.org/10.2200/S00655ED1V01Y201507WBE013">[8]</a></cite>.
+    <p>
+
+    <span id="toc3"></span>
+    <span id="toc3.1"></span>
+    <h2>3 Algorithms</h2>
+    <p>
+        In the following, we present different algorithms namely TURL and Tabbie from a class of Table Transformers. Table Transformers
+        are models that not only incorporate data from individual entries, but include information from their surroundings inside the table
+        as well. This results in models which take a whole table representation of a website or a knowledge base as input instead of only
+        single entries like normal BERT-based models do.
+    </p>
+    <h3>3.1 TURL</h3>
+    <p>
+        Table Understanding through Representation Learning (TURL) is a "novel framework that introduces pre-training/finetuning paradigm to
+        relational Web tables". TURL is a TinyBERT based extension model that was pre-trained on around 600,000 Wikipedia tables such that it
+         can be applied to different tasks with "minimal task-specific fine-tuning". The authors show that the model generalizes well and
+         outperforms existing methods for example in column type annotation <cite><a href="https://doi.org/10.2200/S00655ED1V01Y201507WBE013">[1]</a></cite>.
+    <figcaption style="margin-bottom:1em;">
+        <strong>Figure 3.1: Overview TURL architecture [2]
+        </strong>
+    </figcaption>
+    <figure style="margin-top:3em">
+        <img src="./images/TURL framework.JPG" style="margin-bottom:2em;"/>
+    </figure>
+
+    <p>
+        The architecture that can be seen in Figure \ref{fig:Overview TURL framework} consists of three modules. A first embedding layer
+        that is used to convert the different components of an input table into embeddings. The second layer is a structure-aware stacked
+        transformer to capture textual and relational knowledge, as introduced in \ref{sec:trans}. On top of receiving the embeddings from
+        the first layer, the transformer layer also obtains a visibility matrix that models the row-column structure of a table. It acts as
+         an attention mask such that each input token can only use information from other "visible" tokens, e.g. the header of its column
+         or another entry in the same row. At the end follows a final projection layer including a masked language model (MLM) that trains
+         the model to capture semantic and contextual information and a masked entity recovery (MER) to capture the factual knowledge in
+         the table content for pre-training. <a style="color:#FF0000";>(@Kim and Jen: more information?)</a>
+    </p>
+    </p>
+
+    <span id="toc3.2"></span>
+    <h3>3.2 TABBIE</h3>
+    <p>
+        Tabular Information Embedding or TABBIE is a "pretraining methodology specifically for tabeles [...] that resembles several core
+        tasks in table extraction" <cite><a href="https://doi.org/10.2200/S00655ED1V01Y201507WBE013">[2]</a></cite>. Tabbie is a BERT based Transformer models pretrained on around 26 million
+        tables to better compare it with TaBERT which is "a pretraining approach for joint understanding of tabular data" <cite><a href="https://doi.org/10.2200/S00655ED1V01Y201507WBE013">[12]</a></cite>.
+        It can be shown that Tabbie reaches better performance than comparative methods like Tabert while
+        reducing the computational costs for training the model <cite><a href="https://doi.org/10.2200/S00655ED1V01Y201507WBE013">[2]</a></cite>.
+    </p>
+    <span id="toc3.3"></span>
+    <h3>3.3 Constrastive Learning</h3>
+    <p>
+        Insert Constrastive Learning
+    </p>
+    <span id="toc4"></span>
+    <h2>4 Datasets and Preprocessing </h2>
+    <!--CONTENT-->
+    <p>
+        <!-- Concept Explanation-->
+        Chapter 4 gives an overview on our approaches and their respective results. We start by introducing our dataset and
+        the preprocessing steps conducted. Furthermore, we briefly state some baselines with which we compare our implemented
+        concepts and provide our experiments afterwards. The section is concluded by our results and an associated error
+        analysis.
+        Our dataset is based on the Web Data Commons - Schema.org Table Corpus <cite><a href="https://doi.org/10.2200/S00655ED1V01Y201507WBE013">[10]</a></cite> maintained by the Data
+        and Web Science Research Group at the University of Mannheim. In a first action, the tables were cleaned using a two-step
+        approach in order to focus on English data. We used a TLD-based method to first filter our data on English internet domain
+        endings (e.g., ".com",or ".uk") and afterwards applied the fastText language detection algorithm on each single row in
+        the remaining tables to check whether it belongs to the English language and if not we discarded
+        them <cite><a href="https://doi.org/10.2200/S00655ED1V01Y201507WBE013">[9]</a></cite>. We proceeded with the remaining cleaned rows and subsequently carried out different
+        further preprocessing approaches which are specific for either schema or entity matching.
+        <a style="color:#FF0000";>(i know this applies to both/all groups but this mixes up the order a bit since we first selected
+            specific classes, tables etc.?)</a>
+
+      <span id="toc3.3"></span>
+      <h3>4.1 Entity Matching</h3><br>
+        Within entity matching we focused on two specific parts of the corpus, namely the Product data and a combination of
+        LocalBusiness, Hotel \& Restaurant data. The Product corpus already provided a clustering for the entities, so, no
+        further annotation was needed. Focusing on clusters with at least 8 tables, we used the most common brands for different
+        chosen categories, in particular \textit{bikes}, \textit{cars}, \textit{clothes}, \textit{drugstore}, \textit{electronics},
+        and \textit{technology} as keywords to get relevant clusters for our final dataset. To further enhance our data, we
+        searched for brands with at least 1,000 distinct clusters and established another category "random". In order, to
+        make the final matching for the algorithms not too easy, we browsed the selected clusters for homogeneous entities
+        using Doc2Vec <cite><a href="https://doi.org/10.2200/S00655ED1V01Y201507WBE013">[11]</a></cite> and Jaccard similarity to include hard-to-distinguish clusters in our dataset.
+        Here, we based our selection on the balance between both, Jaccard and Doc2Vec score, by manually validating the best
+        results for each of the defined domains.     <a style="color:#FF0000";>(@Estelle postpreprocessing der gesamten tabellen einfügen)</a>
+        With a multilabel stratified shuffle-split <a style="color:#FF0000";>(@Kim/Jen: Ref?</a> we distributed the remaining clusters
+        into $\frac{3}{8}$ train, $\frac{2}{8}$ validation and $\frac{3}{8}$ test data. With this approach we ensured that
+        tables were distributed equally across size and selected clusters. Furthermore, in order to not distort the results
+        we cleaned the test set manually and discarded around 10\% of noise. Thereby, we end up with an amount of
+        1,410 clusters that are used for training the algorithms. The final set sizes can be seen in Table <a style="color:#FF0000";>(x.x)</a>.
+        <a style="color:#FF0000";>(idea: insert screenshot of one final cluster as example?)</a>.
+
+
+    </p>
+    <table class="Data sizes">
+        <caption style="margin-top: 1em">Table 4.1: Final product data set sizes for entity matching.</caption>
+        <thead>
+          <tr>
+            <th></th>
+            <th>Number of Tables</th>
+            <th>Number of Entities</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Train</td>
+            <td>1.345</td>
+            <td>11.121</td>
+          </tr>
+          <tr>
+            <td>Validation</td>
+            <td>885</td>
+            <td>7.154</td>
+          </tr>
+          <tr>
+            <td>Test</td>
+            <td>1.331</td>
+            <td>10.655</td>
+          </tr>
+        </tbody>
+        </table>
+
+
+        <p>
+            <a style="color:#FF0000";>(@Team LB: insert datset prep)</a>
+            Within the task of schema matching, we choose the 20 largest categories in order to get enough tables for the respective chosen 208 columns
+            Manual data checking of
+
+        </p>
+
+        <span id="toc3.3"></span>
+        <h3>4.2 Schema Matching</h3>
+        <p>
+            Within the task of schema matching, we choose the 20 largest categories in order to gain a large amount of tables that contain a sufficient amount of the selected 208 ? columns.
+            All tables included in the test dataset were manually checked for languages other than English, wrong or missing entries as well as odd entries such as symbols.
+            Thereby, about 10 percent of the tables were removed, mainly due to other foreign languages, and hence reduced the test table size to 8.912.
+            The distribution of all tables as well as tables within each selected category is presented in the table below. 
+
+        </p>
+        <table class="Data sizes">
+            <caption style="margin-top: 1em">Table 4.2: Final data set sizes and category distribution for schema matching.</caption>
+            <thead>
+              <tr>
+                <th></th>
+                <th>Small Training Set</th>
+                <th>Medium Training Set</th>
+                <th>Large Training Set</th>
+                <th>Test Set</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>All</td>
+                <td>2.444</td>
+                <td>9.776</td>
+                <td>44.345</td>
+                <td>8.912</td>
+              </tr>
+              <tr>
+                <td>Product</td>
+                <td>885</td>
+                <td>7.154</td>
+              </tr>
+              <tr>
+                <td>Music Recording</td>
+                <td>1.331</td>
+                <td>10.655</td>
+              </tr>
+              <tr>
+                <td>Event</td>
+                <td>1.331</td>
+                <td>10.655</td>
+              </tr>
+                <td>Creative Work</td>
+                <td>1.331</td>
+                <td>10.655</td>
+              </tr>
+                <td>Recipe</td>
+                <td>2.444</td>
+                <td>9.776</td>
+                <td>44.345</td>
+                <td>8.912</td>
+              </tr>
+              </tr>
+                <td>Person</td>
+                <td>2.444</td>
+                <td>9.776</td>
+                <td>44.345</td>
+                <td>8.912</td>
+              </tr>
+              </tr>
+                <td>Local Business</td>
+                <td>2.444</td>
+                <td>9.776</td>
+                <td>44.345</td>
+                <td>8.912</td>
+              </tr>
+              </tr>
+                <td>Place</td>
+                <td>2.444</td>
+                <td>9.776</td>
+                <td>44.345</td>
+                <td>8.912</td>
+              </tr>
+              </tr>
+                <td>Hotel</td>
+                <td>2.444</td>
+                <td>9.776</td>
+                <td>44.345</td>
+                <td>8.912</td>
+              </tr>
+              </tr>
+                <td>Book</td>
+                <td>2.444</td>
+                <td>9.776</td>
+                <td>44.345</td>
+                <td>8.912</td>
+              </tr>
+              </tr>
+                <td>Restaurant</td>
+                <td>2.444</td>
+                <td>9.776</td>
+                <td>44.345</td>
+                <td>8.912</td>
+              </tr>
+              </tr>
+                <td>Music Album</td>
+                <td>2.444</td>
+                <td>9.776</td>
+                <td>44.345</td>
+                <td>8.912</td>
+              </tr>
+              </tr>
+                <td>TV Episode</td>
+                <td>2.444</td>
+                <td>9.776</td>
+                <td>44.345</td>
+                <td>8.912</td>
+              </tr>
+            </tbody>
+            </table>
+
+        <p>
+            <a style="color:#FF0000";>(@jen aka myself: finish datset prep)</a>
+        </p>
+    <p>
+        Images are examples
+    </p>
+    <figcaption style="margin-bottom:1em;">
+        <strong>Figure 1: Number of offers per cluster for the different languages in the multi-class train set of
+            category
+            phone
+        </strong>
+    </figcaption>
+    <figure style="margin-top:3em">
+        <img src="./images/multiclass_phone_train_hist.svg" style="margin-bottom:2em;"/>
+    </figure>
+
+<p>
+    All of our datasets can be requested by mail at <a href="mailto:ralph@informatik.uni-mannheim.de">ralph@informatik.uni-mannheim.de</a>,
+    but are available for research purposes only.
+</p>
+<span id="toc5"></span>
+<h2>5 Experimental Setup</h2>
+<p>
+    Insert Setup
+</p>
+<span id="toc5.1"></span>
+<h3>5.1 Baseline Experiments</h3>
+<!--CONTENT-->
+<p>
+    In the case of entity matching, we use three different baseline models to be able to compare the results of our algorithms.
+    We include one tree-based model in Random Forest, and two BERT-based models in TinyBERT and RoBERTa, because, as mentioned
+    in section \ref{cha:alg}, TURL is based on TinyBERT and Tabbie on RoBERTa
+        <a style="color:#FF0000";>(@Team Tabbie: is that true?)</a>.
+    All the baselines were modelled as multi-class classification that were presented a concatentation of the entity name and
+    a description in case of the product dataset respectively the name of the  entity in case of the LocalBusiness dataset.
+    The results are presented in Table <a style="color:#FF0000";>(x.x)</a>.
+    <table class="Data sizes">
+        <caption style="margin-top: 1em">Table 4.2: F1-scores for different baselines models in entity matching.</caption>
+        <thead>
+          <tr>
+            <th></th>
+            <th>Random Forest</th>
+            <th>TinyBert</th>
+            <th>RoBERTa</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Product</td>
+            <td>0.8684</td>
+            <td>0.8329</td>
+            <td>0.8958</td>
+          </tr>
+          <tr>
+            <td>LocalBusiness</td>
+            <td>0.8793</td>
+            <td>0.9457</td>
+            <td>/</td>
+          </tr>
+        </tbody>
+        </table>
+<p>
+    Due to the fact, that the baseline models were already to good for the LocalBusiness dataset with only being presented the
+    name of the entity, we decided to discard the dataset for our experiments and focus solely on the product dataset.
+<p>
+    <a style="color:#FF0000";>(@Team Schema:finish baselines with further description of text concatenation etc? @Estelle?)</a>.
+</p>
+<p>
+    Within the task of schema matching, we initially applied a random forest with TF-IDF, binary as well as metadata approaches
+    as a tree-based model yielding an F1-Score of 0.35. Further, we used bert based models such as Bert, RoBERTa, TinyBert and
+    Distilbert as baseline models for the respective small, medium as well as large training data set.
+
+    <table class="Data sizes">
+        <caption style="margin-top: 1em">Table 4.3: F1-scores for different baselines models in schema matching.</caption>
+            <thead>
+              <tr>
+                <th></th>
+                <th>Random Forest <br> using TF-IDF</th>
+                <th>Bert</th>
+                <th>TinyBert</th>
+                <th>RoBERTa</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Small</td>
+                <td>0.35</td>
+                <td>0.73</td>
+                <td>0.69</td>
+                <td>0.66</td>
+              </tr>
+              <tr>
+                <td>Medium</td>
+                <td>0.35</td>
+                <td>0.76</td>
+                <td>0.70</td>
+                <td>0.77</td>
+              </tr>
+              <tr>
+                <td>Large</td>
+                <td>0.35</td>
+                <td>0.80</td>
+                <td>0.76</td>
+                <td>0.80</td>
+              </tr>
+            </tbody>
+            </table>
+<p>
+    As mentioned earlier, TURL is based on TinyBert so that this represents a feasable baseline model and is mainly used
+    for comparison and evaluation of the results later on.
+</p>
+
+    <!-- include pair-wise trainsizes?-->
+
+    <span id="toc5.2"></span>
+<h3>5.2 Experiments</h3>
+<!--CONTENT-->
+<p>
+   Insert Experiments
+
+All of our experiments were conducted using <a
+        href="https://huggingface.co/transformers/main_classes/trainer.html">HuggingFace's Trainer</a> wrapper class for
+PyTorch.
+</p>
+
+<h2>6 Experimental Results and Error Analysis</h2>
+<!--CONTENT-->
+<p>Insert Experimental Results and error analysis The necessary code to retrace our experimental runs can be found in our <a
+            href="https://github.com/NiklasSabel/data_integration_using_deep_learning">GitHub repository</a>.
+</p>
+    <p>
+        Table as example
+    </p>
+<div style="margin-top:2em;">
+    <div style="float: left;margin-right: 2.5em">
+        <div class="tab">
+            <button class="tablinks" onclick="openExpResult(event, 'unsup')">Multi-class</button>
+            <button class="tablinks" onclick="openExpResult(event, 'supwc')">Pair-wise Small</button>
+            <button class="tablinks active" onclick="openExpResult(event, 'supmg')" id="defaultOpen">Pair-wise Medium
+            </button>
+        </div>
+        <div id="unsup" class="tabcontent" style="display: none;">
+            <table class="Multi-class">
+                <caption style="margin-top: 1em">Table 3: Experimental results</caption>
+                <tr>
+                    <th>Category</th>
+                    <th colspan="2" style='text-align:center; vertical-align:middle'> Setting</th>
+                    <th colspan="3" style='text-align:center; vertical-align:middle'> Baseline</th>
+                    <th colspan="3" style='text-align:center; vertical-align:middle'> Transformer</th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th>Train Lang</th>
+                    <th>Test Lang</th>
+                    <th>Classifier</th>
+                    <th>Embedding</th>
+                    <th>Score</th>
+                    <th>BERT</th>
+                    <th>mBERT</th>
+                    <th>XLM-R</th>
+
+                </tr>
+                <tr>
+                    <td rowspan="9" style='text-align:center; vertical-align:middle'>Toy</td>
+                    <td>DE</td>
+                    <td>DE</td>
+                    <td style="background-color:#E8E8E8">SVM</td>
+                    <td style="background-color:#E8E8E8">TF-IDF</td>
+                    <td style="background-color:#E8E8E8">0.9677</td>
+                    <td>0.9668<i><sub>t</sub></i></td>
+                    <td><b>0.9745</b></td>
+                    <td>0.9626</td>
+
+                </tr>
+                <tr>
+                    <td>EN</td>
+                    <td>DE</td>
+                    <td style="background-color:#E8E8E8">SVM</td>
+                    <td style="background-color:#E8E8E8">TF-IDF</td>
+                    <td style="background-color:#E8E8E8"><b>0.7084</b></td>
+                    <td>0.4713</td>
+                    <td>0.6176</td>
+                    <td>0.5955<i><sub>t</sub></i></td>
+                </tr>
+                <tr>
+                    <td>EN</td>
+                    <td>EN</td>
+                    <td style="background-color:#E8E8E8">Logistic Regression</td>
+                    <td style="background-color:#E8E8E8">TF-IDF</td>
+                    <td style="background-color:#E8E8E8">0.9683</td>
+                    <td><b>0.9836</b></td>
+                    <td>0.9754</td>
+                    <td>0.9743</td>
+                </tr>
+                <tr>
+                    <td>EN</td>
+                    <td>ES</td>
+                    <td style="background-color:#E8E8E8">Logistic Regression</td>
+                    <td style="background-color:#E8E8E8">TF-IDF</td>
+                    <td style="background-color:#E8E8E8"><b>0.6735<i><sub>t</sub></i></b></td>
+                    <td>0.3722</td>
+                    <td>0.5619</td>
+                    <td>0.4812</td>
+                </tr>
+                <tr>
+                    <td>EN</td>
+                    <td>FR</td>
+                    <td style="background-color:#E8E8E8">Logistic Regression</td>
+                    <td style="background-color:#E8E8E8">TF-IDF</td>
+                    <td style="background-color:#E8E8E8"><b>0.7047</b></td>
+                    <td>0.4826</td>
+                    <td>0.5975</td>
+                    <td>0.5658<i><sub>t</sub></i></td>
+                </tr>
+                <tr>
+                    <td>EN+DE</td>
+                    <td>DE</td>
+                    <td style="background-color:#E8E8E8">SVM</td>
+                    <td style="background-color:#E8E8E8">TF-IDF</td>
+                    <td style="background-color:#E8E8E8">0.9757</td>
+                    <td>0.9789</td>
+                    <td><b>0.9828</b></td>
+                    <td>0.9723</td>
+                </tr>
+                <tr>
+                    <td>EN+DE</td>
+                    <td>EN</td>
+                    <td style="background-color:#E8E8E8">-</td>
+                    <td style="background-color:#E8E8E8">-</td>
+                    <td style="background-color:#E8E8E8">-</td>
+                    <td>0.9802</td>
+                    <td><b>0.9823</b></td>
+                    <td>0.977</td>
+                </tr>
+                <tr>
+                    <td>EN+DE</td>
+                    <td>ES</td>
+                    <td style="background-color:#E8E8E8">-</td>
+                    <td style="background-color:#E8E8E8">-</td>
+                    <td style="background-color:#E8E8E8">-</td>
+                    <td>0.5034</td>
+                    <td><b>0.6602<i><sub>t</sub></i></b></td>
+                    <td>0.5792</td>
+                </tr>
+                <tr>
+                    <td>EN+DE</td>
+                    <td>FR</td>
+                    <td style="background-color:#E8E8E8">-</td>
+                    <td style="background-color:#E8E8E8">-</td>
+                    <td style="background-color:#E8E8E8">-</td>
+                    <td>0.563</td>
+                    <td><b>0.6695</b></td>
+                    <td>0.6384<i><sub>t</sub></i></td>
+                </tr>
+                <tr style="border-top:2px solid grey">
+                    <td rowspan="9" style='text-align:center; vertical-align:middle'>Phone</td>
+                    <td>DE</td>
+                    <td>DE</td>
+                    <td style="background-color:#E8E8E8">Logistic Regression</td>
+                    <td style="background-color:#E8E8E8">TF-IDF</td>
+                    <td style="background-color:#E8E8E8">0.7891<i><sub>t</sub></i></td>
+                    <td>0.9422</td>
+                    <td><b>0.9552</b></td>
+                    <td>0.9131<i><sub>t</sub></i></td>
+                </tr>
+                <tr>
+                    <td>EN</td>
+                    <td>DE</td>
+                    <td style="background-color:#E8E8E8">Logistic Regression</td>
+                    <td style="background-color:#E8E8E8">Binary BOW</td>
+                    <td style="background-color:#E8E8E8">0.6973<i><sub>t</sub></i></td>
+                    <td>0.7019</td>
+                    <td><b>0.756</b></td>
+                    <td>0.7348</td>
+                </tr>
+                <tr>
+                    <td>EN</td>
+                    <td>EN</td>
+                    <td style="background-color:#E8E8E8">Logistic Regression</td>
+                    <td style="background-color:#E8E8E8">Binary BOW</td>
+                    <td style="background-color:#E8E8E8">0.8341<i><sub>t</sub></i></td>
+                    <td><b>0.9544</b></td>
+                    <td>0.9445</td>
+                    <td>0.9324</td>
+                </tr>
+                <tr>
+                    <td>EN</td>
+                    <td>ES</td>
+                    <td style="background-color:#E8E8E8">SVM</td>
+                    <td style="background-color:#E8E8E8">Binary BOW</td>
+                    <td style="background-color:#E8E8E8"><b>0.7016<i><sub>t</sub></i></b></td>
+                    <td>0.5714<i><sub>t</sub></i></td>
+                    <td>0.6623</td>
+                    <td>0.555</td>
+                </tr>
+                <tr>
+                    <td>EN</td>
+                    <td>FR</td>
+                    <td style="background-color:#E8E8E8">SVM</td>
+                    <td style="background-color:#E8E8E8">Binary BOW</td>
+                    <td style="background-color:#E8E8E8"><b>0.6232<i><sub>t</sub></i></b></td>
+                    <td>0.5263<i><sub>t</sub></i></td>
+                    <td>0.6025</td>
+                    <td>0.475</td>
+                </tr>
+                <tr>
+                    <td>EN+DE</td>
+                    <td>DE</td>
+                    <td style="background-color:#E8E8E8">Logistic Regression</td>
+                    <td style="background-color:#E8E8E8">Binary BOW</td>
+                    <td style="background-color:#E8E8E8">0.8394<i><sub>t</sub></i></td>
+                    <td>0.9486</td>
+                    <td><b>0.958</b></td>
+                    <td>0.9294<i><sub>t</sub></i></td>
+                </tr>
+                <tr>
+                    <td>EN+DE</td>
+                    <td>EN</td>
+                    <td style="background-color:#E8E8E8">-</td>
+                    <td style="background-color:#E8E8E8">-</td>
+                    <td style="background-color:#E8E8E8">-</td>
+                    <td>0.9529</td>
+                    <td><b>0.9621</b></td>
+                    <td>0.9257<i><sub>t</sub></i></td>
+                </tr>
+                <tr>
+                    <td>EN+DE</td>
+                    <td>ES</td>
+                    <td style="background-color:#E8E8E8">-</td>
+                    <td style="background-color:#E8E8E8">-</td>
+                    <td style="background-color:#E8E8E8">-</td>
+                    <td>0.8571<i><sub>t</sub></i></td>
+                    <td><b>0.886</b></td>
+                    <td>0.7589<i><sub>t</sub></i></td>
+
+                </tr>
+                <tr>
+                    <td>EN+DE</td>
+                    <td>FR</td>
+                    <td style="background-color:#E8E8E8">-</td>
+                    <td style="background-color:#E8E8E8">-</td>
+                    <td style="background-color:#E8E8E8">-</td>
+                    <td>0.8852</td>
+                    <td><b>0.8205</b></td>
+                    <td>0.7143</td>
+                </tr>
+            </table>
+        </div>
+        <div id="supwc" class="tabcontent" style="display: none;">
+            <table class="pair-wiseSmall">
+                <caption style="margin-top: 1em">Table 3: Experimental results</caption>
+                <tr>
+                    <th>Category</th>
+                    <th colspan="2" style='text-align:center; vertical-align:middle'> Setting</th>
+                    <th colspan="3" style='text-align:center; vertical-align:middle'> Baseline</th>
+                    <th colspan="3" style='text-align:center; vertical-align:middle'> Transformer</th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th>Train Lang</th>
+                    <th>Test Lang</th>
+                    <th>Classifier</th>
+                    <th>Embedding</th>
+                    <th>Score</th>
+                    <th>BERT</th>
+                    <th>mBERT</th>
+                    <th>XLM-R</th>
+                </tr>
+                <tr>
+                    <td rowspan="9" style='text-align:center; vertical-align:middle'>Toy</td>
+                    <td>DE</td>
+                    <td>DE</td>
+                    <td style="background-color:#E8E8E8">SVM</td>
+                    <td style="background-color:#E8E8E8">Co-Occurence</td>
+                    <td style="background-color:#E8E8E8">0.8298</td>
+                    <td>0.8984</td>
+                    <td><b>0.948</b></td>
+                    <td>0.9026</td>
+                </tr>
+                <tr>
+                    <td>EN</td>
+                    <td>DE</td>
+                    <td style="background-color:#E8E8E8">Random Forest</td>
+                    <td style="background-color:#E8E8E8">Co-Occurence</td>
+                    <td style="background-color:#E8E8E8">0.6746<i><sub>t</sub></i></td>
+                    <td>0.6777<i><sub>t</sub></i></td>
+                    <td><b>0.8891</b></td>
+                    <td>0.882</td>
+                </tr>
+                <tr>
+                    <td>EN</td>
+                    <td>EN</td>
+                    <td style="background-color:#E8E8E8">Logistic Regression</td>
+                    <td style="background-color:#E8E8E8">Co-Occurence</td>
+                    <td style="background-color:#E8E8E8">0.8263</td>
+                    <td>0.9167</td>
+                    <td>0.9223</td>
+                    <td><b>0.9284</b></td>
+                </tr>
+                <tr>
+                    <td>EN</td>
+                    <td>ES</td>
+                    <td style="background-color:#E8E8E8">Logistic Regression</td>
+                    <td style="background-color:#E8E8E8">Co-Occurence</td>
+                    <td style="background-color:#E8E8E8">0.625<i><sub>t</sub></i></td>
+                    <td>0.6767<i><sub>t</sub></i></td>
+                    <td><b>0.8043</b></td>
+                    <td>0.7725</td>
+                </tr>
+                <tr>
+                    <td>EN</td>
+                    <td>FR</td>
+                    <td style="background-color:#E8E8E8">SVM</td>
+                    <td style="background-color:#E8E8E8">Co-Occurence</td>
+                    <td style="background-color:#E8E8E8">0.6732</td>
+                    <td>0.7416</td>
+                    <td><b>0.8002</b></td>
+                    <td>0.7748</td>
+                </tr>
+                <tr>
+                    <td>EN+DE</td>
+                    <td>DE</td>
+                    <td style="background-color:#E8E8E8">Logistic Regression</td>
+                    <td style="background-color:#E8E8E8">Co-Occurence</td>
+                    <td style="background-color:#E8E8E8">0.8146</td>
+                    <td>0.9236</td>
+                    <td>0.9397</td>
+                    <td><b>0.9401</b></td>
+                </tr>
+                <tr>
+                    <td>EN+DE</td>
+                    <td>EN</td>
+                    <td style="background-color:#E8E8E8">-</td>
+                    <td style="background-color:#E8E8E8">-</td>
+                    <td style="background-color:#E8E8E8">-</td>
+                    <td>0.9258</td>
+                    <td>0.9239</td>
+                    <td><b>0.9275</b></td>
+                </tr>
+                <tr>
+                    <td>EN+DE</td>
+                    <td>ES</td>
+                    <td style="background-color:#E8E8E8">-</td>
+                    <td style="background-color:#E8E8E8">-</td>
+                    <td style="background-color:#E8E8E8">-</td>
+                    <td>0.7528</td>
+                    <td><b>0.8467</b></td>
+                    <td>0.8388</td>
+                </tr>
+                <tr>
+                    <td>EN+DE</td>
+                    <td>FR</td>
+                    <td style="background-color:#E8E8E8">-</td>
+                    <td style="background-color:#E8E8E8">-</td>
+                    <td style="background-color:#E8E8E8">-</td>
+                    <td>0.75</td>
+                    <td>0.8298</td>
+                    <td><b>0.8299</b></td>
+                </tr>
+                <tr style="border-top:2px solid grey">
+                    <td rowspan="9" style='text-align:center; vertical-align:middle'>Phone</td>
+                    <td>DE</td>
+                    <td>DE</td>
+                    <td style="background-color:#E8E8E8">SVM</td>
+                    <td style="background-color:#E8E8E8">Co-Occurence</td>
+                    <td style="background-color:#E8E8E8">0.7304</td>
+                    <td>0.7507<i><sub>t</sub></i></td>
+                    <td><b>0.8803</b></td>
+                    <td>0.8498<i><sub>t</sub></i></td>
+                </tr>
+                <tr>
+                    <td>EN</td>
+                    <td>DE</td>
+                    <td style="background-color:#E8E8E8">SVM</td>
+                    <td style="background-color:#E8E8E8">Magellan</td>
+                    <td style="background-color:#E8E8E8">0.6681</td>
+                    <td>0.7168<i><sub>t</sub></i></td>
+                    <td><b>0.8222</b></td>
+                    <td>0.7607<i><sub>t</sub></i></td>
+                </tr>
+                <tr>
+                    <td>EN</td>
+                    <td>EN</td>
+                    <td style="background-color:#E8E8E8">SVM</td>
+                    <td style="background-color:#E8E8E8">Co-Occurence</td>
+                    <td style="background-color:#E8E8E8">0.7571</td>
+                    <td>0.7806<i><sub>t</sub></i></td>
+                    <td><b>0.9117</b></td>
+                    <td>0.8565<i><sub>t</sub></i></td>
+                </tr>
+                <tr>
+                    <td>EN</td>
+                    <td>ES</td>
+                    <td style="background-color:#E8E8E8">Logistic Regression</td>
+                    <td style="background-color:#E8E8E8">Magellan</td>
+                    <td style="background-color:#E8E8E8">0.614</td>
+                    <td>0.7292<i><sub>t</sub></i></td>
+                    <td><b>0.7893</b></td>
+                    <td>0.7556<i><sub>t</sub></i></td>
+                </tr>
+                <tr>
+                    <td>EN</td>
+                    <td>FR</td>
+                    <td style="background-color:#E8E8E8">SVM</td>
+                    <td style="background-color:#E8E8E8">Magellan</td>
+                    <td style="background-color:#E8E8E8">0.5952<i><sub>t</sub></i></td>
+                    <td>0.7218<i><sub>t</sub></i></td>
+                    <td>0.7352</td>
+                    <td><b>0.745<i><sub>t</sub></i></b></td>
+                </tr>
+                <tr>
+                    <td>EN+DE</td>
+                    <td>DE</td>
+                    <td style="background-color:#E8E8E8">SVM</td>
+                    <td style="background-color:#E8E8E8">Co-Occurence</td>
+                    <td style="background-color:#E8E8E8">0.7297</td>
+                    <td>0.8202<i><sub>t</sub></i></td>
+                    <td><b>0.8874</b></td>
+                    <td>0.8713</td>
+                </tr>
+                <tr>
+                    <td>EN+DE</td>
+                    <td>EN</td>
+                    <td style="background-color:#E8E8E8">-</td>
+                    <td style="background-color:#E8E8E8">-</td>
+                    <td style="background-color:#E8E8E8">-</td>
+                    <td>0.8462<i><sub>t</sub></i></td>
+                    <td><b>0.9102</b></td>
+                    <td>0.8713</td>
+                </tr>
+                <tr>
+                    <td>EN+DE</td>
+                    <td>ES</td>
+                    <td style="background-color:#E8E8E8">-</td>
+                    <td style="background-color:#E8E8E8">-</td>
+                    <td style="background-color:#E8E8E8">-</td>
+                    <td>0.7753<i><sub>t</sub></i></td>
+                    <td><b>0.8091</b></td>
+                    <td>0.7914</td>
+                </tr>
+                <tr>
+                    <td>EN+DE</td>
+                    <td>FR</td>
+                    <td style="background-color:#E8E8E8">-</td>
+                    <td style="background-color:#E8E8E8">-</td>
+                    <td style="background-color:#E8E8E8">-</td>
+                    <td>0.7795<i><sub>t</sub></i></td>
+                    <td>0.7847<i><sub>t</sub></i></td>
+                    <td><b>0.7951<i><sub>t</sub></i></b></td>
+                </tr>
+            </table>
+        </div>
+        <div id="supmg" class="tabcontent" style="display: block;">
+            <table class="pair-wiseMedium">
+                <caption style="margin-top: 1em">Table 3: Experimental results</caption>
+                <tr>
+                    <th>Category</th>
+                    <th colspan="2" style='text-align:center; vertical-align:middle'> Setting</th>
+                    <th colspan="3" style='text-align:center; vertical-align:middle'> Baseline</th>
+                    <th colspan="3" style='text-align:center; vertical-align:middle'> Transformer</th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th>Train Lang</th>
+                    <th>Test Lang</th>
+                    <th>Classifier</th>
+                    <th>Embedding</th>
+                    <th>Score</th>
+                    <th>BERT</th>
+                    <th>mBERT</th>
+                    <th>XLM-R</th>
+                </tr>
+                <tr>
+                    <td rowspan="9" style='text-align:center; vertical-align:middle'>Toy</td>
+                    <td>DE</td>
+                    <td>DE</td>
+                    <td style="background-color:#E8E8E8">SVM</td>
+                    <td style="background-color:#E8E8E8">Co-Occurence</td>
+                    <td style="background-color:#E8E8E8">0.8437</td>
+                    <td>0.9318</td>
+                    <td>0.9502</td>
+                    <td><b>0.9533</b></td>
+                </tr>
+                <tr>
+                    <td>EN</td>
+                    <td>DE</td>
+                    <td style="background-color:#E8E8E8">SVM</td>
+                    <td style="background-color:#E8E8E8">Co-Occurence</td>
+                    <td style="background-color:#E8E8E8">0.7163<i><sub>t</sub></i></td>
+                    <td>0.7653<i><sub>t</sub></i></td>
+                    <td>0.9002</td>
+                    <td><b>0.907</b></td>
+                </tr>
+                <tr>
+                    <td>EN</td>
+                    <td>EN</td>
+                    <td style="background-color:#E8E8E8">SVM</td>
+                    <td style="background-color:#E8E8E8">Co-Occurence</td>
+                    <td style="background-color:#E8E8E8">0.8403<i><sub>t</sub></i></td>
+                    <td><b>0.9515</b></td>
+                    <td>0.9323</td>
+                    <td>0.949</td>
+                </tr>
+                <tr>
+                    <td>EN</td>
+                    <td>ES</td>
+                    <td style="background-color:#E8E8E8">SVM</td>
+                    <td style="background-color:#E8E8E8">Magellan</td>
+                    <td style="background-color:#E8E8E8">0.6581<i><sub>t</sub></i></td>
+                    <td>0.7418<i><sub>t</sub></i></td>
+                    <td><b>0.8214</b></td>
+                    <td>0.8068</td>
+                </tr>
+                <tr>
+                    <td>EN</td>
+                    <td>FR</td>
+                    <td style="background-color:#E8E8E8">Logistic Regression</td>
+                    <td style="background-color:#E8E8E8">Co-Occurence</td>
+                    <td style="background-color:#E8E8E8">0.7005</td>
+                    <td>0.76</td>
+                    <td><b>0.8167</b></td>
+                    <td>0.8142</td>
+                </tr>
+                <tr>
+                    <td>EN+DE</td>
+                    <td>DE</td>
+                    <td style="background-color:#E8E8E8">Logistic Regression</td>
+                    <td style="background-color:#E8E8E8">Co-Occurence</td>
+                    <td style="background-color:#E8E8E8">0.8458</td>
+                    <td>0.9465</td>
+                    <td>0.9638</td>
+                    <td><b>0.9657</b></td>
+                </tr>
+                <tr>
+                    <td>EN+DE</td>
+                    <td>EN</td>
+                    <td style="background-color:#E8E8E8">-</td>
+                    <td style="background-color:#E8E8E8">-</td>
+                    <td style="background-color:#E8E8E8">-</td>
+                    <td>0.9398</td>
+                    <td>0.9477</td>
+                    <td><b>0.9543</b></td>
+                </tr>
+                <tr>
+                    <td>EN+DE</td>
+                    <td>ES</td>
+                    <td style="background-color:#E8E8E8">-</td>
+                    <td style="background-color:#E8E8E8">-</td>
+                    <td style="background-color:#E8E8E8">-</td>
+                    <td>0.7799</td>
+                    <td><b>0.8649</b></td>
+                    <td>0.8444</td>
+                </tr>
+                <tr>
+                    <td>EN+DE</td>
+                    <td>FR</td>
+                    <td style="background-color:#E8E8E8">-</td>
+                    <td style="background-color:#E8E8E8">-</td>
+                    <td style="background-color:#E8E8E8">-</td>
+                    <td>0.7736</td>
+                    <td><b>0.8662</b></td>
+                    <td>0.8558</td>
+                </tr>
+                <tr style="border-top:2px solid grey">
+                    <td rowspan="9" style='text-align:center; vertical-align:middle'>Phone</td>
+                    <td>DE</td>
+                    <td>DE</td>
+                    <td style="background-color:#E8E8E8">SVM</td>
+                    <td style="background-color:#E8E8E8">Co-Occurence</td>
+                    <td style="background-color:#E8E8E8">0.7581</td>
+                    <td>0.8588<i><sub>t</sub></i></td>
+                    <td><b>0.9363</b></td>
+                    <td>0.9114</td>
+                </tr>
+                <tr>
+                    <td>EN</td>
+                    <td>DE</td>
+                    <td style="background-color:#E8E8E8">Logistic Regression</td>
+                    <td style="background-color:#E8E8E8">Co-Occurence</td>
+                    <td style="background-color:#E8E8E8">0.7096</td>
+                    <td>0.7813<i><sub>t</sub></i></td>
+                    <td><b>0.8503</b></td>
+                    <td>0.8258</td>
+                </tr>
+                <tr>
+                    <td>EN</td>
+                    <td>EN</td>
+                    <td style="background-color:#E8E8E8">SVM</td>
+                    <td style="background-color:#E8E8E8">Co-Occurence</td>
+                    <td style="background-color:#E8E8E8">0.7824</td>
+                    <td>0.8852</td>
+                    <td><b>0.9348</b></td>
+                    <td>0.9257</td>
+                </tr>
+                <tr>
+                    <td>EN</td>
+                    <td>ES</td>
+                    <td style="background-color:#E8E8E8">Logistic Regression</td>
+                    <td style="background-color:#E8E8E8">Magellan</td>
+                    <td style="background-color:#E8E8E8">0.6184</td>
+                    <td>0.7627<i><sub>t</sub></i></td>
+                    <td><b>0.8113</b></td>
+                    <td>0.7717</td>
+                </tr>
+                <tr>
+                    <td>EN</td>
+                    <td>FR</td>
+                    <td style="background-color:#E8E8E8">SVM</td>
+                    <td style="background-color:#E8E8E8">Magellan</td>
+                    <td style="background-color:#E8E8E8">0.5951<i><sub>t</sub></i></td>
+                    <td>0.7572<i><sub>t</sub></i></td>
+                    <td><b>0.7876</b></td>
+                    <td>0.768</td>
+                </tr>
+                <tr>
+                    <td>EN+DE</td>
+                    <td>DE</td>
+                    <td style="background-color:#E8E8E8">SVM</td>
+                    <td style="background-color:#E8E8E8">Co-Occurence</td>
+                    <td style="background-color:#E8E8E8">0.7592</td>
+                    <td>0.8818<i><sub>t</sub></i></td>
+                    <td><b>0.9446</b></td>
+                    <td>0.9287</td>
+                </tr>
+                <tr>
+                    <td>EN+DE</td>
+                    <td>EN</td>
+                    <td style="background-color:#E8E8E8">-</td>
+                    <td style="background-color:#E8E8E8">-</td>
+                    <td style="background-color:#E8E8E8">-</td>
+                    <td>0.9035</td>
+                    <td><b>0.9484</b></td>
+                    <td>0.9351</td>
+                </tr>
+                <tr>
+                    <td>EN+DE</td>
+                    <td>ES</td>
+                    <td style="background-color:#E8E8E8">-</td>
+                    <td style="background-color:#E8E8E8">-</td>
+                    <td style="background-color:#E8E8E8">-</td>
+                    <td>0.8063<i><sub>t</sub></i></td>
+                    <td><b>0.8846</b></td>
+                    <td>0.8252</td>
+                </tr>
+                <tr>
+                    <td>EN+DE</td>
+                    <td>FR</td>
+                    <td style="background-color:#E8E8E8">-</td>
+                    <td style="background-color:#E8E8E8">-</td>
+                    <td style="background-color:#E8E8E8">-</td>
+                    <td>0.801<i><sub>t</sub></i></td>
+                    <td><b>0.8563</b></td>
+                    <td>0.8211</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<span id="toc7"></span>
+<h2>7 Discussion and Outlook</h2>
+<!--CONTENT-->
+<p>
+    Insert Discussion and Outlook
+</p>
+
+<span id="toc8"></span>
+<h2>8 References</h2>
+<ol>
+    <li>Deng, X. et al.:
+        <a href="https://doi.org/10.48550/arXiv.2006.14806" target="_blank">TURL: Table Understanding through Representation Learning</a>. In:
+       Proceedings of the VLDB Endowment 14, 3, 307--319 (2020).
+    </li>
+    <li>Iida, H. et al.:
+        <a href="http://arxiv.org/abs/2105.02584" target="_blank">TABBIE: Pretrained Representations of Tabular Data</a>.
+       arXiv:2105.02584 [cs] (2021).
+    </li>
+    <li>Devlin, J. et al.: <a
+            href="http://dblp.uni-trier.de/db/conf/naacl/naacl2019-1.html#DevlinCLT19"
+            target="_blank">BERT: Pre-training of Deep Bidirectional Transformers for Language
+        Understanding</a>. In:
+        Jill Burstein; Christy Doran & Thamar Solorio, ed., 'NAACL-HLT (1)', Association for Computational Linguistics,
+        , pp. 4171-4186 (2019).
+    </li>
+    <li>Peeters, R., Bizer, C.: <a
+            href="https://arxiv.org/abs/2202.02098"
+            target="_blank">Supervised Contrastive Learning for Product Matching</a>.
+       arXiv:2202.02098 [cs] (2022).
+    </li>
+    <li>Christophides, V. et al.: <a
+            href="https://doi.org/10.2200/S00655ED1V01Y201507WBE013"
+            target="_blank">Entity Resolution in the Web of Data</a>.
+        In: Synthesis Lectures on the Semantic Web: Theory and Technology, 5(3):1–122, (2015).
+    </li>
+    <li>Vaswani, A. et al.: <a
+            href="https://arxiv.org/abs/1706.03762"
+            target="_blank">Attention Is All You Need</a>.
+        In: NIPS'17: Proceedings of the 31st International Conference on Neural Information Processing Systems, 6000-6010 (2017).
+    </li>
+    <li>Jiao, X. et al.: <a
+            href="https://arxiv.org/abs/1909.10351"
+            target="_blank">TinyBERT: Distilling BERT for Natural Language Understanding</a>.
+        In: Findings of the Association for Computational Linguistics: EMNLP 2020, 4163--4174, (2020).
+    </li>
+    <li>Liu, Y. et al.: <a
+            href="http://arxiv.org/abs/1907.11692"
+            target="_blank">RoBERTa: A Robustly Optimized BERT Pretraining Approach</a>.
+        arXiv:1907.11692 [cs], (2019).
+    </li>
+    <li>Joulin, A. et al.: <a
+            href="https://arxiv.org/abs/1612.03651"
+            target="_blank">FastText.zip: Compressing text classification models</a>.
+        arXiv:1612.03651 [cs], (2016).
+    </li>
+    <li>Primpeli, A. et al.: <a
+            href="https://dl.acm.org/doi/10.1145/3308560.3316609"
+            target="_blank">The WDC Training Dataset and Gold Standard for Large-Scale Product Matching</a>.
+        In:Proceedings of The 2019 World Wide Web Conference, 381–-386, San Francisco USA, (2019).
+    </li>
+    <li>Le, Quoc V., Mikolov, T.: <a
+            href="https://arxiv.org/abs/1405.4053"
+            target="_blank">Distributed Representations of Sentences and Documents</a>.
+        arXiv:1405.4053 [cs], (2014).
+    </li>
+    <li>Yin, P. et al.: <a
+            href="https://aclanthology.org/2020.acl-main.745"
+            target="_blank">TaBERT: Pretraining for Joint Understanding of Textual and Tabular Data</a>.
+        In: Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics, 8413–8426, (2020)
+    </li>
+
+
+</ol>
+</div>
+<script type="text/javascript">
+    $('#toc').toc({
+        'selectors': 'h2', //elements to use as headings
+        'container': '#toccontent', //element to find all selectors in
+        'smoothScrolling': true, //enable or disable smooth scrolling on click
+        'prefix': 'toc', //prefix for anchor tags and class names
+        'highlightOnScroll': true, //add class to heading that is currently in focus
+        'highlightOffset': 100, //offset to trigger the next headline
+        'anchorName': function (i, heading, prefix) { //custom function for anchor name
+            return prefix + i;
+        }
+    });
+    $('[id*="link_"]').each(function () {
+        var element = $(this);
+        element.click(function (e) {
+            e.preventDefault();
+            var id = element.attr("id").split("_")[1];
+            element.parent().removeClass("show").addClass("no-show");
+            $('#charts_' + id).removeClass("no-show").addClass("show");
+        });
+    });
+    $('[id*="colapse_"]').each(function () {
+        var element = $(this);
+        element.click(function (e) {
+            e.preventDefault();
+            var id = element.attr("id").split("_")[1];
+            element.parent().removeClass("show").addClass("no-show");
+            $('#intro_' + id).removeClass("no-show").addClass("show");
+        });
+    });
+    document.getElementById("defaultOpen").click();
+</script>
+</body>
+
+</html>
