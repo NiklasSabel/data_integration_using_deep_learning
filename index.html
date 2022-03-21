@@ -250,8 +250,6 @@
         Therefore, merging heterogeneous information for further usage becomes quite challenging due to the overwhelming mass of differences. To meet those challenges,
          this project deals with different methods for both schema and entity matching.
     </p>
-    Also, information in other forms can be aggregated in tables such as the derivation of tables through annotated entities.
-        <a style="color:#FF0000";>(verstehe letzten satz nicht?)</a>
 
     <p>
         All of our datasets can be requested by mail at <a href="mailto:ralph@informatik.uni-mannheim.de">ralph@informatik.uni-mannheim.de</a>,
@@ -279,7 +277,7 @@
         Database instances, for example, comprise of schemata and respective (table) columns describing the same attribute can be matched.
         The main challenges are large schemata, semantic heterogeneity, generic names, esoteric naming conventions and different languages.
         Therefore, correspondences between the schemes should be detected in an automated or semi-automated manner. Although 1:n and n:1 approaches are possible,
-        the scope of the object is reduced and only 1:1 matching is considered. <a style="color:#FF0000";>(some reference?)</a>
+        the scope of the object is reduced and only 1:1 matching is considered as defined in the problem statement of the initial project discussion.
     <p>
     <span id="toc2.2"></span>
     <h3>2.2 Entity Matching</h3>
@@ -352,16 +350,7 @@
     </p>
 
     <span id="toc3.2"></span>
-    <h3>3.2 TABBIE</h3>
-    <p>
-        Tabular Information Embedding or TABBIE is a "pretraining methodology specifically for tabeles [...] that resembles several core
-        tasks in table extraction" <cite><a href="https://doi.org/10.2200/S00655ED1V01Y201507WBE013">[2]</a></cite>. Tabbie is a BERT based Transformer models pretrained on around 26 million
-        tables to better compare it with TaBERT which is "a pretraining approach for joint understanding of tabular data" <cite><a href="https://doi.org/10.2200/S00655ED1V01Y201507WBE013">[12]</a></cite>.
-        It can be shown that Tabbie reaches better performance than comparative methods like Tabert while
-        reducing the computational costs for training the model <cite><a href="https://doi.org/10.2200/S00655ED1V01Y201507WBE013">[2]</a></cite>.
-    </p>
-    <span id="toc3.3"></span>
-    <h3>3.3 Constrastive Learning</h3>
+    <h3>3.2 Constrastive Learning</h3>
     <p>
         Insert Constrastive Learning
     </p>
@@ -379,7 +368,8 @@
         approach in order to focus on English data. We used a TLD-based method to first filter our data on English internet domain
         endings (e.g., ".com",or ".uk") and afterwards applied the fastText language detection algorithm on each single row in
         the remaining tables to check whether it belongs to the English language and if not we discarded
-        them <cite><a href="https://doi.org/10.2200/S00655ED1V01Y201507WBE013">[9]</a></cite>. We proceeded with the remaining cleaned rows and subsequently carried out different
+        them <cite><a href="https://doi.org/10.2200/S00655ED1V01Y201507WBE013">[9]</a></cite>. We proceeded with the
+        remaining cleaned rows and subsequently carried out different
         further preprocessing approaches which are specific for either schema or entity matching.
         <a style="color:#FF0000";>(i know this applies to both/all groups but this mixes up the order a bit since we first selected
             specific classes, tables etc.?)</a>
@@ -444,9 +434,22 @@
         <span id="toc3.3"></span>
         <h3>4.2 Schema Matching</h3>
         <p>
-            Within the task of schema matching, we choose the 20 largest categories in order to gain a large amount of tables that contain a sufficient amount of the selected 208 ? columns.
-            All tables included in the test dataset were manually checked for languages other than English, wrong or missing entries as well as odd entries such as symbols.
-            Thereby, about 10 percent of the tables were removed, mainly due to other foreign languages, and hence reduced the test table size to 8.912.
+            As a base for the schema matching use case it is the goal to crate a dataset with at least 200 different
+            columns. These columns should come from an evenly distributed mixture from large, mid size and small tables,
+            have different lengths and contain hard cases for distinction.
+            To meet the requirements, we choose the 20 largest categories in order to gain a large amount of
+            tables that contain a sufficient amount of data. As the amount of data is huge and the data due to its source
+            not necessarily reliable we decide to pick initially more than 200 columns to be able to remove columns if they
+            for some reason do not fulfill the needed quality.
+            Then the tables were distributed into three different sized data sets, a small, a medium sized and a large one.
+            Additionally, a test set was constructed. Hereby, the distribution of the data was considered. That means, that
+            the small dataset is contained in the mid sized one and so on. Also, the sets contain every target column.
+
+            More than 9,894 tables included in the test dataset were manually checked for languages other than English, wrong or
+            missing entries as well as odd entries such as symbols.
+            Thereby, about 10 percent of the tables were removed, mainly due to other foreign languages, and hence
+            reduced the test table size to 8,912. In this process, a few columns were removed (from all datasets) which leaves
+            the final dataset with 202 columns.
             The distribution of all tables as well as tables within each selected category is presented in the table below. 
 
         </p>
@@ -617,20 +620,28 @@
 <p>
     Due to the fact, that the baseline models were already to good for the LocalBusiness dataset with only being presented the
     name of the entity, we decided to discard the dataset for our experiments and focus solely on the product dataset.
+
 <p>
-    <a style="color:#FF0000";>(@Team Schema:finish baselines with further description of text concatenation etc? @Estelle?)</a>.
-</p>
-<p>
-    Within the task of schema matching, we initially applied a random forest with TF-IDF, binary as well as metadata approaches
-    as a tree-based model yielding an F1-Score of 0.35. Further, we used bert based models such as Bert, RoBERTa, TinyBert and
-    Distilbert as baseline models for the respective small, medium as well as large training data set.
+    As a baseline for schema matching, both tree and bert based models are used. The tree based models use a random forest with
+    both value and meta based data. The value based data sets are both created with TF-IDF. Hereby, a global and a binary approach is used.
+    For TF-IDF the data is preprocessed with the following steps: the concatenated text of each column is lower-cased and tokenized. Also,
+    stopwords and punctuation is removed.
+    The meta approach is based on the following properties of the data: whether or not it has a structure such as {},
+    the length of the value, the average word length and a binary variable whether the column includes dates. To keep the original
+    structure of the data, no preprocessing is done. Hereby, the regular TF-IDF approach yields a micro F1-Score of 0.35 and the binary TF-IDF
+    approach yields a micro F1-Score of 0.27 while the meta approach yields a micro F1-Score of 0.12.
+    Further, we used bert based models such as Bert, RoBERTa, TinyBert and Distilbert as baseline models for the
+    respective small, medium as well as large training data set. As a data base the concatenated values of the target columns were used.
+    To keep as much information as possible, no further preprocessing was done. The models were trained with 25 epochs. As can be
+    seen in the results in table 4.3, the models perform quite different on the small and medium datasets. Except for TinyBert,
+    the performances adjust to each other for the large data set.
 
     <table class="Data sizes">
-        <caption style="margin-top: 1em">Table 4.3: F1-scores for different baselines models in schema matching.</caption>
+        <caption style="margin-top: 1em">Table 4.3: Micro F1-scores for bert-based baseline models in schema matching.</caption>
             <thead>
               <tr>
                 <th></th>
-                <th>Random Forest <br> using TF-IDF</th>
+                <th>Distilbert</th>
                 <th>Bert</th>
                 <th>TinyBert</th>
                 <th>RoBERTa</th>
@@ -639,21 +650,21 @@
             <tbody>
               <tr>
                 <td>Small</td>
-                <td>0.35</td>
+                <td>0.60</td>
                 <td>0.73</td>
                 <td>0.69</td>
                 <td>0.66</td>
               </tr>
               <tr>
                 <td>Medium</td>
-                <td>0.35</td>
+                <td>0.62</td>
                 <td>0.76</td>
                 <td>0.70</td>
                 <td>0.77</td>
               </tr>
               <tr>
                 <td>Large</td>
-                <td>0.35</td>
+                <td>0.80</td>
                 <td>0.80</td>
                 <td>0.76</td>
                 <td>0.80</td>
@@ -680,7 +691,9 @@ PyTorch.
 
 <h2>6 Experimental Results and Error Analysis</h2>
 <!--CONTENT-->
-<p>Insert Experimental Results and error analysis The necessary code to retrace our experimental runs can be found in our <a
+<p>Insert Experimental Results and error analysis
+
+    The necessary code to retrace our experimental runs can be found in our <a
             href="https://github.com/NiklasSabel/data_integration_using_deep_learning">GitHub repository</a>.
 </p>
     <p>
