@@ -385,7 +385,7 @@
             specific classes, tables etc.?)</a>
 
       <span id="toc3.3"></span>
-      <h3>4.1 Entity Matching</h3>
+      <h3>4.1 Entity Matching</h3><br>
         Within entity matching we focused on two specific parts of the corpus, namely the Product data and a combination of
         LocalBusiness, Hotel \& Restaurant data. The Product corpus already provided a clustering for the entities, so, no
         further annotation was needed. Focusing on clusters with at least 8 tables, we used the most common brands for different
@@ -433,12 +433,21 @@
         </tbody>
         </table>
 
+
+        <p>
+            <a style="color:#FF0000";>(@Team LB: insert datset prep)</a>
+            Within the task of schema matching, we choose the 20 largest categories in order to get enough tables for the respective chosen 208 columns
+            Manual data checking of
+
+        </p>
+
         <span id="toc3.3"></span>
         <h3>4.2 Schema Matching</h3>
         <p>
-            <a style="color:#FF0000";>(@Team LB: insert datset prep)</a>
-            Within the task of schema matching, we choose the 20 largest categories in order to get enough tables for the respective chosen 208 columns 
-            Manual data checking of
+            Within the task of schema matching, we choose the 20 largest categories in order to gain a large amount of tables that contain a sufficient amount of the selected 208 ? columns.
+            All tables included in the test dataset were manually checked for languages other than English, wrong or missing entries as well as odd entries such as symbols.
+            Thereby, about 10 percent of the tables were removed, mainly due to other foreign languages, and hence reduced the test table size to 8.912.
+            The distribution of all tables as well as tables within each selected category is presented in the table below. 
 
         </p>
         <table class="Data sizes">
@@ -475,11 +484,77 @@
                 <td>1.331</td>
                 <td>10.655</td>
               </tr>
+                <td>Creative Work</td>
+                <td>1.331</td>
+                <td>10.655</td>
+              </tr>
+                <td>Recipe</td>
+                <td>2.444</td>
+                <td>9.776</td>
+                <td>44.345</td>
+                <td>8.912</td>
+              </tr>
+              </tr>
+                <td>Person</td>
+                <td>2.444</td>
+                <td>9.776</td>
+                <td>44.345</td>
+                <td>8.912</td>
+              </tr>
+              </tr>
+                <td>Local Business</td>
+                <td>2.444</td>
+                <td>9.776</td>
+                <td>44.345</td>
+                <td>8.912</td>
+              </tr>
+              </tr>
+                <td>Place</td>
+                <td>2.444</td>
+                <td>9.776</td>
+                <td>44.345</td>
+                <td>8.912</td>
+              </tr>
+              </tr>
+                <td>Hotel</td>
+                <td>2.444</td>
+                <td>9.776</td>
+                <td>44.345</td>
+                <td>8.912</td>
+              </tr>
+              </tr>
+                <td>Book</td>
+                <td>2.444</td>
+                <td>9.776</td>
+                <td>44.345</td>
+                <td>8.912</td>
+              </tr>
+              </tr>
+                <td>Restaurant</td>
+                <td>2.444</td>
+                <td>9.776</td>
+                <td>44.345</td>
+                <td>8.912</td>
+              </tr>
+              </tr>
+                <td>Music Album</td>
+                <td>2.444</td>
+                <td>9.776</td>
+                <td>44.345</td>
+                <td>8.912</td>
+              </tr>
+              </tr>
+                <td>TV Episode</td>
+                <td>2.444</td>
+                <td>9.776</td>
+                <td>44.345</td>
+                <td>8.912</td>
+              </tr>
             </tbody>
             </table>
 
         <p>
-            <a style="color:#FF0000";>(@Team Schema: finish datset prep)</a>
+            <a style="color:#FF0000";>(@jen aka myself: finish datset prep)</a>
         </p>
     <p>
         Images are examples
@@ -555,7 +630,7 @@
             <thead>
               <tr>
                 <th></th>
-                <th>Random Forest using TF-IDF</th>
+                <th>Random Forest <br> using TF-IDF</th>
                 <th>Bert</th>
                 <th>TinyBert</th>
                 <th>RoBERTa</th>
