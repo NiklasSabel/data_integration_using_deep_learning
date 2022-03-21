@@ -278,7 +278,7 @@
         Schema Matching describes the task of matching, as the name already suggests, similar or rather the same schemata and finding agreement and unity between schemata.
         Database instances, for example, comprise of schemata and respective (table) columns describing the same attribute can be matched.
         The main challenges are large schemata, semantic heterogeneity, generic names, esoteric naming conventions and different languages.
-        Therefore, correspondences between the schemes should be detected in an automated or semi-automated manner. Although 1:n and n:1 approaches are possible, 
+        Therefore, correspondences between the schemes should be detected in an automated or semi-automated manner. Although 1:n and n:1 approaches are possible,
         the scope of the object is reduced and only 1:1 matching is considered. <a style="color:#FF0000";>(some reference?)</a>
     <p>
     <span id="toc2.2"></span>
@@ -384,6 +384,8 @@
         <a style="color:#FF0000";>(i know this applies to both/all groups but this mixes up the order a bit since we first selected
             specific classes, tables etc.?)</a>
 
+      <span id="toc3.3"></span>
+      <h3>4.1 Entity Matching</h3>
         Within entity matching we focused on two specific parts of the corpus, namely the Product data and a combination of
         LocalBusiness, Hotel \& Restaurant data. The Product corpus already provided a clustering for the entities, so, no
         further annotation was needed. Focusing on clusters with at least 8 tables, we used the most common brands for different
@@ -431,10 +433,51 @@
         </tbody>
         </table>
 
-
+        <span id="toc3.3"></span>
+        <h3>4.2 Schema Matching</h3>
         <p>
             <a style="color:#FF0000";>(@Team LB: insert datset prep)</a>
+            Within the task of schema matching, we choose the 20 largest categories in order to get enough tables for the respective chosen 208 columns 
+            Manual data checking of
+
         </p>
+        <table class="Data sizes">
+            <caption style="margin-top: 1em">Table 4.2: Final data set sizes and category distribution for schema matching.</caption>
+            <thead>
+              <tr>
+                <th></th>
+                <th>Small Training Set</th>
+                <th>Medium Training Set</th>
+                <th>Large Training Set</th>
+                <th>Test Set</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>All</td>
+                <td>2.444</td>
+                <td>9.776</td>
+                <td>44.345</td>
+                <td>8.912</td>
+              </tr>
+              <tr>
+                <td>Product</td>
+                <td>885</td>
+                <td>7.154</td>
+              </tr>
+              <tr>
+                <td>Music Recording</td>
+                <td>1.331</td>
+                <td>10.655</td>
+              </tr>
+              <tr>
+                <td>Event</td>
+                <td>1.331</td>
+                <td>10.655</td>
+              </tr>
+            </tbody>
+            </table>
+
         <p>
             <a style="color:#FF0000";>(@Team Schema: finish datset prep)</a>
         </p>
@@ -484,14 +527,14 @@
         <tbody>
           <tr>
             <td>Product</td>
-            <td>0,8684</td>
-            <td>0,8329</td>
-            <td>0,8958</td>
+            <td>0.8684</td>
+            <td>0.8329</td>
+            <td>0.8958</td>
           </tr>
           <tr>
             <td>LocalBusiness</td>
-            <td>0,8793</td>
-            <td>0,9457</td>
+            <td>0.8793</td>
+            <td>0.9457</td>
             <td>/</td>
           </tr>
         </tbody>
@@ -521,24 +564,24 @@
             <tbody>
               <tr>
                 <td>Small</td>
-                <td>0,35</td>
-                <td>0,73</td>
-                <td>0,69</td>
-                <td>0,66</td>
+                <td>0.35</td>
+                <td>0.73</td>
+                <td>0.69</td>
+                <td>0.66</td>
               </tr>
               <tr>
                 <td>Medium</td>
-                <td>0,35</td>
-                <td>0,76</td>
-                <td>0,70</td>
-                <td>0,77</td>
+                <td>0.35</td>
+                <td>0.76</td>
+                <td>0.70</td>
+                <td>0.77</td>
               </tr>
               <tr>
                 <td>Large</td>
-                <td>0,35</td>
-                <td>0,80</td>
-                <td>0,76</td>
-                <td>0,80</td>
+                <td>0.35</td>
+                <td>0.80</td>
+                <td>0.76</td>
+                <td>0.80</td>
               </tr>
             </tbody>
             </table>
