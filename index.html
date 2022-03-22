@@ -1570,10 +1570,10 @@ PyTorch.
                 <caption style="margin-top: 1em">Table 3: Experimental results</caption>
                 <tr>
                     <th>Category</th>
-                    <th colspan="1" style='text-align:center; vertical-align:middle'> Setting</th>
+                    <th colspan="1" style='text-align:center; vertical-align:middle'></th>
                     <th colspan="4" style='text-align:center; vertical-align:middle'> Baseline</th>
-                    <th colspan="1" style='text-align:center; vertical-align:middle'> Contrastive Learning</th>
-                    <th colspan="2" style='text-align:center; vertical-align:middle'> Table-based Transformers</th>
+                    <th colspan="1" style='text-align:center; vertical-align:middle'>Other?</th>
+                    <th colspan="1" style='text-align:center; vertical-align:middle'> Table-based Transformers</th>
                 </tr>
                 <tr>
                     <th></th>
@@ -1593,9 +1593,8 @@ PyTorch.
                     <td style="background-color:#E8E8E8">0.66</td>
                     <td style="background-color:#E8E8E8">0.60</td>
                     <td style="background-color:#E8E8E8">0.69</td>
-                    <td>0.9668<i><sub>t</sub></i></td>
-                    <td><b>0.9745</b></td>
-                    <td>0.9626</td>
+                    <td>?</td>
+                    <td style="background-color:#E8E8E8">0.77</td>
 
                 </tr>
                 <tr>
@@ -1604,7 +1603,8 @@ PyTorch.
                     <td style="background-color:#E8E8E8">0.77</td>
                     <td style="background-color:#E8E8E8">0.62</td>
                     <td style="background-color:#E8E8E8">0.70</b></td>
-                    <td>0.4713</td>
+                    <td>?</td>
+                    <td style="background-color:#E8E8E8">0.81</td>
                     <td>0.6176</td>
                     <td>0.5955<i><sub>t</sub></i></td>
                 </tr>
@@ -1614,10 +1614,8 @@ PyTorch.
                     <td style="background-color:#E8E8E8">0.80</td>
                     <td style="background-color:#E8E8E8">0.80</td>
                     <td style="background-color:#E8E8E8">0.76</td>
-                    <td><b>0.9836</b></td>
-                    <td style="background-color:#E8E8E8">0.76</td>
-                    <td>0.9754</td>
-                    <td>0.9743</td>
+                    <td>?</td>
+                    <td style="background-color:#E8E8E8">0.87</td>
                 </tr>
                 <tr>
                     <td>EN</td>
@@ -1628,148 +1626,6 @@ PyTorch.
                     <td>0.3722</td>
                     <td>0.5619</td>
                     <td>0.4812</td>
-                </tr>
-                <tr>
-                    <td>EN</td>
-                    <td>FR</td>
-                    <td style="background-color:#E8E8E8">Logistic Regression</td>
-                    <td style="background-color:#E8E8E8">TF-IDF</td>
-                    <td style="background-color:#E8E8E8"><b>0.7047</b></td>
-                    <td>0.4826</td>
-                    <td>0.5975</td>
-                    <td>0.5658<i><sub>t</sub></i></td>
-                </tr>
-                <tr>
-                    <td>EN+DE</td>
-                    <td>DE</td>
-                    <td style="background-color:#E8E8E8">SVM</td>
-                    <td style="background-color:#E8E8E8">TF-IDF</td>
-                    <td style="background-color:#E8E8E8">0.9757</td>
-                    <td>0.9789</td>
-                    <td><b>0.9828</b></td>
-                    <td>0.9723</td>
-                </tr>
-                <tr>
-                    <td>EN+DE</td>
-                    <td>EN</td>
-                    <td style="background-color:#E8E8E8">-</td>
-                    <td style="background-color:#E8E8E8">-</td>
-                    <td style="background-color:#E8E8E8">-</td>
-                    <td>0.9802</td>
-                    <td><b>0.9823</b></td>
-                    <td>0.977</td>
-                </tr>
-                <tr>
-                    <td>EN+DE</td>
-                    <td>ES</td>
-                    <td style="background-color:#E8E8E8">-</td>
-                    <td style="background-color:#E8E8E8">-</td>
-                    <td style="background-color:#E8E8E8">-</td>
-                    <td>0.5034</td>
-                    <td><b>0.6602<i><sub>t</sub></i></b></td>
-                    <td>0.5792</td>
-                </tr>
-                <tr>
-                    <td>EN+DE</td>
-                    <td>FR</td>
-                    <td style="background-color:#E8E8E8">-</td>
-                    <td style="background-color:#E8E8E8">-</td>
-                    <td style="background-color:#E8E8E8">-</td>
-                    <td>0.563</td>
-                    <td><b>0.6695</b></td>
-                    <td>0.6384<i><sub>t</sub></i></td>
-                </tr>
-                <tr style="border-top:2px solid grey">
-                    <td rowspan="9" style='text-align:center; vertical-align:middle'>Phone</td>
-                    <td>DE</td>
-                    <td>DE</td>
-                    <td style="background-color:#E8E8E8">Logistic Regression</td>
-                    <td style="background-color:#E8E8E8">TF-IDF</td>
-                    <td style="background-color:#E8E8E8">0.7891<i><sub>t</sub></i></td>
-                    <td>0.9422</td>
-                    <td><b>0.9552</b></td>
-                    <td>0.9131<i><sub>t</sub></i></td>
-                </tr>
-                <tr>
-                    <td>EN</td>
-                    <td>DE</td>
-                    <td style="background-color:#E8E8E8">Logistic Regression</td>
-                    <td style="background-color:#E8E8E8">Binary BOW</td>
-                    <td style="background-color:#E8E8E8">0.6973<i><sub>t</sub></i></td>
-                    <td>0.7019</td>
-                    <td><b>0.756</b></td>
-                    <td>0.7348</td>
-                </tr>
-                <tr>
-                    <td>EN</td>
-                    <td>EN</td>
-                    <td style="background-color:#E8E8E8">Logistic Regression</td>
-                    <td style="background-color:#E8E8E8">Binary BOW</td>
-                    <td style="background-color:#E8E8E8">0.8341<i><sub>t</sub></i></td>
-                    <td><b>0.9544</b></td>
-                    <td>0.9445</td>
-                    <td>0.9324</td>
-                </tr>
-                <tr>
-                    <td>EN</td>
-                    <td>ES</td>
-                    <td style="background-color:#E8E8E8">SVM</td>
-                    <td style="background-color:#E8E8E8">Binary BOW</td>
-                    <td style="background-color:#E8E8E8"><b>0.7016<i><sub>t</sub></i></b></td>
-                    <td>0.5714<i><sub>t</sub></i></td>
-                    <td>0.6623</td>
-                    <td>0.555</td>
-                </tr>
-                <tr>
-                    <td>EN</td>
-                    <td>FR</td>
-                    <td style="background-color:#E8E8E8">SVM</td>
-                    <td style="background-color:#E8E8E8">Binary BOW</td>
-                    <td style="background-color:#E8E8E8"><b>0.6232<i><sub>t</sub></i></b></td>
-                    <td>0.5263<i><sub>t</sub></i></td>
-                    <td>0.6025</td>
-                    <td>0.475</td>
-                </tr>
-                <tr>
-                    <td>EN+DE</td>
-                    <td>DE</td>
-                    <td style="background-color:#E8E8E8">Logistic Regression</td>
-                    <td style="background-color:#E8E8E8">Binary BOW</td>
-                    <td style="background-color:#E8E8E8">0.8394<i><sub>t</sub></i></td>
-                    <td>0.9486</td>
-                    <td><b>0.958</b></td>
-                    <td>0.9294<i><sub>t</sub></i></td>
-                </tr>
-                <tr>
-                    <td>EN+DE</td>
-                    <td>EN</td>
-                    <td style="background-color:#E8E8E8">-</td>
-                    <td style="background-color:#E8E8E8">-</td>
-                    <td style="background-color:#E8E8E8">-</td>
-                    <td>0.9529</td>
-                    <td><b>0.9621</b></td>
-                    <td>0.9257<i><sub>t</sub></i></td>
-                </tr>
-                <tr>
-                    <td>EN+DE</td>
-                    <td>ES</td>
-                    <td style="background-color:#E8E8E8">-</td>
-                    <td style="background-color:#E8E8E8">-</td>
-                    <td style="background-color:#E8E8E8">-</td>
-                    <td>0.8571<i><sub>t</sub></i></td>
-                    <td><b>0.886</b></td>
-                    <td>0.7589<i><sub>t</sub></i></td>
-
-                </tr>
-                <tr>
-                    <td>EN+DE</td>
-                    <td>FR</td>
-                    <td style="background-color:#E8E8E8">-</td>
-                    <td style="background-color:#E8E8E8">-</td>
-                    <td style="background-color:#E8E8E8">-</td>
-                    <td>0.8852</td>
-                    <td><b>0.8205</b></td>
-                    <td>0.7143</td>
                 </tr>
             </table>
         </div>
