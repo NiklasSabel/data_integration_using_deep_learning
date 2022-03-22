@@ -689,16 +689,22 @@
 <h3>5.2 TURL Experiments</h3>
 <!--CONTENT-->
 <p>
+
+    All of our experiments were conducted using <a
+        href="https://huggingface.co/transformers/main_classes/trainer.html">HuggingFace's Trainer</a> wrapper class for PyTorch. <br>
+    
     TURL does already offer several predefined tasks to evaluate the pre-trained framework on <cite><a href="https://doi.org/10.48550/arXiv.2006.14806">[1]</a></cite>.
-    Hereby, the taks of column type annotation is most suitable for both entity as well as schema matching. For column type annotation. 
+    Hereby, the taks of column type annotation is most suitable for both entity as well as schema matching. In order to pretain the model with our selected tables and 
+    entities and perform the task of column type annotation the data has to be structured as a list containing lists for each table. Each table list then contains the
+    table id, the page title, section title as well as further lists of headers, cell content and the column types. The respective representation of tables for schema matching and entitiy matching can be found here: ? 
+    <br>
+    Further define task of column type annotation used for both schema and entitiy matching ? 
+    <br>
+    Once the data was transformed to the relevant input representation, 
+    <br>
+    Detailed information on settings and hyperparameters adjusted during the experimentation are presented in the table below. 
 
-    Define Task of column type annotation used for both schema and entitiy matching
 
-    Insert Experiments
-
-All of our experiments were conducted using <a
-        href="https://huggingface.co/transformers/main_classes/trainer.html">HuggingFace's Trainer</a> wrapper class for
-PyTorch.
 </p>
 <br>
 <div style="margin-top:2em;">
@@ -712,17 +718,16 @@ PyTorch.
                 <caption style="margin-top: 1em">Table 3: Experimental results</caption>
                 <tr>
                     <th>Category</th>
-                    <th colspan="2" style='text-align:center; vertical-align:middle'> Setting</th>
-                    <th colspan="3" style='text-align:center; vertical-align:middle'> Baseline</th>
-                    <th colspan="3" style='text-align:center; vertical-align:middle'> Transformer</th>
+                    <th colspan="1" style='text-align:center; vertical-align:middle'> Inital</th>
+                    <th colspan="1" style='text-align:center; vertical-align:middle'> Final/Last</th>
                 </tr>
                 <tr>
                     <th></th>
-                    <th>Train Lang</th>
-                    <th>Test Lang</th>
-                    <th>Classifier</th>
-                    <th>Embedding</th>
-                    <th>Score</th>
+                    <th>Epochs</th>
+                    <th>Learning Rate</th>
+                    <th>Step Sizes </th>
+                    <th>...</th>
+                    <th>...</th>
                     <th>BERT</th>
                     <th>mBERT</th>
                     <th>XLM-R</th>
