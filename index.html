@@ -272,7 +272,7 @@
     <span id="toc2.1"></span>
     <h3>2.1 Schema Matching</h3>
     <p>
-        Schema Matching describes the task of matching, as the name already suggests, similar or rather the same schemata and finding agreement and unity between schemata.
+        Schema Matching describes the task of matching similar or rather the same schemata and finding agreement and unity between schemata.
         Database instances, for example, comprise of schemata and respective (table) columns describing the same attribute can be matched.
         The main challenges are large schemata, semantic heterogeneity, generic names, esoteric naming conventions and different languages.
         Therefore, correspondences between the schemes should be detected in an automated or semi-automated manner. Although 1:n and n:1 approaches are possible,
@@ -587,7 +587,9 @@
 <span id="toc5"></span>
 <h2>5 Experimental Setup</h2>
 <p>
-    Insert Setup
+    For running the experiments we used the resources from the University of Mannheim(dws-server) as well as the resources from the state Baden-Württemberg, 
+    the bw-uni-cluster. With that we had access to different GPU setups to efficiently run the experiments. Furthermore, we had enough storage space to store
+    the different datasets, created for the experiments.
 </p>
 <span id="toc5.1"></span>
 <h3>5.1 Baseline Experiments</h3>
@@ -595,8 +597,7 @@
 <p>
     In the case of entity matching, we use three different baseline models to be able to compare the results of our algorithms.
     We include one tree-based model in Random Forest, and two BERT-based models in TinyBERT and RoBERTa, because, as mentioned
-    in section \ref{cha:alg}, TURL is based on TinyBERT and Tabbie on RoBERTa
-        <a style="color:#FF0000";>(@Team Tabbie: is that true?)</a>.
+    in section \ref{cha:alg}, TURL is based on TinyBERT and Tabbie on BERT.
     All the baselines were modelled as multi-class classification that were presented a concatentation of the entity name and
     a description in case of the product dataset respectively the name of the  entity in case of the LocalBusiness dataset.
     The results are presented in Table <a style="color:#FF0000";>(x.x)</a>.
@@ -704,8 +705,8 @@ PyTorch.
 <div style="margin-top:2em;">
     <div style="float: left;margin-right: 2.5em">
         <div class="tab">
-            <button class="tablinks" onclick="openExpResult(event, 'unsup')">Multi-class</button>
-            <button class="tablinks" onclick="openExpResult(event, 'supwc')">Pair-wise Small</button>
+            <button class="tablinks" onclick="openExpResult(event, 'unsup')">Schema</button>
+            <button class="tablinks" onclick="openExpResult(event, 'supwc')">Entity</button>
             <button class="tablinks active" onclick="openExpResult(event, 'supmg')" id="defaultOpen">Pair-wise Medium
             </button>
         </div>
