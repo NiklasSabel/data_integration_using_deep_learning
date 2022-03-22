@@ -456,7 +456,8 @@
             Further, in order to create a useful dataset, we reduced our sample of od tables further by checking for tables with more than 10 rows,
             less than 50% NAs within selected columns​ as well as less than 15% NAs within relevant columns in entire table. The resulting 54,190 tables were then split into
             a training and set set by performing a multi-label stratified shuffled split with 3 splits (random state = 42) resulting in 44,435 training tables and 9,894 test tables. 
-            We chose to perform a <ahref="https://github.com/trent-b/iterative-stratification">multi-label stratified shuffled split</a> to not only distribute the different categories 
+            We chose to perform a <a
+                href="https://github.com/trent-b/iterative-stratification">multi-label stratified shuffled split</a> to not only distribute the different categories 
             but also the selected columns in each category proportionally between the training and test set.
             To compare different input and training sizes later on, our training data was further divided into a medium as well as small sized training set. Again, 
             we performed a multi-label stratified shuffled split to distribute the data and especially columns proportinally making sure that all selected columns
