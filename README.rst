@@ -82,7 +82,6 @@ Results:
 * RoBERTa: 0.8 F1
 * TURL: 0.86 F1
 * Tabbie: - 
-* Tabbie: -
 
 You can find the code for each part in the following table: 
 
@@ -142,8 +141,7 @@ The project started in October 2021 as a team project at the University of Mannh
 * `Estelle Weinstock <https://github.com/estelleweinstock>`__
 
 Feel free to raise an issue in this github repository if you have questions to the project team.
-Feel free to raise an issue in this github repository if you have questions to the project team. 
->>>>>>> 2a60e11aa390b62ff14f0b452214541c38738ce6
+
 
 License
 ==============================
