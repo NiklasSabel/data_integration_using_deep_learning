@@ -96,7 +96,6 @@ You can find the code for each part in the following table:
 
 All Experiments done were written in Jupyter Notebooks, which can be found in this  `folder <https://github.com/NiklasSabel/data_integration_using_deep_learning/tree/main/notebooks/Schema>`__.
 
-Furthermore, we make all models available `Drive <url>`__. All raw and preprocessed data can be downloaded in the following `Drive <url>`__. 
 
 
 How to Install
