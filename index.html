@@ -353,7 +353,35 @@
     <span id="toc3.2"></span>
     <h3>3.2 Constrastive Learning</h3>
     <p>
-        Insert Constrastive Learning
+        Contrastive learning has become a promising approach both in information retrieval [7] as well as in computer vision outperforming previous methods
+        in self-supervised and semi-supervised learning [6]. This framework has further been extended to a fully-supervised setting introducing an alternative 
+        to the usual cross-entropy loss function [5] while achieving state of the art results. In addition, supervised contrastive learning has seen recent success 
+        in product matching which is a special form of entitiy matching [4]. 
+
+        <figcaption style="margin-bottom:1em;">
+            <strong>Figure 3.2: Supervised Contrastive Learning
+            </strong>
+        </figcaption>
+        <figure style="margin-top:3em">
+            <img src="./images/supervised contrastive loss.JPG" style="margin-bottom:2em;"/>
+        </figure>
+    
+        Figure 3.2 summarizes the general framework of supervised contrastive learning. In general, the whole process is split up in two stages, pretraining  
+        followed by the second stage of finetuning. The main purpose of contrastive pretraining is to learn hidden representations of respective clusters in such a way
+        that instances from the same class end up close in space while instances from different classes end up far in space.
+        To this end, the pretraining usually requires pairs of training instances: a positive is defined as a pair of training instances drawn
+        from the same class, while negatives are training instances drawn from different classes. At training time these pairs are fed through two distinct encoder networks which share the same weights.
+        This yields two latent representations which can now be used to compute the supervised contrastive (SupCon) loss which usually involves some sort of similarity metric. The SupCon loss function then
+        maximizes the agreement between positives while it minimizes the agreement between negatives.
+    <p>
+        After the pretraining step, the encoder network ideally maps each class to a well seperated cluster in the embedding space. For the final stage of finetuning 
+        the parameters of the encoder network remain frozen and only the linear classifier is trained using the usal cross-entropy loss for multi-class classification. 
+        In contrast to other methods, contrastive pretraining makes it much easier to learn decision boundaries for a linear classifier given a pretrained embedding space making
+        contrastive pretraining a powerful method for further downstream tasks.
+        
+    </p>
+    
+    
     </p>
     <span id="toc4"></span>
     <h2>4 Datasets and Preprocessing </h2>
@@ -2001,6 +2029,21 @@ PyTorch.
             href="https://arxiv.org/abs/2202.02098"
             target="_blank">Supervised Contrastive Learning for Product Matching</a>.
        arXiv:2202.02098 [cs] (2022).
+    </li>
+    <li>Prannay Khosla, Piotr Teterwak, Chen Wang, Aaron Sarna, Yonglong Tian, et al.: <a
+        href="https://arxiv.org/abs/2004.11362"
+        target="_blank">Supervised Contrastive Learning</a>.
+        arXiv:2004.11362 [cs.LG] (2020).
+    </li>
+    <li>Ting Chen, Simon Kornblith, Mohammad Norouzi, and Geoffrey Hinton.: <a
+        href="https://arxiv.org/abs/2002.05709"
+        target="_blank">A Simple Framework for Contrastive Learning of Visual Representations</a>.
+        arXiv:2002.05709 [cs.LG] (2020)
+    </li>
+    <li>Tianyu Gao, Xingcheng Yao, and Danqi Chen.: <a
+        href="https://arxiv.org/abs/2104.08821"
+        target="_blank">SimCSE: Simple Contrastive Learning of Sentence Embeddings.</a>.
+        arXiv:2104.08821 [cs.CL] (2021)
     </li>
     <li>Christophides, V. et al.: <a
             href="https://doi.org/10.2200/S00655ED1V01Y201507WBE013"
