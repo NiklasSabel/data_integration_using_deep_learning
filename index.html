@@ -346,7 +346,7 @@
          an attention mask such that each input token can only use information from other "visible" tokens, e.g. the header of its column
          or another entry in the same row. At the end follows a final projection layer including a masked language model (MLM) that trains
          the model to capture semantic and contextual information and a masked entity recovery (MER) to capture the factual knowledge in
-         the table content for pre-training. <a style="color:#FF0000";>(@Kim and Jen: more information?)</a>
+         the table content for pre-training. <a style="color:#FF0000";>(@Kim and Jen: more information? - J: Sollen wir hier nochmal auf die einzelnen Tasks eingehen?)</a> 
     </p>
     </p>
 
@@ -689,7 +689,12 @@
 <h3>5.2 TURL Experiments</h3>
 <!--CONTENT-->
 <p>
-   Insert Experiments
+    TURL does already offer several predefined tasks to evaluate the pre-trained framework on <cite><a href="https://doi.org/10.48550/arXiv.2006.14806">[1]</a></cite>.
+    Hereby, the taks of column type annotation is most suitable for both entity as well as schema matching. For column type annotation. 
+
+    Define Task of column type annotation used for both schema and entitiy matching
+
+    Insert Experiments
 
 All of our experiments were conducted using <a
         href="https://huggingface.co/transformers/main_classes/trainer.html">HuggingFace's Trainer</a> wrapper class for
@@ -1565,51 +1570,52 @@ PyTorch.
                 <caption style="margin-top: 1em">Table 3: Experimental results</caption>
                 <tr>
                     <th>Category</th>
-                    <th colspan="2" style='text-align:center; vertical-align:middle'> Setting</th>
-                    <th colspan="3" style='text-align:center; vertical-align:middle'> Baseline</th>
-                    <th colspan="3" style='text-align:center; vertical-align:middle'> Transformer</th>
+                    <th colspan="1" style='text-align:center; vertical-align:middle'> Setting</th>
+                    <th colspan="4" style='text-align:center; vertical-align:middle'> Baseline</th>
+                    <th colspan="1" style='text-align:center; vertical-align:middle'> Contrastive Learning</th>
+                    <th colspan="2" style='text-align:center; vertical-align:middle'> Table-based Transformers</th>
                 </tr>
                 <tr>
                     <th></th>
-                    <th>Train Lang</th>
-                    <th>Test Lang</th>
-                    <th>Classifier</th>
-                    <th>Embedding</th>
-                    <th>Score</th>
-                    <th>BERT</th>
-                    <th>mBERT</th>
-                    <th>XLM-R</th>
+                    <th>Train Set</th>
+                    <th>Bert</th>
+                    <th>RoBerta</th>
+                    <th>Distilbert</th>
+                    <th>TinyBert</th>
+                    <th>Contrastive Learning</th>
+                    <th>TURL</th>
 
                 </tr>
                 <tr>
                     <td rowspan="9" style='text-align:center; vertical-align:middle'>Toy</td>
-                    <td>DE</td>
-                    <td>DE</td>
-                    <td style="background-color:#E8E8E8">SVM</td>
-                    <td style="background-color:#E8E8E8">TF-IDF</td>
-                    <td style="background-color:#E8E8E8">0.9677</td>
+                    <td>Small</td>
+                    <td style="background-color:#E8E8E8">0.73</td>
+                    <td style="background-color:#E8E8E8">0.66</td>
+                    <td style="background-color:#E8E8E8">0.60</td>
+                    <td style="background-color:#E8E8E8">0.69</td>
                     <td>0.9668<i><sub>t</sub></i></td>
                     <td><b>0.9745</b></td>
                     <td>0.9626</td>
 
                 </tr>
                 <tr>
-                    <td>EN</td>
-                    <td>DE</td>
-                    <td style="background-color:#E8E8E8">SVM</td>
-                    <td style="background-color:#E8E8E8">TF-IDF</td>
-                    <td style="background-color:#E8E8E8"><b>0.7084</b></td>
+                    <td>Medium</td>
+                    <td style="background-color:#E8E8E8">0.76</td>
+                    <td style="background-color:#E8E8E8">0.77</td>
+                    <td style="background-color:#E8E8E8">0.62</td>
+                    <td style="background-color:#E8E8E8">0.70</b></td>
                     <td>0.4713</td>
                     <td>0.6176</td>
                     <td>0.5955<i><sub>t</sub></i></td>
                 </tr>
                 <tr>
-                    <td>EN</td>
-                    <td>EN</td>
-                    <td style="background-color:#E8E8E8">Logistic Regression</td>
-                    <td style="background-color:#E8E8E8">TF-IDF</td>
-                    <td style="background-color:#E8E8E8">0.9683</td>
+                    <td>Large</td>
+                    <td style="background-color:#E8E8E8">0.80</td>
+                    <td style="background-color:#E8E8E8">0.80</td>
+                    <td style="background-color:#E8E8E8">0.80</td>
+                    <td style="background-color:#E8E8E8">0.76</td>
                     <td><b>0.9836</b></td>
+                    <td style="background-color:#E8E8E8">0.76</td>
                     <td>0.9754</td>
                     <td>0.9743</td>
                 </tr>
