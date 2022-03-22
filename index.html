@@ -1565,6 +1565,24 @@
 <!--CONTENT-->
 <p>Insert Experimental Results and error analysis
 
+
+<h3>6.1 Schema Matching Results</h3>
+
+
+    As can be seen in table 3, TURL outperforms the baseline models as well as the contrastive learning approach.
+    It seems as the number of epochs that TURL is trained on does not play an important role for the both mid sized
+    and large dataset as the performance converges for both 25 and 50 epochs at the same outcomes. The size of the dataset
+    seems to take an important part in the performance of the baseline models and TURL. The performances increase up to 20 percent points.
+    For contrastive learning on the other hand, the size of the dataset only makes a difference of 0.01.
+    To deepen the understanding of the differences between baselines and TURL, a more detailed evaluation with regards to the datatypes
+    of the data is of interest. For example, while TinyBert and CL reach respectively a micro F1 Score of 0.5034 and 0.5780 for the type geolocation,
+    TURL outperforms them with a micro F1 Score of 0.8857. Also floats and integers reach much higher micro F1 Scores with TURL.
+    For datetime the performances of the three approaches are quite similar. Only the type string is detected more accurately
+    by the baseline model and the CL approach.
+
+
+
+
     The necessary code to retrace our experimental runs can be found in our <a
             href="https://github.com/NiklasSabel/data_integration_using_deep_learning">GitHub repository</a>.
 </p>
@@ -1602,7 +1620,7 @@
                     <td style="background-color:#E8E8E8">0.66</td>
                     <td style="background-color:#E8E8E8">0.60</td>
                     <td style="background-color:#E8E8E8">0.69</td>
-                    <td>?</td>
+                    <td>style="background-color:#E8E8E8">0.75</td>
                     <td style="background-color:#E8E8E8">0.77</td>
                 </tr>
                 <tr>
@@ -1611,7 +1629,7 @@
                     <td style="background-color:#E8E8E8">0.77</td>
                     <td style="background-color:#E8E8E8">0.62</td>
                     <td style="background-color:#E8E8E8">0.70</b></td>
-                    <td>?</td>
+                    <td>style="background-color:#E8E8E8">0.76</td>
                     <td style="background-color:#E8E8E8">0.81</td>
                 </tr>
                 <tr>
@@ -1620,7 +1638,7 @@
                     <td style="background-color:#E8E8E8">0.80</td>
                     <td style="background-color:#E8E8E8">0.80</td>
                     <td style="background-color:#E8E8E8">0.76</td>
-                    <td>?</td>
+                    <td>style="background-color:#E8E8E8">0.76</td>
                     <td style="background-color:#E8E8E8">0.87</td>
                 </tr>
             </table>
