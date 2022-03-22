@@ -424,11 +424,22 @@
         </tbody>
         </table>
 
+        <p>
+            Images are examples
+        </p>
+        <figcaption style="margin-bottom:1em;">
+            <strong>Figure 1: Number of offers per cluster for the different languages in the multi-class train set of
+                category
+                phone
+            </strong>
+        </figcaption>
+        <figure style="margin-top:3em">
+            <img src="./images/multiclass_phone_train_hist.svg" style="margin-bottom:2em;"/>
+        </figure>
 
         <p>
             <a style="color:#FF0000";>(@Team LB: insert datset prep)</a>
-            Within the task of schema matching, we choose the 20 largest categories in order to get enough tables for the respective chosen 208 columns
-            Manual data checking of
+
 
         </p>
 
@@ -451,7 +462,7 @@
             Thereby, about 10 percent of the tables were removed, mainly due to other foreign languages, and hence
             reduced the test table size to 8,912. In this process, a few columns were removed (from all datasets) which leaves
             the final dataset with 202 columns.
-            The distribution of all tables as well as tables within each selected category is presented in the table below. 
+            The distribution of all tables as well as tables within each selected category is presented in the table below.
 
         </p>
         <table class="Data sizes">
@@ -475,84 +486,92 @@
               </tr>
               <tr>
                 <td>Product</td>
-                <td>885</td>
-                <td>7,154</td>
+                <td>1,033</td>
+                <td>4,256</td>
+                <td>19,367</td>
+                <td>3,839</td>
               </tr>
               <tr>
                 <td>Music Recording</td>
-                <td>1,331</td>
-                <td>10,655</td>
+                <td>318</td>
+                <td>1,102</td>
+                <td>5,031</td>
+                <td>1,097</td>
               </tr>
               <tr>
                 <td>Event</td>
-                <td>1,331</td>
-                <td>10,655</td>
+                <td>248</td>
+                <td>1,007</td>
+                <td>4,563</td>
+                <td>1,000</td>
               </tr>
                 <td>Creative Work</td>
-                <td>1,331</td>
-                <td>10,655</td>
+                <td>221</td>
+                <td>869</td>
+                <td>3,925</td>
+                <td>876</td>
               </tr>
                 <td>Recipe</td>
-                <td>2,444</td>
-                <td>9,776</td>
-                <td>44,345</td>
-                <td>8,912</td>
+                <td>195</td>
+                <td>770</td>
+                <td>3,522</td>
+                <td>727</td>
               </tr>
               </tr>
                 <td>Person</td>
-                <td>2,444</td>
-                <td>9,776</td>
-                <td>44,345</td>
-                <td>8,912</td>
+                <td>163</td>
+                <td>690</td>
+                <td>3,148</td>
+                <td>545</td>
               </tr>
               </tr>
                 <td>Local Business</td>
-                <td>2,444</td>
-                <td>9,776</td>
-                <td>44,345</td>
-                <td>8,912</td>
+                <td>123</td>
+                <td>490</td>
+                <td>2,209</td>
+                <td>381</td>
               </tr>
               </tr>
                 <td>Place</td>
-                <td>2,444</td>
-                <td>9,776</td>
-                <td>44,345</td>
-                <td>8,912</td>
+                <td>38</td>
+                <td>160</td>
+                <td>728</td>
+                <td>131</td>
               </tr>
               </tr>
                 <td>Hotel</td>
-                <td>2,444</td>
-                <td>9,776</td>
-                <td>44,345</td>
-                <td>8,912</td>
+                <td>38</td>
+                <td>156</td>
+                <td>701</td>
+                <td>117</td>
               </tr>
               </tr>
                 <td>Book</td>
-                <td>2,444</td>
-                <td>9,776</td>
-                <td>44,345</td>
-                <td>8,912</td>
+                <td>29</td>
+                <td>118</td>
+                <td>537</td>
+                <td>65</td>
               </tr>
               </tr>
                 <td>Restaurant</td>
-                <td>2,444</td>
-                <td>9,776</td>
-                <td>44,345</td>
-                <td>8,912</td>
+                <td>20</td>
+                <td>79</td>
+                <td>353</td>
+                <td>61</td>
               </tr>
               </tr>
                 <td>Music Album</td>
-                <td>2,444</td>
-                <td>9,776</td>
-                <td>44,345</td>
-                <td>8,912</td>
+                <td>9</td>
+                <td>41</td>
+                <td>189</td>
+                <td>42</td>
               </tr>
               </tr>
                 <td>TV Episode</td>
-                <td>2,444</td>
-                <td>9,776</td>
-                <td>44,345</td>
-                <td>8,912</td>
+                <td>9</td>
+                <td>38</td>
+                <td>162</td>
+                <td>31</td>
               </tr>
             </tbody>
             </table>
@@ -560,18 +579,6 @@
         <p>
             <a style="color:#FF0000";>(@jen aka myself: finish datset prep)</a>
         </p>
-    <p>
-        Images are examples
-    </p>
-    <figcaption style="margin-bottom:1em;">
-        <strong>Figure 1: Number of offers per cluster for the different languages in the multi-class train set of
-            category
-            phone
-        </strong>
-    </figcaption>
-    <figure style="margin-top:3em">
-        <img src="./images/multiclass_phone_train_hist.svg" style="margin-bottom:2em;"/>
-    </figure>
 
 <p>
     All of our datasets can be requested by mail at <a href="mailto:ralph@informatik.uni-mannheim.de">ralph@informatik.uni-mannheim.de</a>,
@@ -629,7 +636,7 @@
     respective small, medium as well as large training data set. As a data base the concatenated values of the target columns were used.
     To keep as much information as possible, no further preprocessing was done. The models were trained with 25 epochs. As can be
     seen in the results in table 4.3, the models perform quite different on the small and medium datasets. Except for TinyBert,
-    the performances adjust to each other for the large data set.
+    the performance of the different models converges for the large data set.
 
     <table class="Data sizes">
         <caption style="margin-top: 1em">Table 4.3: Micro F1-scores for bert-based baseline models in schema matching.</caption>
