@@ -281,32 +281,31 @@
     <span id="toc2.2"></span>
     <h3>2.2 Entity Matching</h3>
     <p>
-        Entity matching or identity resolution refers to the task of finding all records that refer to the same entity,
+        Entity matching, often also called identity resolution, duplicate detection, record linkage, or data matching,
+        is a crucial task for data integration. It consists of the exercise of finding all records that refer to the same entity,
         e.g. when integrating data from different source systems. Unfortunately, entity representations in real-world
-        environments are in general not identical and have to be processed at massive scale. Therefore, identity
-        resolution becomes quite challenging. One solution is offered by comparing multiple attributes of different
-        record representations with attribute-specific similarity measures like Levenshtein distance, TF-IDF or advanced
-        techniques like BERT. Identity resolution or entity matching tries to allocate entities with different
-        representations under the assumption that the higher the similarity is, the more likely two
+        environments are in general not identical or always complete but have to be processed at massive scale.
+        Therefore, entity matching becomes quite challenging. One solution to address this difficulty is offered by
+        comparing multiple attributes of different record representations with attribute-specific similarity measures
+        like Levenshtein distance, TF-IDF or advanced techniques like BERT. Newer approaches include the application of
+        so-called table transformers which will be discussed at <a href="#toc3">Section 3</a>. Entity matching tries to allocate entities
+        with different representations under the assumption that the higher the similarity is, the more likely two
         entity representations are a match <cite><a href="https://doi.org/10.2200/S00655ED1V01Y201507WBE013">[1]</a></cite>.
-        Records then get clustered according to their correspondences and similarities.
-        <body>
-            <p style="color:#FF0000";>(note:add more information?)</p>
-          </body>
+        Records will then get clustered according to their correspondences and similarities such that further usage of
+        the data can be applied.
     <p>
-
         In recent years, the usage of transformer models in schema and entity matching became more and more popular
         due to limitations of standard algorithms and measures.
     <p>
     <span id="toc2.3"></span>
     <h3>2.3 Transformer Models</h3>
     <p>
-        In 2017, Google Brain proposed the transformer model, that based on a encoder-decoder structure and an attention mechanism showed
+        In 2017, Google Brain proposed the transformer model, that based on an encoder-decoder structure and an attention mechanism showed
         impressive improvements over state-of-the-art methods and simplicity in adoption to a wide range of machine learning tasks,
          especially in the context of NLP <cite><a href="https://doi.org/10.2200/S00655ED1V01Y201507WBE013">[6]</a></cite>.
         As a result, a new language representation model named BERT was introduced in 2019 to pre-train deep bidirectional
         representations from unlabeled text. That resulted in a lot of possibilities as a "pre-trained BERT model can be finetuned with
-        just one additional output layer to create state-of-the art methods for a wide range of tasks"<cite><a href="https://doi.org/10.2200/S00655ED1V01Y201507WBE013">[3]</a></cite>. In the
+        just one additional output layer to create state-of-the art methods for a wide range of tasks" <cite><a href="https://doi.org/10.2200/S00655ED1V01Y201507WBE013">[3]</a></cite>. In the
         following, we will use algorithms that are pre-trained on different BERT extensions, in particular TinyBERT and RoBERTa.
 
         TinyBERT is a 7.5x smaller BERT-Version that performs knowledge distillation with BERT as teacher model on both pre-training and
@@ -323,13 +322,16 @@
         are models that not only incorporate data from individual entries, but include information from their surroundings inside the table
         as well. This results in models which take a whole table representation of a website or a knowledge base as input instead of only
         single entries like normal BERT-based models do.
+        <a style="color:#FF0000";>include sth. for CL as well</a>
     </p>
     <h3>3.1 TURL</h3>
     <p>
-        Table Understanding through Representation Learning (TURL) is a "novel framework that introduces pre-training/finetuning paradigm to
-        relational Web tables". TURL is a TinyBERT based extension model that was pre-trained on around 600,000 Wikipedia tables such that it
+        Table Understanding through Representation Learning (TURL) is a "novel framework that introduces the pre-training/finetuning paradigm to
+        relational Web tables". <a style="color:#FF0000";>(Ref 1)</a> TURL is a TinyBERT based extension model that was pre-trained on around 600,000 Wikipedia tables such that it
          can be applied to different tasks with "minimal task-specific fine-tuning". The authors show that the model generalizes well and
          outperforms existing methods for example in column type annotation <cite><a href="https://doi.org/10.2200/S00655ED1V01Y201507WBE013">[1]</a></cite>.
+        The basic idea of TURL is to "serialize[s] a table into a sequence of words and entities (similar to text data)
+        and [to] learn[s] embedding vectors for words and entities using Word2Vec" <a style="color:#FF0000";>(Ref 1 - TURL)</a>
     <figcaption style="margin-bottom:1em;">
         <strong>Figure 3.1: Overview TURL architecture
         </strong>
@@ -339,14 +341,18 @@
     </figure>
 
     <p>
-        The architecture that can be seen in Figure 3.1 consists of three modules. A first embedding layer
-        that is used to convert the different components of an input table into embeddings. The second layer is a structure-aware stacked
-        transformer to capture textual and relational knowledge, as introduced in \ref{sec:trans}. On top of receiving the embeddings from
+        More specifically, the TURL architecture which can be seen in Figure 3.1 consists of three modules. At first, an embedding layer
+        is used to convert the different components of an input table into embeddings. The second layer then comprises a structure-aware stacked
+        transformer to capture textual and relational knowledge, as introduced in <a style="color:#FF0000";>\ref{sec:trans}???</a>. Additionally to receiving the embeddings from
         the first layer, the transformer layer also obtains a visibility matrix that models the row-column structure of a table. It acts as
-         an attention mask such that each input token can only use information from other "visible" tokens, e.g. the header of its column
-         or another entry in the same row. At the end follows a final projection layer including a masked language model (MLM) that trains
-         the model to capture semantic and contextual information and a masked entity recovery (MER) to capture the factual knowledge in
-         the table content for pre-training. <a style="color:#FF0000";>(@Kim and Jen: more information?)</a>
+        an attention mask such that each input token can only use the information from other "visible" tokens, e.g. the header of its column
+        or another entry in the same row. These visibility matrices are basically modelled by assigning either 0 or 1 to the respective locations of additional tokens.
+        Finally, a projection layer including a masked language model (MLM) adopted from BERT which trains the model to capture semantic
+        and contextual information as well as a masked entity recovery (MER) to capture the factual knowledge in
+        the table content for pre-training is added to the model architecture.
+        After the described pre-training procedure the model can then be applied to different proposed fine-tuning tasks
+        such as entity linking, column type annotation, relation extraction, row population, cell filling, and schema
+        augmentation.
     </p>
     </p>
 
@@ -388,44 +394,51 @@
     <!--CONTENT-->
     <p>
         <!-- Concept Explanation-->
-        Chapter 4 gives an overview on our approaches and their respective results. We start by introducing our dataset and
+        Chapter 4 gives an overview on our approaches and their respective results. <a style="color:#FF0000";>We start by introducing our dataset and
         the preprocessing steps conducted. Furthermore, we briefly state some baselines with which we compare our implemented
         concepts and provide our experiments afterwards. The section is concluded by our results and an associated error
-        analysis.
+        analysis. --- not correct here since there are several chapters; use this for introduction?</a>
         Our dataset is based on the Web Data Commons - Schema.org Table Corpus <cite><a href="https://doi.org/10.2200/S00655ED1V01Y201507WBE013">[10]</a></cite> maintained by the Data
-        and Web Science Research Group at the University of Mannheim. In a first action, the tables were cleaned using a two-step
-        approach in order to focus on English data. We used a TLD-based method to first filter our data on English internet domain
-        endings (e.g., ".com",or ".uk") and afterwards applied the fastText language detection algorithm on each single row in
+        and Web Science Research Group at the University of Mannheim.
+        <br> In a first action, the tables were cleaned using a two-step
+        approach in order to focus on English data. We applied a TLD-based method to first filter our data on English internet domain
+        endings, e.g. ".com",or ".uk", and afterwards applied the fastText language detection algorithm on each single row in
         the remaining tables to check whether it belongs to the English language and if not we discarded
         them <cite><a href="https://doi.org/10.2200/S00655ED1V01Y201507WBE013">[9]</a></cite>. We proceeded with the
         remaining cleaned rows and subsequently carried out different
         further preprocessing approaches which are specific for either schema or entity matching.
-        <a style="color:#FF0000";>(i know this applies to both/all groups but this mixes up the order a bit since we first selected
-            specific classes, tables etc.?)</a>
+        <br>
+        <a style="color:#FF0000";>
+            - I know this applies to both/all groups but this mixes up the order a bit since we first selected
+            specific classes, tables etc.?
+            <br>
+            - Kim: Is it important to know here from how much data we started and to which number of data we end up after cleaning it in the first step? Should we include that?
+        </a>
 
       <span id="toc3.3"></span>
       <h3>4.1 Entity Matching</h3><br>
         Within entity matching we focused on two specific parts of the corpus, namely the Product data and a combination of
-        LocalBusiness, Hotel and Restaurant data. The Product corpus already provided a clustering for the entities, so, no
-        further annotation was needed. Focusing on clusters with at least 8 tables, we used the most common brands for different
+        LocalBusiness, Hotel and Restaurant data. <a style="color:#FF0000";>Leave out all of LB -> so only product here?</a>
+        The Product corpus already provided a clustering for the entities, so, no
+        further annotation was needed. Focusing on clusters with at least eight tables, we used the most common brands for different
         chosen categories, in particular bikes, cars, clothes, drugstore, electronics,
         and technology as keywords to get relevant clusters for our final dataset. To further enhance our data, we
-        searched for brands with at least 1,000 distinct clusters and established another category "random". In order, to
+        searched for brands with at least 1,000 distinct clusters and established another category called "random". In order to
         make the final matching for the algorithms not too easy, we browsed the selected clusters for homogeneous entities
         using Doc2Vec <cite><a href="https://doi.org/10.2200/S00655ED1V01Y201507WBE013">[11]</a></cite> and Jaccard similarity to include hard-to-distinguish clusters in our dataset.
         Here, we based our selection on the balance between both, Jaccard and Doc2Vec score, by manually validating the best
         results for each of the defined domains.     <a style="color:#FF0000";>(@Estelle postpreprocessing der gesamten tabellen einfügen)</a>
-        With a multilabel stratified shuffle-split <a style="color:#FF0000";>(@Kim/Jen: Ref?)</a> we distributed the remaining clusters
-        into $\frac{3}{8}$ train, $\frac{2}{8}$ validation and $\frac{3}{8}$ test data. With this approach we ensured that
-        tables were distributed equally across size and selected clusters. Furthermore, in order to not distort the results
-        we cleaned the test set manually and discarded around 10\% of noise. Thereby, we end up with an amount of
-        1,410 clusters that are used for training the algorithms. The final set sizes can be seen in Table <a style="color:#FF0000";>(x.x)</a>.
+        With a multilabel stratified shuffle-split <a style="color:#FF0000";>(@Kim/Jen: Ref? https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.StratifiedShuffleSplit.html or just cite sklearn?)</a> we distributed the remaining clusters
+        into &frac38; train, &frac14; validation and &frac38; test data. With this approach we ensured that
+        tables were distributed equally across size and selected clusters. Furthermore, in favor of not distorting the results
+        we cleaned the test set manually and discarded around 10 % of noise. Thereby, we ended up with an amount of
+        1,410 clusters that were used for training the algorithms. The final set sizes can be seen in Table 4.1.
         <a style="color:#FF0000";>(idea: insert screenshot of one final cluster as example?)</a>.
 
 
     </p>
     <table class="Data sizes">
-        <caption style="margin-top: 1em">Table 4.1: Final product data set sizes for entity matching.</caption>
+        <caption style="margin-top: 1em">Table 4.1: Final product dataset sizes for entity matching.</caption>
         <thead>
           <tr>
             <th></th>
@@ -465,31 +478,31 @@
             <img src="./images/multiclass_phone_train_hist.svg" style="margin-bottom:2em;"/>
         </figure>
 
-        <p>
-            <a style="color:#FF0000";>(@Team LB: insert datset prep)</a>
-
-
-        </p>
-
         <span id="toc3.3"></span>
         <h3>4.2 Schema Matching</h3>
         <p>
-            As a base for the schema matching use case it is the goal to crate a dataset with at least 200 different
-            columns. These columns should come from an evenly distributed mixture from large, mid size and small tables,
-            have different lengths and contain hard cases for distinction.
-            To meet the requirements, we choose the 20 largest categories in order to gain a large amount of
-            tables that contain a sufficient amount of data. As the amount of data is huge and the data due to its source
-            not necessarily reliable we decide to pick initially more than 200 columns to be able to remove columns if they
-            for some reason do not fulfill the needed quality.
-            Then the tables were distributed into three different sized data sets, a small, a medium sized and a large one.
-            Additionally, a test set was constructed. Hereby, the distribution of the data was considered. That means, that
-            the small dataset is contained in the mid sized one and so on. Also, the sets contain every target column.
+            As a basis for schema matching, it was important to gather a large amount of diverse table data to create a sufficient dataset 
+            with at least 200 different columns. Thereby, the chosen columns should be an evenly distributed within large, mid-sized and small tables,
+            and their content should represent different data types, different lengths and as well as hard cases for distinction. 
+            To create a solid data base, we choose the 20 largest categories of Schema.org in order to gain a large amount of
+            tables that contain a sufficient amount of data. Due to the vast amount of disorderly data we initally chose 208 columns to be able 
+            to further reduce the column set in case that we would detect further misfitting criteria during the following data preparation and preprocessing.
+            However, as we wanted to make sure that all tables contain at least three of the selected columns for schema matching, our initial dataset contained 79,318 tables.
+            Further, in order to create a useful dataset, we reduced our sample of od tables further by checking for tables with more than 10 rows,
+            less than 50% NAs within selected columns​ as well as less than 15% NAs within relevant columns in entire table. The resulting 54,190 tables were then split into
+            a training and set set by performing a multi-label stratified shuffled split with 3 splits (random state = 42) resulting in 44,435 training tables and 9,894 test tables. 
+            We chose to perform a <a
+                href="https://github.com/trent-b/iterative-stratification">multi-label stratified shuffled split</a> to not only distribute the different categories 
+            but also the selected columns in each category proportionally between the training and test set.
+            To compare different input and training sizes later on, our training data was further divided into a medium as well as small sized training set. Again, 
+            we performed a multi-label stratified shuffled split to distribute the data and especially columns proportinally making sure that all selected columns
+            were represented in all datasets. Hereby, the large training set of 44,345 tables contaings all 9,776 tables of the medium-sized training and the medium-sized training
+            set contains all 2,444 tables of the small training set. 
 
-            More than 9,894 tables included in the test dataset were manually checked for languages other than English, wrong or
-            missing entries as well as odd entries such as symbols.
-            Thereby, about 10 percent of the tables were removed, mainly due to other foreign languages, and hence
-            reduced the test table size to 8,912. In this process, a few columns were removed (from all datasets) which leaves
-            the final dataset with 202 columns.
+            As a means to create a clean and reliable set of test tables, the entire test set containing 9,894 tables was manually checked for languages other than English, wrong column
+            labels as well as multiple, missing or odd entries such as symbols, for example. Thereby, about 10 percent of the tables were removed with more than 50 percent due to other foreign languages, 
+            hence reducing the test table size to 8,912. 
+
             The distribution of all tables as well as tables within each selected category is presented in the table below.
 
         </p>
@@ -604,9 +617,6 @@
             </tbody>
             </table>
 
-        <p>
-            <a style="color:#FF0000";>(@jen aka myself: finish datset prep)</a>
-        </p>
 
 <p>
     All of our datasets can be requested by mail at <a href="mailto:ralph@informatik.uni-mannheim.de">ralph@informatik.uni-mannheim.de</a>,
@@ -714,11 +724,22 @@
 <h3>5.2 TURL Experiments</h3>
 <!--CONTENT-->
 <p>
-   Insert Experiments
 
-All of our experiments were conducted using <a
-        href="https://huggingface.co/transformers/main_classes/trainer.html">HuggingFace's Trainer</a> wrapper class for
-PyTorch.
+    All of our experiments were conducted using <a
+        href="https://huggingface.co/transformers/main_classes/trainer.html">HuggingFace's Trainer</a> wrapper class for PyTorch. <br>
+    
+    TURL does already offer several predefined tasks to evaluate the pre-trained framework on <cite><a href="https://doi.org/10.48550/arXiv.2006.14806">[1]</a></cite>.
+    Hereby, the taks of column type annotation is most suitable for both entity as well as schema matching. In order to pretain the model with our selected tables and 
+    entities and perform the task of column type annotation the data has to be structured as a list containing lists for each table. Each table list then contains the
+    table id, the page title, section title as well as further lists of headers, cell content and the column types. The respective representation of tables for schema matching and entitiy matching can be found here: ? 
+    <br>
+    Further define task of column type annotation used for both schema and entitiy matching ? 
+    <br>
+    Once the data was transformed to the relevant input representation, 
+    <br>
+    Detailed information on settings and hyperparameters adjusted during the experimentation are presented in the table below. 
+
+
 </p>
 <br>
 <div style="margin-top:2em;">
@@ -732,17 +753,16 @@ PyTorch.
                 <caption style="margin-top: 1em">Table 3: Experimental results</caption>
                 <tr>
                     <th>Category</th>
-                    <th colspan="2" style='text-align:center; vertical-align:middle'> Setting</th>
-                    <th colspan="3" style='text-align:center; vertical-align:middle'> Baseline</th>
-                    <th colspan="3" style='text-align:center; vertical-align:middle'> Transformer</th>
+                    <th colspan="1" style='text-align:center; vertical-align:middle'> Inital</th>
+                    <th colspan="1" style='text-align:center; vertical-align:middle'> Final/Last</th>
                 </tr>
                 <tr>
                     <th></th>
-                    <th>Train Lang</th>
-                    <th>Test Lang</th>
-                    <th>Classifier</th>
-                    <th>Embedding</th>
-                    <th>Score</th>
+                    <th>Epochs</th>
+                    <th>Learning Rate</th>
+                    <th>Step Sizes </th>
+                    <th>...</th>
+                    <th>...</th>
                     <th>BERT</th>
                     <th>mBERT</th>
                     <th>XLM-R</th>
@@ -1573,6 +1593,24 @@ PyTorch.
 <!--CONTENT-->
 <p>Insert Experimental Results and error analysis
 
+
+<h3>6.1 Schema Matching Results</h3>
+
+
+    As can be seen in table 3, TURL outperforms the baseline models as well as the contrastive learning approach.
+    It seems as the number of epochs that TURL is trained on does not play an important role for the both mid sized
+    and large dataset as the performance converges for both 25 and 50 epochs at the same outcomes. The size of the dataset
+    seems to take an important part in the performance of the baseline models and TURL. The performances increase up to 20 percent points.
+    For contrastive learning on the other hand, the size of the dataset only makes a difference of 0.01.
+    To deepen the understanding of the differences between baselines and TURL, a more detailed evaluation with regards to the datatypes
+    of the data is of interest. For example, while TinyBert and CL reach respectively a micro F1 Score of 0.5034 and 0.5780 for the type geolocation,
+    TURL outperforms them with a micro F1 Score of 0.8857. Also floats and integers reach much higher micro F1 Scores with TURL.
+    For datetime the performances of the three approaches are quite similar. Only the type string is detected more accurately
+    by the baseline model and the CL approach.
+
+
+
+
     The necessary code to retrace our experimental runs can be found in our <a
             href="https://github.com/NiklasSabel/data_integration_using_deep_learning">GitHub repository</a>.
 </p>
@@ -1589,206 +1627,47 @@ PyTorch.
             <table class="Multi-class">
                 <caption style="margin-top: 1em">Table 3: Experimental results</caption>
                 <tr>
-                    <th>Category</th>
-                    <th colspan="2" style='text-align:center; vertical-align:middle'> Setting</th>
-                    <th colspan="3" style='text-align:center; vertical-align:middle'> Baseline</th>
-                    <th colspan="3" style='text-align:center; vertical-align:middle'> Transformer</th>
+                    <th colspan="1" style='text-align:center; vertical-align:middle'></th>
+                    <th colspan="4" style='text-align:center; vertical-align:middle'> Baseline</th>
+                    <th colspan="1" style='text-align:center; vertical-align:middle'>Other?</th>
+                    <th colspan="1" style='text-align:center; vertical-align:middle'> Table-based Transformers</th>
                 </tr>
                 <tr>
-                    <th></th>
-                    <th>Train Lang</th>
-                    <th>Test Lang</th>
-                    <th>Classifier</th>
-                    <th>Embedding</th>
-                    <th>Score</th>
-                    <th>BERT</th>
-                    <th>mBERT</th>
-                    <th>XLM-R</th>
+                    <th>Train Set</th>
+                    <th>Bert</th>
+                    <th>RoBerta</th>
+                    <th>Distilbert</th>
+                    <th>TinyBert</th>
+                    <th>Contrastive Learning</th>
+                    <th>TURL</th>
 
                 </tr>
                 <tr>
-                    <td rowspan="9" style='text-align:center; vertical-align:middle'>Toy</td>
-                    <td>DE</td>
-                    <td>DE</td>
-                    <td style="background-color:#E8E8E8">SVM</td>
-                    <td style="background-color:#E8E8E8">TF-IDF</td>
-                    <td style="background-color:#E8E8E8">0.9677</td>
-                    <td>0.9668<i><sub>t</sub></i></td>
-                    <td><b>0.9745</b></td>
-                    <td>0.9626</td>
-
+                    <td>Small</td>
+                    <td style="background-color:#E8E8E8">0.73</td>
+                    <td style="background-color:#E8E8E8">0.66</td>
+                    <td style="background-color:#E8E8E8">0.60</td>
+                    <td style="background-color:#E8E8E8">0.69</td>
+                    <td>style="background-color:#E8E8E8">0.75</td>
+                    <td style="background-color:#E8E8E8">0.77</td>
                 </tr>
                 <tr>
-                    <td>EN</td>
-                    <td>DE</td>
-                    <td style="background-color:#E8E8E8">SVM</td>
-                    <td style="background-color:#E8E8E8">TF-IDF</td>
-                    <td style="background-color:#E8E8E8"><b>0.7084</b></td>
-                    <td>0.4713</td>
-                    <td>0.6176</td>
-                    <td>0.5955<i><sub>t</sub></i></td>
+                    <td>Medium</td>
+                    <td style="background-color:#E8E8E8">0.76</td>
+                    <td style="background-color:#E8E8E8">0.77</td>
+                    <td style="background-color:#E8E8E8">0.62</td>
+                    <td style="background-color:#E8E8E8">0.70</b></td>
+                    <td>style="background-color:#E8E8E8">0.76</td>
+                    <td style="background-color:#E8E8E8">0.81</td>
                 </tr>
                 <tr>
-                    <td>EN</td>
-                    <td>EN</td>
-                    <td style="background-color:#E8E8E8">Logistic Regression</td>
-                    <td style="background-color:#E8E8E8">TF-IDF</td>
-                    <td style="background-color:#E8E8E8">0.9683</td>
-                    <td><b>0.9836</b></td>
-                    <td>0.9754</td>
-                    <td>0.9743</td>
-                </tr>
-                <tr>
-                    <td>EN</td>
-                    <td>ES</td>
-                    <td style="background-color:#E8E8E8">Logistic Regression</td>
-                    <td style="background-color:#E8E8E8">TF-IDF</td>
-                    <td style="background-color:#E8E8E8"><b>0.6735<i><sub>t</sub></i></b></td>
-                    <td>0.3722</td>
-                    <td>0.5619</td>
-                    <td>0.4812</td>
-                </tr>
-                <tr>
-                    <td>EN</td>
-                    <td>FR</td>
-                    <td style="background-color:#E8E8E8">Logistic Regression</td>
-                    <td style="background-color:#E8E8E8">TF-IDF</td>
-                    <td style="background-color:#E8E8E8"><b>0.7047</b></td>
-                    <td>0.4826</td>
-                    <td>0.5975</td>
-                    <td>0.5658<i><sub>t</sub></i></td>
-                </tr>
-                <tr>
-                    <td>EN+DE</td>
-                    <td>DE</td>
-                    <td style="background-color:#E8E8E8">SVM</td>
-                    <td style="background-color:#E8E8E8">TF-IDF</td>
-                    <td style="background-color:#E8E8E8">0.9757</td>
-                    <td>0.9789</td>
-                    <td><b>0.9828</b></td>
-                    <td>0.9723</td>
-                </tr>
-                <tr>
-                    <td>EN+DE</td>
-                    <td>EN</td>
-                    <td style="background-color:#E8E8E8">-</td>
-                    <td style="background-color:#E8E8E8">-</td>
-                    <td style="background-color:#E8E8E8">-</td>
-                    <td>0.9802</td>
-                    <td><b>0.9823</b></td>
-                    <td>0.977</td>
-                </tr>
-                <tr>
-                    <td>EN+DE</td>
-                    <td>ES</td>
-                    <td style="background-color:#E8E8E8">-</td>
-                    <td style="background-color:#E8E8E8">-</td>
-                    <td style="background-color:#E8E8E8">-</td>
-                    <td>0.5034</td>
-                    <td><b>0.6602<i><sub>t</sub></i></b></td>
-                    <td>0.5792</td>
-                </tr>
-                <tr>
-                    <td>EN+DE</td>
-                    <td>FR</td>
-                    <td style="background-color:#E8E8E8">-</td>
-                    <td style="background-color:#E8E8E8">-</td>
-                    <td style="background-color:#E8E8E8">-</td>
-                    <td>0.563</td>
-                    <td><b>0.6695</b></td>
-                    <td>0.6384<i><sub>t</sub></i></td>
-                </tr>
-                <tr style="border-top:2px solid grey">
-                    <td rowspan="9" style='text-align:center; vertical-align:middle'>Phone</td>
-                    <td>DE</td>
-                    <td>DE</td>
-                    <td style="background-color:#E8E8E8">Logistic Regression</td>
-                    <td style="background-color:#E8E8E8">TF-IDF</td>
-                    <td style="background-color:#E8E8E8">0.7891<i><sub>t</sub></i></td>
-                    <td>0.9422</td>
-                    <td><b>0.9552</b></td>
-                    <td>0.9131<i><sub>t</sub></i></td>
-                </tr>
-                <tr>
-                    <td>EN</td>
-                    <td>DE</td>
-                    <td style="background-color:#E8E8E8">Logistic Regression</td>
-                    <td style="background-color:#E8E8E8">Binary BOW</td>
-                    <td style="background-color:#E8E8E8">0.6973<i><sub>t</sub></i></td>
-                    <td>0.7019</td>
-                    <td><b>0.756</b></td>
-                    <td>0.7348</td>
-                </tr>
-                <tr>
-                    <td>EN</td>
-                    <td>EN</td>
-                    <td style="background-color:#E8E8E8">Logistic Regression</td>
-                    <td style="background-color:#E8E8E8">Binary BOW</td>
-                    <td style="background-color:#E8E8E8">0.8341<i><sub>t</sub></i></td>
-                    <td><b>0.9544</b></td>
-                    <td>0.9445</td>
-                    <td>0.9324</td>
-                </tr>
-                <tr>
-                    <td>EN</td>
-                    <td>ES</td>
-                    <td style="background-color:#E8E8E8">SVM</td>
-                    <td style="background-color:#E8E8E8">Binary BOW</td>
-                    <td style="background-color:#E8E8E8"><b>0.7016<i><sub>t</sub></i></b></td>
-                    <td>0.5714<i><sub>t</sub></i></td>
-                    <td>0.6623</td>
-                    <td>0.555</td>
-                </tr>
-                <tr>
-                    <td>EN</td>
-                    <td>FR</td>
-                    <td style="background-color:#E8E8E8">SVM</td>
-                    <td style="background-color:#E8E8E8">Binary BOW</td>
-                    <td style="background-color:#E8E8E8"><b>0.6232<i><sub>t</sub></i></b></td>
-                    <td>0.5263<i><sub>t</sub></i></td>
-                    <td>0.6025</td>
-                    <td>0.475</td>
-                </tr>
-                <tr>
-                    <td>EN+DE</td>
-                    <td>DE</td>
-                    <td style="background-color:#E8E8E8">Logistic Regression</td>
-                    <td style="background-color:#E8E8E8">Binary BOW</td>
-                    <td style="background-color:#E8E8E8">0.8394<i><sub>t</sub></i></td>
-                    <td>0.9486</td>
-                    <td><b>0.958</b></td>
-                    <td>0.9294<i><sub>t</sub></i></td>
-                </tr>
-                <tr>
-                    <td>EN+DE</td>
-                    <td>EN</td>
-                    <td style="background-color:#E8E8E8">-</td>
-                    <td style="background-color:#E8E8E8">-</td>
-                    <td style="background-color:#E8E8E8">-</td>
-                    <td>0.9529</td>
-                    <td><b>0.9621</b></td>
-                    <td>0.9257<i><sub>t</sub></i></td>
-                </tr>
-                <tr>
-                    <td>EN+DE</td>
-                    <td>ES</td>
-                    <td style="background-color:#E8E8E8">-</td>
-                    <td style="background-color:#E8E8E8">-</td>
-                    <td style="background-color:#E8E8E8">-</td>
-                    <td>0.8571<i><sub>t</sub></i></td>
-                    <td><b>0.886</b></td>
-                    <td>0.7589<i><sub>t</sub></i></td>
-
-                </tr>
-                <tr>
-                    <td>EN+DE</td>
-                    <td>FR</td>
-                    <td style="background-color:#E8E8E8">-</td>
-                    <td style="background-color:#E8E8E8">-</td>
-                    <td style="background-color:#E8E8E8">-</td>
-                    <td>0.8852</td>
-                    <td><b>0.8205</b></td>
-                    <td>0.7143</td>
+                    <td>Large</td>
+                    <td style="background-color:#E8E8E8">0.80</td>
+                    <td style="background-color:#E8E8E8">0.80</td>
+                    <td style="background-color:#E8E8E8">0.80</td>
+                    <td style="background-color:#E8E8E8">0.76</td>
+                    <td>style="background-color:#E8E8E8">0.76</td>
+                    <td style="background-color:#E8E8E8">0.87</td>
                 </tr>
             </table>
         </div>

@@ -1,3 +1,5 @@
+### This python script is used to perform the keyword search in several steps, allocate the remaining rows to the specified domains & perform a post-processing task based on manually selected similarity scores. ###
+
 import pandas as pd
 import os
 import progressbar
@@ -729,7 +731,7 @@ def jaccard_similarity_score(original, translation):
 
 def post_cleaning():
     """
-    Measures the similarity within a cluster_id of our final electronics and clothes entities and removes ...??
+    Measures the similarity within a cluster_id of our final electronics and clothes entities and removes the ones which do not fit the scores
     Post-processing.
     :return:
     """
@@ -843,7 +845,7 @@ def post_cleaning():
             os.path.join(cluster_path, '{}_clusters_all_8_tables_post_processed.csv'.format(entity)),
             columns=None)
 
-        ### Auch gleiche table_ids rauswerfen!!!!
+        ### Also exclude same table_ids
 
 
 if __name__ == "__main__":
