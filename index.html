@@ -192,6 +192,11 @@
         Insert Task And Experiment Description/Abstract
         <br>
     </p>
+    <p>
+    <a style="color:#FF0000";>Insert description of the whole webpage:We start by introducing our dataset and
+        the preprocessing steps conducted. Furthermore, we briefly state some baselines with which we compare our implemented
+        concepts and provide our experiments afterwards. The section is concluded by our results and an associated error
+        analysis. --- not correct here since there are several chapters; use this for introduction?</a>
     <h2>Contents</h2>
     <ul>
         <li class="toc-h2 toc-active">
@@ -288,9 +293,9 @@
         Therefore, entity matching becomes quite challenging. One solution to address this difficulty is offered by
         comparing multiple attributes of different record representations with attribute-specific similarity measures
         like Levenshtein distance, TF-IDF or advanced techniques like BERT. Newer approaches include the application of
-        so-called table transformers which will be discussed at <a href="#toc3">Section 3</a>. Entity matching tries to allocate entities
+        so-called table transformers which will be discussed in <a href="#toc3">Section 3</a>. Entity matching tries to allocate entities
         with different representations under the assumption that the higher the similarity is, the more likely two
-        entity representations are a match <cite><a href="https://doi.org/10.2200/S00655ED1V01Y201507WBE013">[1]</a></cite>.
+        entity representations are a match <a href="#toc8">[1]</a>.
         Records will then get clustered according to their correspondences and similarities such that further usage of
         the data can be applied.
     <p>
@@ -302,20 +307,19 @@
     <p>
         In 2017, Google Brain proposed the transformer model, that based on an encoder-decoder structure and an attention mechanism showed
         impressive improvements over state-of-the-art methods and simplicity in adoption to a wide range of machine learning tasks,
-         especially in the context of NLP <cite><a href="https://doi.org/10.2200/S00655ED1V01Y201507WBE013">[6]</a></cite>.
+         especially in the context of NLP <a href="#toc8">[6]</a><cite>.
         As a result, a new language representation model named BERT was introduced in 2019 to pre-train deep bidirectional
         representations from unlabeled text. That resulted in a lot of possibilities as a "pre-trained BERT model can be finetuned with
-        just one additional output layer to create state-of-the art methods for a wide range of tasks" <cite><a href="https://doi.org/10.2200/S00655ED1V01Y201507WBE013">[3]</a></cite>. In the
+        just one additional output layer to create state-of-the art methods for a wide range of tasks" <a href="#toc8">[3]</a>. In the
         following, we will use algorithms that are pre-trained on different BERT extensions, in particular TinyBERT and RoBERTa.
 
         TinyBERT is a 7.5x smaller BERT-Version that performs knowledge distillation with BERT as teacher model on both pre-training and
-        task-specific learning stages. Therefore, it achieves 9.4x faster inference still keeping competitive performance <cite><a href="https://doi.org/10.2200/S00655ED1V01Y201507WBE013">[7]</a></cite>.
+        task-specific learning stages. Therefore, it achieves 9.4x faster inference still keeping competitive performance <a href="#toc8">[7]</a><cite>.
         In contrast, RoBERTa is a more robust variety of BERT that modifies key hyperparameters and is exposed to a larger amount of training data
-        with a prolonged training time and bigger batches compared to BERT itself. This leads to substantial improvements <cite><a href="https://doi.org/10.2200/S00655ED1V01Y201507WBE013">[8]</a></cite>.
+        with a prolonged training time and bigger batches compared to BERT itself. This leads to substantial improvements <a href="#toc8">[8]</a>.
     <p>
 
     <span id="toc3"></span>
-    <span id="toc3.1"></span>
     <h2>3 Algorithms</h2>
     <p>
         In the following, we present different algorithms namely TURL and Tabbie from a class of table transformers. Table transformers
@@ -324,14 +328,15 @@
         single entries like normal BERT-based models do.
         <a style="color:#FF0000";>include sth. for CL as well</a>
     </p>
+    <span id="toc3.1"></span>
     <h3>3.1 TURL</h3>
     <p>
         Table Understanding through Representation Learning (TURL) is a "novel framework that introduces the pre-training/finetuning paradigm to
-        relational Web tables". <a style="color:#FF0000";>(Ref 1)</a> TURL is a TinyBERT based extension model that was pre-trained on around 600,000 Wikipedia tables such that it
+        relational Web tables" <a href="#toc8">[1]</a>. TURL is a TinyBERT based extension model that was pre-trained on around 600,000 Wikipedia tables such that it
          can be applied to different tasks with "minimal task-specific fine-tuning". The authors show that the model generalizes well and
-         outperforms existing methods for example in column type annotation <cite><a href="https://doi.org/10.2200/S00655ED1V01Y201507WBE013">[1]</a></cite>.
+         outperforms existing methods for example in column type annotation <a href="#toc8">[1]</a>.
         The basic idea of TURL is to "serialize[s] a table into a sequence of words and entities (similar to text data)
-        and [to] learn[s] embedding vectors for words and entities using Word2Vec" <a style="color:#FF0000";>(Ref 1 - TURL)</a>
+        and [to] learn[s] embedding vectors for words and entities using Word2Vec" <a href="#toc8">[1]</a>.
     <figcaption style="margin-bottom:1em;">
         <strong>Figure 3.1: Overview TURL architecture
         </strong>
@@ -343,7 +348,7 @@
     <p>
         More specifically, the TURL architecture which can be seen in Figure 3.1 consists of three modules. At first, an embedding layer
         is used to convert the different components of an input table into embeddings. The second layer then comprises a structure-aware stacked
-        transformer to capture textual and relational knowledge, as introduced in <a style="color:#FF0000";>\ref{sec:trans}???</a>. Additionally to receiving the embeddings from
+        transformer to capture textual and relational knowledge, as introduced in section <a href="#toc2.3">2.3</a>. Additionally, to receiving the embeddings from
         the first layer, the transformer layer also obtains a visibility matrix that models the row-column structure of a table. It acts as
         an attention mask such that each input token can only use the information from other "visible" tokens, e.g. the header of its column
         or another entry in the same row. These visibility matrices are basically modelled by assigning either 0 or 1 to the respective locations of additional tokens.
@@ -359,10 +364,10 @@
     <span id="toc3.2"></span>
     <h3>3.2 Constrastive Learning</h3>
     <p>
-        Contrastive learning has become a promising approach both in information retrieval [7] as well as in computer vision outperforming previous methods
-        in self-supervised and semi-supervised learning [6]. This framework has further been extended to a fully-supervised setting introducing an alternative 
-        to the usual cross-entropy loss function [5] while achieving state of the art results. In addition, supervised contrastive learning has seen recent success 
-        in product matching which is a special form of entitiy matching [4]. 
+        Contrastive learning has become a promising approach both in information retrieval <a href="#toc8">[7]</a> as well as in computer vision outperforming previous methods
+        in self-supervised and semi-supervised learning <a href="#toc8">[6]</a>. This framework has further been extended to a fully-supervised setting introducing an alternative
+        to the usual cross-entropy loss function <a href="#toc8">[5]</a> while achieving state of the art results. In addition, supervised contrastive learning has seen recent success
+        in product matching which is a special form of entitiy matching <a href="#toc8">[4]</a>.
 
         <figcaption style="margin-bottom:1em;">
             <strong>Figure 3.2: Supervised Contrastive Learning
@@ -394,17 +399,14 @@
     <!--CONTENT-->
     <p>
         <!-- Concept Explanation-->
-        Chapter 4 gives an overview on our approaches and their respective results. <a style="color:#FF0000";>We start by introducing our dataset and
-        the preprocessing steps conducted. Furthermore, we briefly state some baselines with which we compare our implemented
-        concepts and provide our experiments afterwards. The section is concluded by our results and an associated error
-        analysis. --- not correct here since there are several chapters; use this for introduction?</a>
-        Our dataset is based on the Web Data Commons - Schema.org Table Corpus <cite><a href="https://doi.org/10.2200/S00655ED1V01Y201507WBE013">[10]</a></cite> maintained by the Data
+        Chapter 4 gives an overview on the generation of our datasets and the final values contained in the sets.
+        Our dataset is based on the Web Data Commons - Schema.org Table Corpus <a href="#toc8">[10]</a> maintained by the Data
         and Web Science Research Group at the University of Mannheim.
         <br> In a first action, the tables were cleaned using a two-step
         approach in order to focus on English data. We applied a TLD-based method to first filter our data on English internet domain
         endings, e.g. ".com",or ".uk", and afterwards applied the fastText language detection algorithm on each single row in
         the remaining tables to check whether it belongs to the English language and if not we discarded
-        them <cite><a href="https://doi.org/10.2200/S00655ED1V01Y201507WBE013">[9]</a></cite>. We proceeded with the
+        them  <a href="#toc8">[9]</a><. We proceeded with the
         remaining cleaned rows and subsequently carried out different
         further preprocessing approaches which are specific for either schema or entity matching.
         <br>
@@ -425,7 +427,7 @@
         and technology as keywords to get relevant clusters for our final dataset. To further enhance our data, we
         searched for brands with at least 1,000 distinct clusters and established another category called "random". In order to
         make the final matching for the algorithms not too easy, we browsed the selected clusters for homogeneous entities
-        using Doc2Vec <cite><a href="https://doi.org/10.2200/S00655ED1V01Y201507WBE013">[11]</a></cite> and Jaccard similarity to include hard-to-distinguish clusters in our dataset.
+        using Doc2Vec <a href="#toc8">[11]</a> and Jaccard similarity to include hard-to-distinguish clusters in our dataset.
         Here, we based our selection on the balance between both, Jaccard and Doc2Vec score, by manually validating the best
         results for each of the defined domains.     <a style="color:#FF0000";>(@Estelle postpreprocessing der gesamten tabellen einfügen)</a>
         With a multilabel stratified shuffle-split <a style="color:#FF0000";>(@Kim/Jen: Ref? https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.StratifiedShuffleSplit.html or just cite sklearn?)</a> we distributed the remaining clusters
@@ -728,7 +730,7 @@
     All of our experiments were conducted using <a
         href="https://huggingface.co/transformers/main_classes/trainer.html">HuggingFace's Trainer</a> wrapper class for PyTorch. <br>
     
-    TURL does already offer several predefined tasks to evaluate the pre-trained framework on <cite><a href="https://doi.org/10.48550/arXiv.2006.14806">[1]</a></cite>.
+    TURL does already offer several predefined tasks to evaluate the pre-trained framework on <a href="#toc8">[1]</a>.
     Hereby, the taks of column type annotation is most suitable for both entity as well as schema matching. In order to pretain the model with our selected tables and 
     entities and perform the task of column type annotation the data has to be structured as a list containing lists for each table. Each table list then contains the
     table id, the page title, section title as well as further lists of headers, cell content and the column types. The respective representation of tables for schema matching and entitiy matching can be found here: ? 
