@@ -391,8 +391,8 @@
     <p>
         After the pretraining step, the encoder network ideally maps each class to a well seperated cluster in the embedding space. For the final stage of finetuning 
         the parameters of the encoder network remain frozen and only the linear classifier is trained using the usal cross-entropy loss for multi-class classification. 
-        In contrast to other methods, contrastive pretraining makes it much easier to learn decision boundaries for a linear classifier given a pretrained embedding space making
-        contrastive pretraining a powerful method for further downstream tasks.
+        In contrast to other methods, contrastive pretraining makes it much easier to learn decision boundaries for a linear classifier given a pretrained embedding space.
+        This makes contrastive pretraining a powerful method for further downstream tasks such as multi-class classification.
         
     </p>
     
@@ -969,8 +969,23 @@
 
 
 <span id="toc5.3"></span>
-<h3> 5.3 Contrastive Experiments </h3>
+<h3> 5.3 Contrastive Learning Experiments </h3>
+<p>
+    All our experiments presented in this section build upon the previous work on supervised contrastive learning for product matching <a href="#toc8">[4]</a>
+    and the authors' <a href="https://github.com/wbsg-uni-mannheim/contrastive-product-matching">repository</a>. Their model already offered the use-case of binary pair-wise classification for product matching. 
+    From there we reformulated their approach to serve as a multi-class classification framework, for both schema and entitiy matching.
+    As this approach is not table-based anymore, we had to restructure our data in a similar way as we did for our baseline experiments. While for product matching we only had one
+    dataset available we conducted experiments on all three datasets for schema matching namely small, medium and large. Furthermore, for product we concatenated 
+    the name and description columns and appended the respective cluster id as the label column. For schema matching the whole column information is concatenated into 
+    one text column followed the corresponding label. In both cases we basically got rid of the table content information as all entries are compressed into the same file.
+    For contrastive pretraining we then combined training and validation sets into a single one to rely on more data. As mentioned before, the whole power of this apporach builds on
+    meaningful contrastive pretraining. It is for the same reason that for product, we decided for a large batch size to avoid noisy gradient signals. In the case of schema matching
+    we were not able to set batch size as high as desired due to resource contraints. This is important to note and will be discussed later. 
+    After successful pretraining we froze the parameters of the encoder network and only trained a linear classifier which is a basic feed forward neural network.
+    Detailed information on the respective hyperparameter settings during experimentation are presented in the table below.
 
+
+</p>
 <br>
 <div style="margin-top:2em;">
     <div style=";margin-right: 2.5em">
