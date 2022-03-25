@@ -716,11 +716,11 @@
     TURL does already offer several predefined tasks to evaluate the pre-trained framework on <a href="#toc8">[1]</a>.
     Hereby, the taks of column type annotation is most suitable for both entity as well as schema matching. In order to pretain the model with our selected tables and
     entities and perform the task of column type annotation the data has to be structured as a list containing lists for each table. Each table list then contains the
-    table id, the page title, section title as well as further lists of headers, cell content and the column types. The respective representation of tables for schema matching and entitiy matching can be found here: ?
-    <br>
-    Further define task of column type annotation used for both schema and entitiy matching ?
-    <br>
-    Once the data was transformed to the relevant input representation,
+    table id, the page title, section title as well as further lists of headers, cell content and the column types.
+    The given input representation of tables for the task of column type annotation can be found within the <a
+        href="https://github.com/sunlab-osu/TURL#readme"> README</a> file within the TURL <a
+            href="https://github.com/sunlab-osu/TURL"> git repository</a>.
+    Further information on the pretraining and the respective fine-tuning task can be found in TURL: Table Understanding through Representation Learning <a href="#toc8">[1]</a>.
     <br>
     Detailed information on settings and hyperparameters adjusted during the experimentation are presented in the table below.
 
@@ -741,21 +741,10 @@
                     <th colspan="1" style='text-align:center; vertical-align:middle'> Inital</th>
                     <th colspan="1" style='text-align:center; vertical-align:middle'> Final/Last</th>
                 </tr>
-                <tr>
-                    <th></th>
-                    <th>Epochs</th>
-                    <th>Learning Rate</th>
-                    <th>Step Sizes </th>
-                    <th>...</th>
-                    <th>...</th>
-                    <th>BERT</th>
-                    <th>mBERT</th>
-                    <th>XLM-R</th>
 
-                </tr>
                 <tr>
-                    <td rowspan="9" style='text-align:center; vertical-align:middle'>Toy</td>
-                    <td>DE</td>
+                    <td>Training Epochs</td>
+                    <td>10</td>
                     <td>DE</td>
                     <td style="background-color:#E8E8E8">SVM</td>
                     <td style="background-color:#E8E8E8">TF-IDF</td>
@@ -766,8 +755,8 @@
 
                 </tr>
                 <tr>
-                    <td>EN</td>
-                    <td>DE</td>
+                    <td>Learning Rate</td>
+                    <td>5e-5</td>
                     <td style="background-color:#E8E8E8">SVM</td>
                     <td style="background-color:#E8E8E8">TF-IDF</td>
                     <td style="background-color:#E8E8E8"><b>0.7084</b></td>
@@ -776,8 +765,8 @@
                     <td>0.5955<i><sub>t</sub></i></td>
                 </tr>
                 <tr>
-                    <td>EN</td>
-                    <td>EN</td>
+                    <td>Batch Size</td>
+                    <td>20</td>
                     <td style="background-color:#E8E8E8">Logistic Regression</td>
                     <td style="background-color:#E8E8E8">TF-IDF</td>
                     <td style="background-color:#E8E8E8">0.9683</td>
@@ -786,8 +775,8 @@
                     <td>0.9743</td>
                 </tr>
                 <tr>
-                    <td>EN</td>
-                    <td>ES</td>
+                    <td>Accumulation Steps</td>
+                    <td>2</td>
                     <td style="background-color:#E8E8E8">Logistic Regression</td>
                     <td style="background-color:#E8E8E8">TF-IDF</td>
                     <td style="background-color:#E8E8E8"><b>0.6735<i><sub>t</sub></i></b></td>
@@ -796,8 +785,8 @@
                     <td>0.4812</td>
                 </tr>
                 <tr>
-                    <td>EN</td>
-                    <td>FR</td>
+                    <td>Save Steps</td>
+                    <td>5000</td>
                     <td style="background-color:#E8E8E8">Logistic Regression</td>
                     <td style="background-color:#E8E8E8">TF-IDF</td>
                     <td style="background-color:#E8E8E8"><b>0.7047</b></td>
@@ -806,8 +795,8 @@
                     <td>0.5658<i><sub>t</sub></i></td>
                 </tr>
                 <tr>
-                    <td>EN+DE</td>
-                    <td>DE</td>
+                    <td>Logging Steps</td>
+                    <td>1500</td>
                     <td style="background-color:#E8E8E8">SVM</td>
                     <td style="background-color:#E8E8E8">TF-IDF</td>
                     <td style="background-color:#E8E8E8">0.9757</td>
@@ -816,8 +805,8 @@
                     <td>0.9723</td>
                 </tr>
                 <tr>
-                    <td>EN+DE</td>
-                    <td>EN</td>
+                    <td>Warm up Steps</td>
+                    <td>5000</td>
                     <td style="background-color:#E8E8E8">-</td>
                     <td style="background-color:#E8E8E8">-</td>
                     <td style="background-color:#E8E8E8">-</td>
