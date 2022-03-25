@@ -85,8 +85,7 @@ You can find the code for each part in the following table:
 *  `TURL Experiments <https://github.com/NiklasSabel/data_integration_using_deep_learning/tree/main/notebooks/Schema/TURL>`__
 *  `Tabbie Experiments <https://github.com/NiklasSabel/data_integration_using_deep_learning/tree/main/notebooks/Schema/tabbie>`__
 *  `Visualizations <https://github.com/NiklasSabel/data_integration_using_deep_learning/tree/main/visualizations>`__
-*  `TURL models <>`__
-*  `Tabbie models <>`__
+
 
 All Experiments done were written in Jupyter Notebooks, which can be found in this  `folder <https://github.com/NiklasSabel/data_integration_using_deep_learning/tree/main/notebooks/Schema>`__.
 
