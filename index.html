@@ -420,15 +420,13 @@
         Further cleaning of selected tables and further preprocessing approaches specific to each task of schema or entity matching will be explained in detail in the following.
         <br>
         <a style="color:#FF0000";>
-            - I know this applies to both/all groups but this mixes up the order a bit since we first selected
-            specific classes, tables etc.?
             <br>
             - Kim: Is it important to know here from how much data we started and to which number of data we end up after cleaning it in the first step? Should we include that?
             <br>
             - Niklas: since they want us to focus on statistics, I would say yes
             <br>
-            - Jen: Hatte die anzahl und das herunterbrechen in meinem Schema Teil relativ detailliert erklärt, also würde sagen ja - hab das english cleaning bisschen umformuliert, aber können das sonst auch bei euch
-            integrieren und ich schreibe bei mir darunter, dass das genauso applied wurde?
+            - Jen: @Estelle - hast du hier zufällig noch die zahlen der tables vor und nach dem english language cleaning, damit wir die hier integrieren können?
+
         </a>
 
       <span id="toc4.1"></span>
@@ -691,9 +689,10 @@
     All of our datasets can be downloaded in <a href="#toc9">section 9</a> but are available for research purposes only.
     <br>
     The respective distribution of the chosen columns for schema matching are displayed in the following graph with product, being the largest category and source of tables,
-    including the majority of the columns. As mentioned above, the chosen columns were to represent different data types so that the final data of 207 columns
-    includes 150 strings, 21 datetime, 18 float, 13 integers as well as 5 geolocation columns. During the selection of the dataset, we made sure to include hard matching case,
-    i.e. columns that are really hard to distinguish for the algorithm. Examples for such hard
+    including the majority of the columns. As mentioned above, the chosen columns were to represent different data types so that the set of 207 columns
+    includes 150 strings, 21 datetime, 18 float, 13 integers as well as 5 geolocation columns. During the selection of the data set and the aforementioned columns,
+     we made sure to include hard matching cases, i.e. columns that are really hard to distinguish for the algorithm. Examples for such hard cases
+     are 'date created' and 'date modified', 'author' and 'creator' as well as different product gtins (global trade item numbers).
     <br>
       <a style="color:#FF0000";>(@Estelle: Könntest du hier nochmal beispiele zu den hard cases (irgendwas, was du schon mal in der präsi damals hattest?)
          z.b. in einer tabelle wir bei jannik oben integrieren?)</a>
@@ -1302,7 +1301,7 @@
                     <td>0.60</td>
                     <td>0.69</td>
                     <td>0.75</td>
-                    <td><b>0.77</b></td>
+                    <td><b>0.7722</b></td>
                 </tr>
                 <tr>
                     <td style="background-color:#E8E8E8">Medium</td>
@@ -1311,16 +1310,16 @@
                     <td>0.62</td>
                     <td>0.70</td>
                     <td>0.76</td>
-                    <td><b>0.81</b></td>
+                    <td><b>0.8214​</b></td>
                 </tr>
                 <tr>
                     <td style="background-color:#E8E8E8">Large</td>
-                    <td>0.80</td>
-                    <td>0.80</td>
-                    <td>0.80</td>
+                    <td>0.8014</td>
+                    <td>0.8030</td>
+                    <td>0.8019</td>
+                    <td>0.7593</td>
                     <td>0.76</td>
-                    <td>0.76</td>
-                    <td><b>0.87</b></td>
+                    <td><b>0.8684​</b></td>
                 </tr>
             </table>
         </div>
