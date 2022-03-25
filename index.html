@@ -420,12 +420,15 @@
         Further cleaning of selected tables and further preprocessing approaches specific to each task of schema or entity matching will be explained in detail in the following.
         <br>
         <a style="color:#FF0000";>
+            - I know this applies to both/all groups but this mixes up the order a bit since we first selected
+            specific classes, tables etc.?
             <br>
             - Kim: Is it important to know here from how much data we started and to which number of data we end up after cleaning it in the first step? Should we include that?
             <br>
             - Niklas: since they want us to focus on statistics, I would say yes
             <br>
-            - Jen: @Estelle can you integrate how many tables we lost from the one initially chosen due to english language detection?
+            - Jen: Hatte die anzahl und das herunterbrechen in meinem Schema Teil relativ detailliert erklärt, also würde sagen ja - hab das english cleaning bisschen umformuliert, aber können das sonst auch bei euch
+            integrieren und ich schreibe bei mir darunter, dass das genauso applied wurde?
         </a>
 
       <span id="toc4.1"></span>
@@ -572,8 +575,8 @@
             The distribution of all tables as well as tables within each selected category is presented in the table below.
 
         </p>
-        <table>
-            <caption style="margin-top: 1em" class="centertable">Table 4.3: Final data set sizes and category distribution for schema matching.</caption>
+        <table class="centertable">
+            <caption style="margin-top: 1em" >Table 4.3: Final data set sizes and category distribution for schema matching.</caption>
             <thead>
               <tr>
                 <th></th>
@@ -689,7 +692,8 @@
     <br>
     The respective distribution of the chosen columns for schema matching are displayed in the following graph with product, being the largest category and source of tables,
     including the majority of the columns. As mentioned above, the chosen columns were to represent different data types so that the final data of 207 columns
-    includes 150 strings, 21 datetime, 18 float, 13 integers as well as 5 geolocation columns. During the selection of the dataset, we made sure to include
+    includes 150 strings, 21 datetime, 18 float, 13 integers as well as 5 geolocation columns. During the selection of the dataset, we made sure to include hard matching case,
+    i.e. columns that are really hard to distinguish for the algorithm. Examples for such hard
     <br>
       <a style="color:#FF0000";>(@Estelle: Könntest du hier nochmal beispiele zu den hard cases (irgendwas, was du schon mal in der präsi damals hattest?)
          z.b. in einer tabelle wir bei jannik oben integrieren?)</a>
@@ -1009,7 +1013,7 @@
         </div>
         <div id="schemacon" class="tabcontent" style="display: none;">
             <table class="Multi-class">
-                <caption style="margin-top: 1em">Table 5.5: Schema Contrastive Learning Settings</caption>
+                <caption style="margin-top: 1em">Table 3: Experimental results</caption>
                 <tr>
                     <th>Category</th>
                     <th colspan="1" style='text-align:center; vertical-align:middle'> Inital</th>
@@ -1205,8 +1209,8 @@
                 <tr>
                     <td>EN+DE</td>
                     <td>EN</td>
-                    <td >-</td>
                     <td>-</td>
+                    <td >-</td>
                     <td >-</td>
                     <td>0.9258</td>
                     <td>0.9239</td>
@@ -1216,8 +1220,8 @@
                     <td>EN+DE</td>
                     <td>ES</td>
                     <td>-</td>
-                    <td>-</td>
-                    <td>-</td>
+                    <td >-</td>
+                    <td >-</td>
                     <td>0.7528</td>
                     <td><b>0.8467</b></td>
                     <td>0.8388</td>
@@ -1226,8 +1230,8 @@
                     <td>EN+DE</td>
                     <td>FR</td>
                     <td>-</td>
-                    <td >-</td>
-                    <td >-</td>
+                     <td >-</td>
+                     <td >-</td>
                     <td>0.75</td>
                     <td>0.8298</td>
                     <td><b>0.8299</b></td>
@@ -1326,72 +1330,8 @@
                 <tr>
                     <th colspan="1" style='text-align:center; vertical-align:middle'></th>
                     <th colspan="3" style='text-align:center; vertical-align:middle'> Baseline</th>
-<<<<<<< Updated upstream
                     <th colspan="2" style='text-align:center; vertical-align:middle'></th>
                     <th colspan="2" style='text-align:center; vertical-align:middle'> Table-based Transformers</th>
-=======
-                    <th colspan="1" style='text-align:center; vertical-align:middle'></th>
-                    <th colspan="1" style='text-align:center; vertical-align:middle'> Table-based Transformers</th>
-                </tr>
-                <tr>
-                    <th>Train Set</th>
-                    <th>Bert</th>
-                    <th>RoBerta</th>
-                    <th>TinyBert</th>
-                    <th>Contrastive Learning</th>
-                    <th>TURL</th>
-                </tr>
-                <tr>
-                    <td>Product</td>
-                    <td>DE</td>
-                    <td>DE</td>
-                    <td style="background-color:#E8E8E8">SVM</td>
-                    <td style="background-color:#E8E8E8">Co-Occurence</td>
-                    <td style="background-color:#E8E8E8">0.8298</td>
-                    <td>0.8984</td>
-                    <td><b>0.948</b></td>
-                    <td>0.9026</td>
-                </tr>
-                <tr>
-                    <td>EN</td>
-                    <td>DE</td>
-                    <td style="background-color:#E8E8E8">Random Forest</td>
-                    <td style="background-color:#E8E8E8">Co-Occurence</td>
-                    <td style="background-color:#E8E8E8">0.6746<i><sub>t</sub></i></td>
-                    <td>0.6777<i><sub>t</sub></i></td>
-                    <td><b>0.8891</b></td>
-                    <td>0.882</td>
-                </tr>
-                <tr>
-                    <td>EN</td>
-                    <td>EN</td>
-                    <td style="background-color:#E8E8E8">Logistic Regression</td>
-                    <td style="background-color:#E8E8E8">Co-Occurence</td>
-                    <td style="background-color:#E8E8E8">0.8263</td>
-                    <td>0.9167</td>
-                    <td>0.9223</td>
-                    <td><b>0.9284</b></td>
-                </tr>
-                <tr>
-                    <td>EN</td>
-                    <td>ES</td>
-                    <td style="background-color:#E8E8E8">Logistic Regression</td>
-                    <td style="background-color:#E8E8E8">Co-Occurence</td>
-                    <td style="background-color:#E8E8E8">0.625<i><sub>t</sub></i></td>
-                    <td>0.6767<i><sub>t</sub></i></td>
-                    <td><b>0.8043</b></td>
-                    <td>0.7725</td>
-                </tr>
-                <tr>
-                    <td>EN</td>
-                    <td>FR</td>
-                    <td style="background-color:#E8E8E8">SVM</td>
-                    <td style="background-color:#E8E8E8">Co-Occurence</td>
-                    <td style="background-color:#E8E8E8">0.6732</td>
-                    <td>0.7416</td>
-                    <td><b>0.8002</b></td>
-                    <td>0.7748</td>
->>>>>>> Stashed changes
                 </tr>
                 <tr>
                     <th>Set</th>
