@@ -23,8 +23,8 @@ Results:
 * TinyBert: 0.8329 F1
 * RoBERTa: 0.8958 F1
 * TURL: 0.7556 F1
-* Tabbie: /
-* Constrative Learning: 0.9379 F1
+* Tabbie: -
+* Contrastive Learning: 0.9379 F1
 
 
 You can find the code for each part in the following table: 
@@ -75,6 +75,7 @@ Results:
 * RoBERTa: 0.8 F1
 * TURL: 0.86 F1
 * Tabbie: - 
+* Contrastive Learning: 0.76 F1
 
 You can find the code for each part in the following table: 
 
