@@ -433,8 +433,8 @@
             For hard non-matches we provide the corresponding cosine similarity between a query entity and its closest match while for hard matches we show
             the cosine metric between the query and the closest product in the same cluster. In both cases, the cosine similarity is computed by comparing the vectorized
             entities obtained by Doc2Vec.
-        </p>  
-        
+        </p>
+
         <table style="width:100%">
             <caption style="margin-top: 1em">Table 4.1: Illustration of hard non-matches and hard matches .</caption>
             <thead>
@@ -486,7 +486,7 @@
                 </tr>
               </tbody>
             </table>
-        
+
         <a style="color:#FF0000";>(@Estelle postpreprocessing der gesamten tabellen einfügen)</a>
         With a multilabel stratified shuffle-split <a style="color:#FF0000";>(@Kim/Jen: Ref? https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.StratifiedShuffleSplit.html or just cite sklearn?)</a> we distributed the remaining clusters
         into &frac38; train, &frac14; validation and &frac38; test data. With this approach we ensured that
@@ -799,102 +799,74 @@
                 <caption style="margin-top: 1em">Table 3: Experimental results</caption>
                 <tr>
                     <th>Category</th>
-                    <th colspan="1" style='text-align:center; vertical-align:middle'> Inital</th>
-                    <th colspan="1" style='text-align:center; vertical-align:middle'> Final/Last</th>
+                    <th colspan="1" style='text-align:center; vertical-align:middle'> Inital Inputs</th>
+                    <th colspan="3" style='text-align:center; vertical-align:middle'> Adjusted/Final Inputs per Train Size</th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th>Small</th>
+                    <th>Medium</th>
+                    <th>Large</th>
                 </tr>
 
                 <tr>
-                    <td>Training Epochs</td>
+                    <td  style="background-color:#E8E8E8">Training Epochs</td>
                     <td>10</td>
-                    <td>DE</td>
-                    <td style="background-color:#E8E8E8">SVM</td>
-                    <td style="background-color:#E8E8E8">TF-IDF</td>
-                    <td style="background-color:#E8E8E8">0.9677</td>
-                    <td>0.9668<i><sub>t</sub></i></td>
-                    <td><b>0.9745</b></td>
-                    <td>0.9626</td>
+                    <td>50</td>
+                    <td>50</td>
+                    <td>50</td>
 
                 </tr>
                 <tr>
-                    <td>Learning Rate</td>
+                    <td  style="background-color:#E8E8E8">Learning Rate</td>
                     <td>5e-5</td>
-                    <td style="background-color:#E8E8E8">SVM</td>
-                    <td style="background-color:#E8E8E8">TF-IDF</td>
-                    <td style="background-color:#E8E8E8"><b>0.7084</b></td>
-                    <td>0.4713</td>
-                    <td>0.6176</td>
-                    <td>0.5955<i><sub>t</sub></i></td>
+                    <td>5e-5</td>
+                    <td>5e-5</td>
+                    <td>5e-5</td>
+
                 </tr>
                 <tr>
-                    <td>Batch Size</td>
+                    <td  style="background-color:#E8E8E8">Batch Size</td>
                     <td>20</td>
-                    <td style="background-color:#E8E8E8">Logistic Regression</td>
-                    <td style="background-color:#E8E8E8">TF-IDF</td>
-                    <td style="background-color:#E8E8E8">0.9683</td>
-                    <td><b>0.9836</b></td>
-                    <td>0.9754</td>
-                    <td>0.9743</td>
+                    <td>20</td>
+                    <td>20</td>
+                    <td>20</td>
+
                 </tr>
                 <tr>
-                    <td>Accumulation Steps</td>
+                    <td  style="background-color:#E8E8E8">Accumulation Steps</td>
                     <td>2</td>
-                    <td style="background-color:#E8E8E8">Logistic Regression</td>
-                    <td style="background-color:#E8E8E8">TF-IDF</td>
-                    <td style="background-color:#E8E8E8"><b>0.6735<i><sub>t</sub></i></b></td>
-                    <td>0.3722</td>
-                    <td>0.5619</td>
-                    <td>0.4812</td>
+                    <td>2</td>
+                    <td>2</td>
+                    <td>2</td>
+
                 </tr>
                 <tr>
-                    <td>Save Steps</td>
+                    <td  style="background-color:#E8E8E8">Save Steps</td>
                     <td>5000</td>
-                    <td style="background-color:#E8E8E8">Logistic Regression</td>
-                    <td style="background-color:#E8E8E8">TF-IDF</td>
-                    <td style="background-color:#E8E8E8"><b>0.7047</b></td>
-                    <td>0.4826</td>
-                    <td>0.5975</td>
-                    <td>0.5658<i><sub>t</sub></i></td>
+                    <td>50</td>
+                    <td>125</td>
+                    <td>650</td>
                 </tr>
                 <tr>
-                    <td>Logging Steps</td>
+                    <td  style="background-color:#E8E8E8">Logging Steps</td>
                     <td>1500</td>
-                    <td style="background-color:#E8E8E8">SVM</td>
-                    <td style="background-color:#E8E8E8">TF-IDF</td>
-                    <td style="background-color:#E8E8E8">0.9757</td>
-                    <td>0.9789</td>
-                    <td><b>0.9828</b></td>
-                    <td>0.9723</td>
+                    <td>15</td>
+                    <td>50</td>
+                    <td>200</td>
+
                 </tr>
                 <tr>
-                    <td>Warm up Steps</td>
+                    <td  style="background-color:#E8E8E8">Warm up Steps</td>
                     <td>5000</td>
-                    <td style="background-color:#E8E8E8">-</td>
-                    <td style="background-color:#E8E8E8">-</td>
-                    <td style="background-color:#E8E8E8">-</td>
-                    <td>0.9802</td>
-                    <td><b>0.9823</b></td>
-                    <td>0.977</td>
+                    <td>50</td>
+                    <td>125</td>
+                    <td>650</td>
+
                 </tr>
-                <tr>
-                    <td>EN+DE</td>
-                    <td>ES</td>
-                    <td style="background-color:#E8E8E8">-</td>
-                    <td style="background-color:#E8E8E8">-</td>
-                    <td style="background-color:#E8E8E8">-</td>
-                    <td>0.5034</td>
-                    <td><b>0.6602<i><sub>t</sub></i></b></td>
-                    <td>0.5792</td>
-                </tr>
-                <tr>
-                    <td>EN+DE</td>
-                    <td>FR</td>
-                    <td style="background-color:#E8E8E8">-</td>
-                    <td style="background-color:#E8E8E8">-</td>
-                    <td style="background-color:#E8E8E8">-</td>
-                    <td>0.563</td>
-                    <td><b>0.6695</b></td>
-                    <td>0.6384<i><sub>t</sub></i></td>
-                </tr>
+
+
             </table>
         </div>
         <div id="entity" class="tabcontent" style="display: none;">
