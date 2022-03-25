@@ -432,7 +432,71 @@
         make the final matching for the algorithms not too easy, we browsed the selected clusters for homogeneous entities
         using Doc2Vec <a href="#toc8">[11]</a> and Jaccard similarity to include hard-to-distinguish clusters in our dataset.
         Here, we based our selection on the balance between both, Jaccard and Doc2Vec score, by manually validating the best
-        results for each of the defined domains.     <a style="color:#FF0000";>(@Estelle postpreprocessing der gesamten tabellen einfügen)</a>
+        results for each of the defined domains.
+        <p>
+            To get a better understanding of hard-to-distinguish cases we provide some examples in Table 4.1.
+            The upper table illustrates three examples of so-called hard non-matching cases. A hard non-match describes two entities whic
+            On the other hand, hard matches describe two entities which belong to the same cluster but are semantically not as close as h are semantically very close
+            but belong to different classes. As one can see entities only differ in some characters making them a different cluster.to entities of other classes.
+            This can easily happen when same entities differ in the character length of their respective name column.
+            For hard non-matches we provide the corresponding cosine similarity between a query entity and its closest match while for hard matches we show
+            the cosine metric between the query and the closest product in the same cluster. In both cases, the cosine similarity is computed by comparing the vectorized
+            entities obtained by Doc2Vec.
+        </p>  
+        
+        <table style="width:100%">
+            <caption style="margin-top: 1em">Table 4.1: Illustration of hard non-matches and hard matches .</caption>
+            <thead>
+              <tr>
+                <th>Entity</th>
+                <th>Most Similar Entity</th>
+                <th>Cosine Metric</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Lifeproof Case Iphone 11</td>
+                <td>iPhone 11 <b>Pro Max</b> case</td>
+                <td>0.9776</td>
+              </tr>
+              <tr>
+                <td>Lego Star Wars The Complete Saga <b>DS</b></td>
+                <td>Lego Star Wars: The Complete Saga - <b>Wii Video</b> Game</td>
+                <td>0.9367</td>
+              </tr>
+              <tr>
+                <td> <b>10 2010</b> Audi A5 Quattro Fuel Injector 2.0L 4 Cyl Bosch High Pressure</td>
+                <td> <b>18 2018</b> Audi A5 Quattro Fuel Injector 2.0L 4 Cyl Standard Motor Products</td>
+                <td>0.9771</td>
+              </tr>
+            </tbody>
+            <thead>
+                <tr>
+                  <th>Entity</th>
+                  <th>Matching Entity</th>
+                  <th>Cosine Metric</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>iPhone 11 <b>Pro Max</b> case</td>
+                  <td>For iphone 11 <b>pro</b> x xr xs <b>max</b> cell phone case cover with camera lens protection</td>
+                  <td>0.8514 (below top 30)</td>
+                </tr>
+                <tr>
+                  <td>08MP-08FPS 90° Elbow <b>Long</b> Forged</td>
+                  <td>08MP-08FPS 90° Elbow Forged</td>
+                  <td>0.9062 (15th place)</td>
+                </tr>
+                <tr>
+                  <td>Jasmine Dragon Pearls Green Tea</td>
+                  <td>Jasmine Dragon Pearl <b>Jasmine</b> Green Tea</td>
+                  <td>0.9501 (5th place)</td>
+                </tr>
+              </tbody>
+            </table>
+        
+        <a style="color:#FF0000";>(@Estelle postpreprocessing der gesamten tabellen einfügen)</a>
         With a multilabel stratified shuffle-split <a style="color:#FF0000";>(@Kim/Jen: Ref? https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.StratifiedShuffleSplit.html or just cite sklearn?)</a> we distributed the remaining clusters
         into &frac38; train, &frac14; validation and &frac38; test data. With this approach we ensured that
         tables were distributed equally across size and selected clusters. Furthermore, in favor of not distorting the results
@@ -443,7 +507,7 @@
 
     </p>
     <table style="width:20%">
-        <caption style="margin-top: 1em">Table 4.1: Final product dataset sizes for entity matching.</caption>
+        <caption style="margin-top: 1em">Table 4.2: Final product dataset sizes for entity matching.</caption>
         <thead>
           <tr>
             <th></th>
