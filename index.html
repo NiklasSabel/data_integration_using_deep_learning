@@ -364,8 +364,8 @@
         <figure style="margin-top:3em">
             <img src="./images/supervised contrastive loss.JPG" style="margin-bottom:2em;"/>
         </figure>
-    
-        Figure 3.2 summarizes the general framework of supervised contrastive learning. In general, the whole process is split up in two stages, pretraining  
+
+        Figure 3.2 summarizes the general framework of supervised contrastive learning. In general, the whole process is split up in two stages, pretraining
         followed by the second stage of finetuning. The main purpose of contrastive pretraining is to learn hidden representations of respective clusters in such a way
         that instances from the same class end up close in space while instances from different classes end up far in space.
         To this end, the pretraining usually requires pairs of training instances: a positive is defined as a pair of training instances drawn
@@ -373,14 +373,14 @@
         This yields two latent representations which can now be used to compute the supervised contrastive (SupCon) loss which usually involves some sort of similarity metric. The SupCon loss function then
         maximizes the agreement between positives while it minimizes the agreement between negatives.
     <p>
-        After the pretraining step, the encoder network ideally maps each class to a well seperated cluster in the embedding space. For the final stage of finetuning 
-        the parameters of the encoder network remain frozen and only the linear classifier is trained using the usal cross-entropy loss for multi-class classification. 
+        After the pretraining step, the encoder network ideally maps each class to a well seperated cluster in the embedding space. For the final stage of finetuning
+        the parameters of the encoder network remain frozen and only the linear classifier is trained using the usal cross-entropy loss for multi-class classification.
         In contrast to other methods, contrastive pretraining makes it much easier to learn decision boundaries for a linear classifier given a pretrained embedding space.
         This makes contrastive pretraining a powerful method for further downstream tasks such as multi-class classification.
-        
+
     </p>
-    
-    
+
+
     </p>
     <span id="toc4"></span>
     <h2>4 Datasets and Preprocessing </h2>
@@ -390,13 +390,12 @@
         Chapter 4 gives an overview on the generation of our datasets and the final values contained in the sets.
         Our dataset is based on the Web Data Commons - Schema.org Table Corpus <a href="#toc8">[10]</a> maintained by the Data
         and Web Science Research Group at the University of Mannheim.
-        <br> In a first action, the tables were cleaned using a two-step
-        approach in order to focus on English data. We applied a TLD-based method to first filter our data on English internet domain
+        <br> For both tasks, i.e. entity and schema matching, different selection and filtering methods were applied to attain the final data sets.
+        However, in a first action, chosen tables for both taks were cleaned using a two-step approach in order extract English language data only.
+        We applied a TLD-based method to first filter our data on English internet domain
         endings, e.g. ".com",or ".uk", and afterwards applied the fastText language detection algorithm on each single row in
-        the remaining tables to check whether it belongs to the English language and if not we discarded
-        them  <a href="#toc8">[9]</a><. We proceeded with the
-        remaining cleaned rows and subsequently carried out different
-        further preprocessing approaches which are specific for either schema or entity matching.
+        the remaining tables to check whether it belongs to the English language and if not we discarded them  <a href="#toc8">[9]</a><.
+        Further cleaning of selected tables and further preprocessing approaches specific to each task of schema or entity matching will be explained in detail in the following.
         <br>
         <a style="color:#FF0000";>
             - I know this applies to both/all groups but this mixes up the order a bit since we first selected
@@ -405,6 +404,9 @@
             - Kim: Is it important to know here from how much data we started and to which number of data we end up after cleaning it in the first step? Should we include that?
             <br>
             - Niklas: since they want us to focus on statistics, I would say yes
+            <br>
+            - Jen: Hatte die anzahl und das herunterbrechen in meinem Schema Teil relativ detailliert erklärt, also würde sagen ja - hab das english cleaning bisschen umformuliert, aber können das sonst auch bei euch
+            integrieren und ich schreibe bei mir darunter, dass das genauso applied wurde?
         </a>
 
       <span id="toc4.1"></span>
@@ -462,27 +464,27 @@
         <span id="toc4.2"></span>
         <h3>4.2 Schema Matching</h3>
         <p>
-            As a basis for schema matching, it was important to gather a large amount of diverse table data to create a sufficient dataset 
+            As a basis for schema matching, it was important to gather a large amount of diverse table data to create a sufficient dataset
             with at least 200 different columns. Thereby, the chosen columns should be an evenly distributed within large, mid-sized and small tables,
-            and their content should represent different data types, different lengths and as well as hard cases for distinction. 
+            and their content should represent different data types, different lengths and as well as hard cases for distinction.
             To create a solid data base, we choose the 20 largest categories of Schema.org in order to gain a large amount of
-            tables that contain a sufficient amount of data. Due to the vast amount of disorderly data we initally chose 208 columns to be able 
+            tables that contain a sufficient amount of data. Due to the vast amount of disorderly data we initally chose 208 columns to be able
             to further reduce the column set in case that we would detect further misfitting criteria during the following data preparation and preprocessing.
             However, as we wanted to make sure that all tables contain at least three of the selected columns for schema matching, our initial dataset contained 79,318 tables.
             Further, in order to create a useful dataset, we reduced our sample of od tables further by checking for tables with more than 10 rows,
             less than 50% NAs within selected columns​ as well as less than 15% NAs within relevant columns in entire table. The resulting 54,190 tables were then split into
-            a training and set set by performing a multi-label stratified shuffled split with 3 splits (random state = 42) resulting in 44,435 training tables and 9,894 test tables. 
+            a training and set set by performing a multi-label stratified shuffled split with 3 splits (random state = 42) resulting in 44,435 training tables and 9,894 test tables.
             We chose to perform a <a
-                href="https://github.com/trent-b/iterative-stratification">multi-label stratified shuffled split</a> to not only distribute the different categories 
+                href="https://github.com/trent-b/iterative-stratification">multi-label stratified shuffled split</a> to not only distribute the different categories
             but also the selected columns in each category proportionally between the training and test set.
-            To compare different input and training sizes later on, our training data was further divided into a medium as well as small sized training set. Again, 
+            To compare different input and training sizes later on, our training data was further divided into a medium as well as small sized training set. Again,
             we performed a multi-label stratified shuffled split to distribute the data and especially columns proportinally making sure that all selected columns
             were represented in all datasets. Hereby, the large training set of 44,345 tables contaings all 9,776 tables of the medium-sized training and the medium-sized training
-            set contains all 2,444 tables of the small training set. 
+            set contains all 2,444 tables of the small training set.
 
             As a means to create a clean and reliable set of test tables, the entire test set containing 9,894 tables was manually checked for languages other than English, wrong column
-            labels as well as multiple, missing or odd entries such as symbols, for example. Thereby, about 10 percent of the tables were removed with more than 50 percent due to other foreign languages, 
-            hence reducing the test table size to 8,912. 
+            labels as well as multiple, missing or odd entries such as symbols, for example. Thereby, about 10 percent of the tables were removed with more than 50 percent due to other foreign languages,
+            hence reducing the test table size to 8,912.
 
             The distribution of all tables as well as tables within each selected category is presented in the table below.
 
@@ -606,8 +608,8 @@
 <span id="toc5"></span>
 <h2>5 Experimental Setup</h2>
 <p>
-    For running the experiments we used the resources from the University of Mannheim(dws-server) as well as the resources from the state Baden-Württemberg, 
-    the bw-uni-cluster. With that we had access to different 
+    For running the experiments we used the resources from the University of Mannheim(dws-server) as well as the resources from the state Baden-Württemberg,
+    the bw-uni-cluster. With that we had access to different
      setups to efficiently run the experiments. Furthermore, we had enough storage space to store
     the different datasets, created for the experiments.
 </p>
@@ -705,17 +707,17 @@
 
     All of our experiments were conducted using <a
         href="https://huggingface.co/transformers/main_classes/trainer.html">HuggingFace's Trainer</a> wrapper class for PyTorch. <br>
-    
+
     TURL does already offer several predefined tasks to evaluate the pre-trained framework on <a href="#toc8">[1]</a>.
-    Hereby, the taks of column type annotation is most suitable for both entity as well as schema matching. In order to pretain the model with our selected tables and 
+    Hereby, the taks of column type annotation is most suitable for both entity as well as schema matching. In order to pretain the model with our selected tables and
     entities and perform the task of column type annotation the data has to be structured as a list containing lists for each table. Each table list then contains the
-    table id, the page title, section title as well as further lists of headers, cell content and the column types. The respective representation of tables for schema matching and entitiy matching can be found here: ? 
+    table id, the page title, section title as well as further lists of headers, cell content and the column types. The respective representation of tables for schema matching and entitiy matching can be found here: ?
     <br>
-    Further define task of column type annotation used for both schema and entitiy matching ? 
+    Further define task of column type annotation used for both schema and entitiy matching ?
     <br>
-    Once the data was transformed to the relevant input representation, 
+    Once the data was transformed to the relevant input representation,
     <br>
-    Detailed information on settings and hyperparameters adjusted during the experimentation are presented in the table below. 
+    Detailed information on settings and hyperparameters adjusted during the experimentation are presented in the table below.
 
 
 </p>
@@ -961,15 +963,15 @@
 <h3> 5.3 Contrastive Learning Experiments </h3>
 <p>
     All our experiments presented in this section build upon the previous work on supervised contrastive learning for product matching <a href="#toc8">[4]</a>
-    and the authors' <a href="https://github.com/wbsg-uni-mannheim/contrastive-product-matching">repository</a>. Their model already offered the use-case of binary pair-wise classification for product matching. 
+    and the authors' <a href="https://github.com/wbsg-uni-mannheim/contrastive-product-matching">repository</a>. Their model already offered the use-case of binary pair-wise classification for product matching.
     From there we reformulated their approach to serve as a multi-class classification framework, for both schema and entitiy matching.
     As this approach is not table-based anymore, we had to restructure our data in a similar way as we did for our baseline experiments. While for product matching we only had one
-    dataset available we conducted experiments on all three datasets for schema matching namely small, medium and large. Furthermore, for product we concatenated 
-    the name and description columns and appended the respective cluster id as the label column. For schema matching the whole column information is concatenated into 
+    dataset available we conducted experiments on all three datasets for schema matching namely small, medium and large. Furthermore, for product we concatenated
+    the name and description columns and appended the respective cluster id as the label column. For schema matching the whole column information is concatenated into
     one text column followed the corresponding label. In both cases we basically got rid of the table content information as all entries are compressed into the same file.
     For contrastive pretraining we then combined training and validation sets into a single one to rely on more data. As mentioned before, the whole power of this apporach builds on
     meaningful contrastive pretraining. It is for the same reason that for product, we decided for a large batch size to avoid noisy gradient signals. In the case of schema matching
-    we were not able to set batch size as high as desired due to resource contraints. This is important to note and will be discussed later. 
+    we were not able to set batch size as high as desired due to resource contraints. This is important to note and will be discussed later.
     After successful pretraining we froze the parameters of the encoder network and only trained a linear classifier which is a basic feed forward neural network.
     Detailed information on the respective hyperparameter settings during experimentation are presented in the table below.
 
