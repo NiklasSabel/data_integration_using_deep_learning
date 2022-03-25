@@ -424,7 +424,9 @@
          <a style="color:#FF0000";>(@Jannik example for hard match and non-hard match einfügen und erklären)</a>
         Here, we based our selection on the balance between both, Jaccard and Doc2Vec score, by manually validating the best
         results for each of the defined domains.     <a style="color:#FF0000";>(@Estelle postpreprocessing approach der gesamten tabellen einfügen)</a>
-        With a multilabel stratified shuffle-split <a style="color:#FF0000";>(@Kim/Jen: Ref? https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.StratifiedShuffleSplit.html or just cite sklearn?)</a> we distributed the remaining clusters
+        With a <a
+            href="https://github.com/trent-b/iterative-stratification">multi-label stratified shuffled split</a>
+            <a style="color:#FF0000";>(Jen: passt das so oder als das git als quelle citen?)</a> we distributed the remaining clusters
         into &frac38; train, &frac14; validation and &frac38; test data. With this approach we ensured that
         tables were distributed equally across size and selected clusters. Furthermore, in favor of not distorting the results
         we cleaned the test set manually and discarded around 10 % of noise. Thereby, we ended up with an amount of
@@ -472,7 +474,8 @@
             to further reduce the column set in case that we would detect further misfitting criteria during the following data preparation and preprocessing.
             However, as we wanted to make sure that all tables contain at least three of the selected columns for schema matching, our initial dataset contained 79,318 tables.
             Further, in order to create a useful dataset, we reduced our sample of od tables further by checking for tables with more than 10 rows,
-            less than 50% NAs within selected columns​ as well as less than 15% NAs within relevant columns in entire table. The resulting 54,190 tables were then split into
+            less than 50% NAs within selected columns​ as well as less than 15% NAs within relevant columns in entire table.
+            <br> The resulting 54,190 tables were then split into
             a training and set set by performing a multi-label stratified shuffled split with 3 splits (random state = 42) resulting in 44,435 training tables and 9,894 test tables.
             We chose to perform a <a
                 href="https://github.com/trent-b/iterative-stratification">multi-label stratified shuffled split</a> to not only distribute the different categories
@@ -481,10 +484,12 @@
             we performed a multi-label stratified shuffled split to distribute the data and especially columns proportinally making sure that all selected columns
             were represented in all datasets. Hereby, the large training set of 44,345 tables contaings all 9,776 tables of the medium-sized training and the medium-sized training
             set contains all 2,444 tables of the small training set.
-
+            <br>
             As a means to create a clean and reliable set of test tables, the entire test set containing 9,894 tables was manually checked for languages other than English, wrong column
             labels as well as multiple, missing or odd entries such as symbols, for example. Thereby, about 10 percent of the tables were removed with more than 50 percent due to other foreign languages,
             hence reducing the test table size to 8,912.
+            <br>
+              <a style="color:#FF0000";>(@Estelle: Könntest du hier nochmal beispiele zu den hard cases (irgendwas, was du schon mal in der präsi damals hattest?) integrieren?)</a>
 
             The distribution of all tables as well as tables within each selected category is presented in the table below.
 
