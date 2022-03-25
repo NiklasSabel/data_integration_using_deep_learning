@@ -102,6 +102,18 @@
             /* This leaves 10px margin on left and right. If only right margin is needed try margin-right: 10px; */
         }
 
+        .column {
+          float: left;
+          width: 50%;
+          padding: 5px;
+        }
+
+        .row::after {
+          content: "";
+          clear: both;
+          display: table;
+        }
+
         @keyframes fadeEffect {
             from {
                 opacity: 0;
@@ -718,7 +730,7 @@
 <span id="toc5"></span>
 <h2>5 Experimental Setup</h2>
 <p>
-    For running the experiments we used the resources from the University of Mannheim(dws-server) as well as the resources from the state Baden-Württemberg,
+    For running the experiments we used the resources from the University of Mannheim (dws-server) as well as the resources from the state Baden-Württemberg,
     the bw-uni-cluster. With that we had access to different
      setups to efficiently run the experiments. Furthermore, we had enough storage space to store
     the different datasets, created for the experiments.
@@ -1260,29 +1272,20 @@
 
 <h2>6 Experimental Results and Error Analysis</h2>
 <!--CONTENT-->
-<p>Insert Experimental Results and error analysis
-<br>
+<p>All final F1 score results for both schema and entity tasks and the respective models applied are illustrated in the table below.
 
-<h3>6.1 Schema Matching Results</h3>
-
-<p>
+  <p>
     As can be seen in table 3, TURL outperforms the baseline models as well as the contrastive learning approach.
     It seems as the number of epochs that TURL is trained on does not play an important role for the both mid sized
-    and large dataset as the performance converges for both 25 and 50 epochs at the same outcomes. The size of the dataset
-    seems to take an important part in the performance of the baseline models and TURL. The performances increase up to 20 percent points.
+    and large dataset as the performance converges for both 25 and 50 epochs at the same outcomes. The size of the training dataset
+    definitely has a great infleunce on the performance of the baseline models and TURL. The performances increase up to 20 percent points.
     For contrastive learning on the other hand, the size of the dataset only makes a difference of 0.01.
-    To deepen the understanding of the differences between baselines and TURL, a more detailed evaluation with regards to the datatypes
-    of the data is of interest. For example, while TinyBert and CL reach respectively a micro F1 Score of 0.5034 and 0.5780 for the type geolocation,
-    TURL outperforms them with a micro F1 Score of 0.8857. Also floats and integers reach much higher micro F1 Scores with TURL.
-    For datetime the performances of the three approaches are quite similar. Only the type string is detected more accurately
-    by the baseline model and the CL approach.
+  </p>
+
+  Further detailed information on each of the results and differences in performance of the models are explained in more detail for each task below.
+<br>
 
 
-
-
-    The necessary code to retrace our experimental runs can be found in our <a
-            href="https://github.com/NiklasSabel/data_integration_using_deep_learning">GitHub repository</a>.
-</p>
 
 <div style="margin-top:2em;">
     <div style=";margin-right: 2.5em">
@@ -1297,7 +1300,7 @@
                     <th colspan="1" style='text-align:center; vertical-align:middle'></th>
                     <th colspan="4" style='text-align:center; vertical-align:middle'> Baseline</th>
                     <th colspan="1" style='text-align:center; vertical-align:middle'></th>
-                    <th colspan="1" style='text-align:center; vertical-align:middle'> Table-based Transformers</th>
+                    <th colspan="2" style='text-align:center; vertical-align:middle'> Table-based Transformers</th>
                 </tr>
                 <tr>
                     <th>Train Set</th>
@@ -1306,7 +1309,8 @@
                     <th>Distilbert</th>
                     <th>TinyBert</th>
                     <th>Contrastive Learning</th>
-                    <th>TURL</th>
+                    <th>TURL <br> 25 Epochs</th>
+                    <th>TURL <br> 50 Epochs</th>
 
                 </tr>
                 <tr>
@@ -1316,6 +1320,7 @@
                     <td>0.60</td>
                     <td>0.69</td>
                     <td>0.75</td>
+                    <td>0.7457​​</td>
                     <td><b>0.7722</b></td>
                 </tr>
                 <tr>
@@ -1325,6 +1330,7 @@
                     <td>0.62</td>
                     <td>0.70</td>
                     <td>0.76</td>
+                    <td>0.8214</td>
                     <td><b>0.8214​</b></td>
                 </tr>
                 <tr>
@@ -1334,6 +1340,7 @@
                     <td>0.8019</td>
                     <td>0.7593</td>
                     <td>0.76</td>
+                    <td>0.8663​​</td>
                     <td><b>0.8684​</b></td>
                 </tr>
             </table>
@@ -1374,10 +1381,103 @@
 </div>
 <span id="toc7"></span>
 
+<h3>6.1 Schema Matching Results</h3>
+
+
+  <br>
+
+  To deepen the understanding of the differences between baselines and TURL, a more detailed evaluation with regards to the datatypes
+  of the data is of interest. For example, while TinyBert and Contrastive Learning reach respectively a micro F1 Score of 0.5034 and 0.5780
+  for the type geolocation, TURL outperforms them with a micro F1 Score of 0.8857. Also floats and integers reach much higher micro F1 Scores with TURL.
+  For datetime the performances of the three approaches are quite similar. Only the type string is detected more accurately
+  by the baseline model and the contrastive approach. The following table shows Detailed F1 ccores for each data type and model applied.
+</p>
+
+<div style="margin-top:2em;">
+    <div style=";margin-right: 2.5em">
+        <table class="centertable">
+              <caption style="margin-top: 1em">Table 6.1: F1-scores compared for different data types and models</caption>
+              <tr>
+                  <th>Data Type</th>
+                  <th colspan="3" style='text-align:center; vertical-align:middle'> Model</th>
+              </tr>
+              <tr>
+                <th></th>
+                <th>TinyBERT</th>
+                <th>Contrastive Learning</th>
+                <th>TURL</th>
+              </tr>
+              <tr>
+                <td>strings</td>
+                <td><b>0.7797</b></td>
+                <td><b>0.7906</b></td>
+                <td>0.7651</td>
+              </tr>
+              <tr>
+                <td>datetime</td>
+                <td>0.7575</td>
+                <td>0.7363</td>
+                <td>0.7670</td>
+              </tr>
+              <tr>
+                <td>float</td>
+                <td>0.4988</td>
+                <td>0.4933</td>
+                <td>0.7920</td>
+              </tr>
+              <tr>
+                <td>integer</td>
+                <td>0.5436</td>
+                <td>0.4980</td>
+                <td>0.7235</td>
+              </tr>
+              <tr>
+                <td>geolocation</td>
+                <td>0.5034</td>
+                <td>0.5780</td>
+                <td><b>0.8857</b></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+
+
+
+<p>
+  In addition to differences in data types in general, when looking into the data and tables more thoroughly, further criteria amount for
+  differences in the models' performances. As the data types already suggests, all baseline models perform fairly well on string input as they seem to
+  be more easily identifiable when being concatenated as input. At the same time clean column content performs similarly well for both baselines, CL
+  as well as TURL.
+  Compared to the baselines, TURL performs significantly better on columns containing rather complex content, such as mixtures of strings and integers or floats combined.
+  Examples of such compley columns are openinghours specification of places or address columns for different categories such as person, hotel or local business.
+  The table below shows some examples of complex columns and average content as well as the respective F1 score of the models.
+
+  <br>
+  - More data - better results for baselines (e.g. product)
+  <br>
+  - Clean columns work on both baselines and TURL
+  <br>
+  - Complex column content performs poorly on baseline - gets mixed up when using concatenated input
+  <br>
+  - length not as indicative since product gtins cannot be sepereated
+
+<h3>6.2 Entity Matching Results</h3>
+
+<p>
+  The necessary code to retrace our experimental runs can be found in our <a
+          href="https://github.com/NiklasSabel/data_integration_using_deep_learning">GitHub repository</a>.
+</p>
+
+<br>
+
 <h2>7 Discussion and Outlook</h2>
 <!--CONTENT-->
 <p>
     Insert Discussion and Outlook
+    Schema further work and outlook: <br>
+    - Clean the columns more thoroughly, find noice in columns and data
+    - Further analysis on hard cases
+
     <a style="color:#FF0000";>(Application Schema & Entity Matching together? (see slides Bizer: https://www.uni-mannheim.de/media/Einrichtungen/dws/Files_Teaching/Web_Data_Integration/HWS2021/WDI04-IdentityResolution-HWS2021.pdf))</a>.
 </p>
 
