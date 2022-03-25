@@ -4,6 +4,8 @@ Data Integration using Deep Learning
 
 This github-repository provides the code for our team project in the fall semester 2021 at the University of Mannheim with the topic of Data Integration using Deep Learning. We are investigating the performance of table transformer frameworks on the tasks of matching entities (entity matching) and schemes (schema matching) across tables. The task will be presented as a multi-class classification problem of characterising if a row (entity) or a column (schema) belongs to a predefined cluster/has a specific label. Table transformer models use whole table representations as input to enrich the classification problem with metadata and surrounding information. We investigate whether these enriched models, in particular TURL and Tabbie, will perform better than our two baselines: RandomForest based on tf-idf and word count representations and RoBERTa/TinyBert as embedding based transformer models. The project is based on data from the `WDC Schema.org Table Corpus <http://webdatacommons.org/structureddata/schemaorgtables/>`__ with special focus on two of the largest categories product and localbusiness for the entity matching task and with predefined restrictions for the schema matching task. The schema matching task entails the determination of > 200 column types such as name, title, duration etc. from categories such as Music Recoding or Recipe.
 
+We make most of our code availabe that was used for this project. Since the repositories for the different algorithms are too hugh for github on top of our code, they can be requested by contacting the authors.
+
 Table of Contents
 ==============================
 .. contents::
@@ -11,17 +13,18 @@ Table of Contents
 Description Entity - Product
 ==============================
 
-We make all our code availabe that was used for this project. In the following, we will shortly describe the project setup and our approach. For the product data, the corpus already provided a clustering that we could make use of as labels. By first cleaning the corpus data via a tld-based approach (filter on english internet domain endings) and using fast-text we made sure to focus on tables that are mainly english. Via keyword search on brands with the strongest revenue in different product categories, we created our dataset from the corpus and made sure that enough entities are included that are hard to distinguish (Doc2Vec and Jaccard similarity). Using a multilabel stratified shuffle approach we split our remaining data into train-validation-test sets by using 3/8 for training, 2/8 for validation and 3/8 for testing. After a manual check of the test data and then discarding noise (~10%), we remain with 1,345 train, 855 validation and 1,331 test tables. As baselines we use on the one hand a tf-idf and tf based random forest algorithm and one the other hand two bert based approaches with TinyBert and RoBERTa. The results can be seen below.
-As we are trying to beat those baselines with the mentioned table transformers, we will provide in the following the results of TURL and tabbie for comparison with best settings respectively.
+In the following, we will shortly describe the project setup and our approach. For the product data, the corpus already provided a clustering that we could make use of as labels. By first cleaning the corpus data via a tld-based approach (filter on english internet domain endings) and using fast-text we made sure to focus on tables that are mainly english. Via keyword search on brands with the strongest revenue in different product categories, we created our dataset from the corpus and made sure that enough entities are included that are hard to distinguish (Doc2Vec and Jaccard similarity). Using a multilabel stratified shuffle approach we split our remaining data into train-validation-test sets by using 3/8 for training, 2/8 for validation and 3/8 for testing. After a manual check of the test data and then discarding noise (~10%), we remain with 1,345 train, 855 validation and 1,331 test tables. As baselines we use on the one hand a tf-idf and tf based random forest algorithm and one the other hand two bert based approaches with TinyBert and RoBERTa. The results can be seen below.
+As we are trying to beat those baselines with the mentioned table transformers, we will provide in the following the results of TURL, tabbie and constrative learning for comparison with best settings respectively.
 
 
 Results: 
 
 * Random Forest: 0.8684 F1  
-* TinyBert: 
-* RoBERTa: 0,8958 F1
-* TURL: 
-* Tabbie: 
+* TinyBert: 0.8329 F1
+* RoBERTa: 0.8958 F1
+* TURL: 0.7556 F1
+* Tabbie: /
+* Constrative Learning: 0.9379 F1
 
 
 You can find the code for each part in the following table: 
@@ -32,8 +35,6 @@ You can find the code for each part in the following table:
 *  `TURL Experiments <https://github.com/NiklasSabel/data_integration_using_deep_learning/tree/main/notebooks/Entity/Product/TURL>`__
 *  `Tabbie Experiments <https://github.com/NiklasSabel/data_integration_using_deep_learning/tree/main/notebooks/Entity/Product/tabbie>`__
 *  `Visualizations <https://github.com/NiklasSabel/data_integration_using_deep_learning/tree/main/visualizations>`__
-*  `TURL models <>`__
-*  `Tabbie models <>`__
 
 All Experiments done were written in Jupyter Notebooks, which can be found in this  `folder <https://github.com/NiklasSabel/data_integration_using_deep_learning/tree/main/notebooks/Entity>`__.
 
@@ -43,26 +44,15 @@ All of our datasets can be requested by mail at ralph@informatik.uni-mannheim.de
 Description Entity - LocalBusiness
 ==============================
 
-We make all our code availabe that were used for this project. In the following we will shortly describe the project setup and our approach. By first cleaning the corpus data via tld-based approach (filter on english internet domain endings) and using fast-text we made sure to focus on tables that are mainly english. ?
+We used the same approach as above for preparing a dataset for LocalBusiness. Unfortunately the baselines were already in the range of 95%-99% F1. So, we discarded the dataset as it did not include difficult enough examples to evaluate the approaches.
 
-Results: 
-
-* Random Forest: 
-* TinyBert: 
-* RoBERTa:
-* TURL: 
-* Tabbie: 
 
 You can find the code for each part in the following table: 
 
 *  `Data set generation <https://github.com/NiklasSabel/data_integration_using_deep_learning/tree/main/notebooks/Entity/LocalBusiness/Preprocessing>`__
 *  `Train test split <https://github.com/NiklasSabel/data_integration_using_deep_learning/tree/main/notebooks/Entity/LocalBusiness/train_test_split>`__
 *  `Baselines <https://github.com/NiklasSabel/data_integration_using_deep_learning/tree/main/notebooks/Entity/LocalBusiness/Baseline>`__
-*  `TURL Experiments <https://github.com/NiklasSabel/data_integration_using_deep_learning/tree/main/notebooks/Entity/LocalBusiness/TURL>`__
-*  `Tabbie Experiments <https://github.com/NiklasSabel/data_integration_using_deep_learning/tree/main/notebooks/Entity/LocalBusiness/tabbie>`__
-*  `Visualizations <https://github.com/NiklasSabel/data_integration_using_deep_learning/tree/main/visualizations>`__
-*  `TURL models <>`__
-*  `Tabbie models <>`__
+
 
 All Experiments done were written in Jupyter Notebooks, which can be found in this  `folder <https://github.com/NiklasSabel/data_integration_using_deep_learning/tree/main/notebooks/Entity>`__.
 
