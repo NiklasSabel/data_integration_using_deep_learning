@@ -415,21 +415,21 @@
         with 1.662 million tables and 231 million entities in the parts Top100 and Minimum3, while excluding the tables in the Rest part,
         because those tables do not have enough entries. After our initial language cleaning step, we remained with 435,000 tables and  <a style="color:#FF0000";>xx </a> entities.
         The Product corpus already provided a clustering for the entities, so, no
-        further annotation was needed. Focusing on clusters with at least eight tables, we used the most common brands for different
+        further annotation was needed. Here, a cluster corresponds to a collection of identical products across different origins, i.e. websites.
+        Focusing on clusters with at least eight tables, we used the most common brands for different
         chosen categories, in particular bikes, cars, clothes, drugstore, electronics,
         and technology as keywords to get relevant clusters for our final dataset. To further enhance our data, we
         searched for brands with at least 1,000 distinct clusters and established another category called "random". In order to
         make the final matching for the algorithms not too easy, we browsed the selected clusters for homogeneous entities
         using Doc2Vec <a href="#toc8">[11]</a> and Jaccard similarity to include hard-to-distinguish clusters in our dataset.
-         <a style="color:#FF0000";>(@Jannik example for hard match and non-hard match einfügen und erklären)</a>
         Here, we based our selection on the balance between both, Jaccard and Doc2Vec score, by manually validating the best
         results for each of the defined domains.
         <p>
-            To get a better understanding of hard-to-distinguish cases we provide some examples in Table 4.1.
-            The upper table illustrates three examples of so-called hard non-matching cases. A hard non-match describes two entities whic
-            On the other hand, hard matches describe two entities which belong to the same cluster but are semantically not as close as h are semantically very close
-            but belong to different classes. As one can see entities only differ in some characters making them a different cluster.to entities of other classes.
-            This can easily happen when same entities differ in the character length of their respective name column.
+            To get a better understanding of hard-to-distinguish cases, we provide some examples in Table 4.1.
+            The upper table illustrates three examples of so-called hard non-matching cases. A hard non-match describes two entities which are semantically very close
+            but belong to different classes.  As one can see, some entities only differ in some characters, resulting in different cluster assignments.
+            On the other hand, hard matches relate to two entities which belong to the same cluster but are semantically not as close to entities of the same class.
+            This can easily happen when the same entities differ in the character length of their respective name column.
             For hard non-matches we provide the corresponding cosine similarity between a query entity and its closest match while for hard matches we show
             the cosine metric between the query and the closest product in the same cluster. In both cases, the cosine similarity is computed by comparing the vectorized
             entities obtained by Doc2Vec.
@@ -493,7 +493,6 @@
         tables were distributed equally across size and selected clusters. Furthermore, in favor of not distorting the results
         we cleaned the test set manually and discarded around 10 % of noise. Thereby, we ended up with an amount of
         1,410 clusters that were used for training the algorithms. The final set sizes can be seen in Table 4.1.
-        <a style="color:#FF0000";>(idea: insert screenshot of one final cluster as example?)</a>.
 
 
     </p>
