@@ -1306,20 +1306,40 @@
 
 <h3>6.1 Schema Matching Results</h3>
 
+<br>
+
+<a style="color:#FF0000";>@Luisa or Estelle Hier fehlen noch ein paar kommentare zu CL</a>
+
+<p>
+  When looking at the distribution of F1 Scores for each chosen category and the differences in training sizes, the graph above clearly indicates, that
+  the performance increases with increasing training samples. For some categories, such as TV episode or music album, for examples, the difference is rather large
+  while for other categories the difference is not as big. When looking at the data and column count more thoroughly, however, some columns such as number of tracks
+  (in music album) that are only represented in 20 tables within the medium-sized training set already achieve an F1 Score higher than 0.8.
+  Other columns, such as names (in music album) do not reach an F1 Score of 0.8 despite bein represented in more than 160 tables. Hence, even though the models'
+  performances generally increase with a larger training sample size, this is not neccessarily indicate that all columns achieve a high F1 Score with more training data.
+</p>
+
+<figcaption style="text-align:center">Figure 6.1: F1 Score Distribution for each Category and Training Size</figcaption>
+      <figure>
+        <img src="./images/F1_Score_Distribution.png" style="margin-bottom:2em;"class="center2"/>
+      </figure>
 
   <br>
 
-  To deepen the understanding of the differences between baselines and TURL, a more detailed evaluation with regards to the datatypes
+<p>
+  Therefore, to deepen the understanding of the differences between baselines and TURL, a more detailed evaluation with regards to the datatypes
   of the data is of interest. For example, while TinyBert and Contrastive Learning reach respectively a micro F1 Score of 0.5034 and 0.5780
   for the type geolocation, TURL outperforms them with a micro F1 Score of 0.8857. Also floats and integers reach much higher micro F1 Scores with TURL.
   For datetime the performances of the three approaches are quite similar. Only the type string is detected more accurately
-  by the baseline model and the contrastive approach. The following table shows Detailed F1 ccores for each data type and model applied.
+  by the baseline model and the contrastive approach. The following table shows Detailed F1 ccores for each data type and model applied with the best
+  performing data type highlighted for each model.
+
 </p>
 
 <div style="margin-top:2em;">
     <div style=";margin-right: 2.5em">
         <table class="centertable">
-              <caption style="margin-top: 1em">Table 6.3: F1-scores compared for different data types and models</caption>
+              <caption style="margin-top: 1em">Table 6.1: F1-scores compared for different data types and models</caption>
               <tr>
                   <th>Data Type</th>
                   <th colspan="3" style='text-align:center; vertical-align:middle'> Model</th>
@@ -1368,21 +1388,69 @@
 
 <p>
   In addition to differences in data types in general, when looking into the data and tables more thoroughly, further criteria amount for
-  differences in the models' performances. As the data types already suggests, all baseline models perform fairly well on string input as they seem to
-  be more easily identifiable when being concatenated as input. At the same time clean column content performs similarly well for both baselines, CL
-  as well as TURL.
+  differences in the models' performances. As the analysis of different data types already suggests, all baseline models perform fairly well
+   on string input as they seem to be more easily identifiable when being concatenated as input. At the same time clean column content of strings
+   or integers only performs similarly well for both baselines, CL as well as TURL.
   Compared to the baselines, TURL performs significantly better on columns containing rather complex content, such as mixtures of strings and integers or floats combined.
-  Examples of such compley columns are openinghours specification of places or address columns for different categories such as person, hotel or local business.
-  The table below shows some examples of complex columns and average content as well as the respective F1 score of the models.
+  Examples of such complex columns are openinghours specification of places or address columns for different categories such as person, hotel or local business.
+  The table below shows some examples of clean, e.g. total time, and complex, e.g. address, columns as well as the respective F1 score of the models.
 
+  <div style="margin-top:2em;">
+      <div style=";margin-right: 2.5em">
+          <table class="centertable">
+                <caption style="margin-top: 1em">Table 6.2: Examples of different Column and Data Types and respective Results for the Large Train Size</caption>
+                <tr>
+                    <th>Column</th>
+                    <th>Data Type</th>
+                    <th>Example content</th>
+                    <th>TinyBERT</th>
+                    <th>CL</th>
+                    <th>TURL</th>
+                </tr>
+                <tr>
+                  <td>Hotel.address</td>
+                  <td>string</td>
+                  <td></td>
+                  <td>0.4727</td>
+                  <td>0.3909</td>
+                  <td>0.9099</td>
+                </tr>
+                  <td>Person.address</td>
+                  <td>string</td>
+                  <td></td>
+                  <td>0.3387</td>
+                  <td>0.1935</td>
+                  <td>0.8197</td>
+                </tr>
+                </tr>
+                  <td>Place.geo</td>
+                  <td>geolocation</td>
+                  <td></td>
+                  <td>0.5118</td>
+                  <td>?</td>
+                  <td>0.9512</td>
+                </tr>
+                <tr>
+                  <td>Recipe.totaltime</td>
+                  <td>datetime</td>
+                  <td></td>
+                  <td>0.8053</td>
+                  <td>0.8114</td>
+                  <td>0.8857</td>
+                </tr>
+                <tr>
+                  <td>Book.bookformat</td>
+                  <td>string</td>
+                  <td></td>
+                  <td>0.8966</td>
+                  <td>0.9310</td>
+                  <td>0.8621</td>
+                </tr>
+              </table>
+            </div>
+          </div>
   <br>
-  - More data - better results for baselines (e.g. product)
-  <br>
-  - Clean columns work on both baselines and TURL
-  <br>
-  - Complex column content performs poorly on baseline - gets mixed up when using concatenated input
-  <br>
-  - length not as indicative since product gtins cannot be sepereated
+
 
 <h3>6.2 Entity Matching Results</h3>
 
@@ -1396,11 +1464,37 @@
 <h2>7 Discussion and Outlook</h2>
 <!--CONTENT-->
 <p>
+  As for the task of schema matching, the experiments clearly show that table-based transformer models such as TURL are highly relevant and
+  can be applied advantageously to identify and match identicals schemata. In particular, complex content that seems rather confusing as concatenated input
+  and hard to differentiate by all BERT-based models can be succesfully identified by TURL. Further, as is to be expected, larger amounts of training data clearly improve the model's
+  performance. Especially for hard matching cases such as author and creator within creative work, for example, more training makes a huge difference.
+  At the same time, however,
+  Results also show that difference in length of the content, given in the case of different product gtins, do not help to improve the models' performance as much
+  as context in the case of TURL. Such examples cleary show how tabel-based transformers utilize context to draw inferences about specific columns content.
+  At the same time, the amount of context, such as number of columns does not results in any significant differences in the performance of TURL compared to the baselines.
+  <br>
+  However, while clean table content seems to provide good results for both baseline as well as table-based models, specific hard cases such as product gtins,
+  despite the large amount of data, still seems to be rather difficult to differentiate. Taking this as an example, one could further look into the specific
+  column content of hard matching cases and possibly identify noise, other misleading content or further relevant context information. The test data already yielded roughly ten percent of noise, mainly due to languages other than english, we assume that there are also roughly 10 percent of
+  noise within the training data. Hence, further cleaning and investigation of the column content could give more insights and potentially lead to better
+  model performance as well.
+  <br>
+  With regard to further work that can be applied to the tasks of data integration and transformer models, we also suggest to gather more training data and
+  gain more insights on other categories next to the already chosen ones. Additionally, due to time restrictions, we did not focus extensively on hyperparameter
+  tuning during our project. Therefore, further experiments and adjustment of different hyperparameters within TURL, such as the learning rate for examples,
+  could also lead to better results.
+  <br>
+  In general, as data integration using deep learning is still a rather new application, further tables-tabes transformer such as ?? for example, could
+  be investigated and used for further experimentation. At the same time, due to time limitations, our project team was not able to dive deeper into the
+  analysis and exploration of contrastive learning, so that
+
+<br>
+  <a style="color:#FF0000";>@Luisa or Estelle Can you add a few statements regarding Contrastive Learning?</a>
+
     Insert Discussion and Outlook
     Schema further work and outlook: <br>
-    - Clean the columns more thoroughly, find noice in columns and data
     - Further analysis on hard cases
-
+<br>
     <a style="color:#FF0000";>(Application Schema & Entity Matching together? (see slides Bizer: https://www.uni-mannheim.de/media/Einrichtungen/dws/Files_Teaching/Web_Data_Integration/HWS2021/WDI04-IdentityResolution-HWS2021.pdf))</a>.
 </p>
 
