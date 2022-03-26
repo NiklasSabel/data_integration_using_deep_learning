@@ -211,7 +211,7 @@
 
 <body>
 <div id="logo" style="text-align:right; background-color: white;">&nbsp;&nbsp;<a
-        href="http://dws.informatik.uni-mannheim.de"><img src="images/ma-logo.gif"
+        href="http://dws.informatik.uni-mannheim.de"><img src="./visualizations/Website_images/ma-logo.gif"
                                                           alt="University of Mannheim - Logo"></a></div>
 <div id="header">
     <h1 style="font-size: 250%;">Data Integration using Deep Learning</h1>
@@ -380,7 +380,7 @@
      Figure 3.1: Overview TURL architecture
     </figcaption>
     <figure >
-        <img src="./images/TURL framework.JPG" style="margin-bottom:2em;" class="center"/>
+        <img src="./visualizations/Website_images/TURL framework.JPG" style="margin-bottom:2em;" class="center"/>
     </figure>
 
     <p>
@@ -403,7 +403,7 @@
 
         </figcaption>
         <figure >
-            <img src="./images/supervised contrastive loss.JPG" style="margin-bottom:2em;"class="center1"/>
+            <img src="./visualizations/Website_images/supervised contrastive loss.JPG" style="margin-bottom:2em;"class="center1"/>
         </figure>
 
         Figure 3.2 summarizes the general framework of supervised contrastive learning. In general, the whole process is split up in two stages, pretraining
@@ -523,7 +523,7 @@
             </table>
 
         <a style="color:#FF0000";>(@Estelle postpreprocessing der gesamten tabellen einfügen)</a>
-        With a multilabel stratified shuffle-split <a href="#toc8">[1]</a> or just cite sklearn?)</a> we distributed the remaining clusters
+        With a multilabel stratified shuffle-split <a href="#toc8">[1]</a> we distributed the remaining clusters
         into &frac38; train, &frac14; validation and &frac38; test data. With this approach we ensured that
         tables were distributed equally across size and selected clusters. To avoid skewing the results, we also manually
         cleaned the test set, detecting about 10% noise, which we then discarded entirely. Thereby, we ended up with an amount of
@@ -570,21 +570,21 @@
             to further reduce the column set in case that we would detect further misfitting criteria during the following data preparation and preprocessing.
             However, as we wanted to make sure that all tables contain at least three of the selected columns for schema matching, our initial dataset contained 79,318 tables.
             Further, in order to create a useful dataset, we reduced our sample of tables further by checking for tables with more than 10 rows,
-            less than 50% NAs within selected columns​ as well as less than 15% NAs within relevant columns in entire table.
+            less than 50% NAs within selected columns​ as well as less than 15% NAs within relevant columns in entire table. <a style="color:#FF0000";>Kim: tense?</a>
             <br> The resulting 54,190 tables were then split into
-            a training and set set by performing a multi-label stratified shuffled split with 3 splits (random state = 42) resulting in 44,435 training tables and 9,894 test tables.
+            a training and test set by performing a multi-label stratified shuffle split with three splits (random state = 42) resulting in 44,435 training tables and 9,894 test tables.
             We chose to perform a multi-label stratified shuffled split <a href="#toc8">[1]</a> to not only distribute the different categories
-            but also the selected columns in each category proportionally between the training and test set.
+            but also the selected columns in each category proportionally between the training and test set. <a style="color:#FF0000";>Kim: split doppelt sich mit oben </a>
             To compare different input and training sizes later on, our training data was further divided into a medium as well as small sized training set. Again,
             we performed a multi-label stratified shuffled split to distribute the data and especially columns proportinally making sure that all selected columns
-            were represented in all datasets. Hereby, the large training set of 44,345 tables contaings all 9,776 tables of the medium-sized training and the medium-sized training
+            were represented in all datasets. Hereby, the large training set of 44,345 tables contains all 9,776 tables of the medium-sized training and the medium-sized training
             set contains all 2,444 tables of the small training set.
             <br>
             As a means to create a clean and reliable set of test tables, the entire test set containing 9,894 tables was manually checked for languages other than English, wrong column
-            labels as well as multiple, missing or odd entries such as symbols, for example. Thereby, about 10 percent of the tables were removed with more than 50 percent due to other foreign languages,
+            labels as well as multiple, missing or odd entries such as symbols, for example. Thereby, about 10% of the tables were removed with more than 50% due to other foreign languages,
             hence reducing the test table size to 8,912.
             <br>
-            The distribution of all tables as well as tables within each selected category is presented in the table below.
+            The distribution of all tables as well as tables within each selected category is presented in the Table 4.3.
 
         </p>
         <table class="centertable">
@@ -716,7 +716,7 @@
 
 <p>
     All of our datasets can be downloaded in <a href="#toc9">section 9</a> but are available for research purposes only.
-    <br>
+    <br><br>
     The respective distribution of the chosen columns for schema matching are displayed in the following graph with product, being the largest category and source of tables,
     including the majority of the columns. As mentioned above, the chosen columns were to represent different data types so that the set of 207 columns
     includes 150 strings, 21 datetime, 18 float, 13 integers as well as 5 geolocation columns. During the selection of the data set and the aforementioned columns,
@@ -735,15 +735,15 @@
     For running the experiments we used the resources from the University of Mannheim (dws-server) as well as the resources from the state Baden-Württemberg,
     the bw-uni-cluster. With that we had access to different
      setups to efficiently run the experiments. Furthermore, we had enough storage space to store
-    the different datasets, created for the experiments.
+    the different datasets created for the experiments.
 </p>
 <span id="toc5.1"></span>
 <h3>5.1 Baseline Experiments</h3>
 <!--CONTENT-->
 <p>
-    In the case of entity matching, we use three different baseline models to be able to compare the results of our algorithms.
-    We include one tree-based model in Random Forest, and two BERT-based models in TinyBERT and RoBERTa, because, as mentioned
-    in section \ref{cha:alg}, TURL is based on TinyBERT and Tabbie on BERT.
+    In the case of entity matching, we used three different baseline models to be able to compare the results of our algorithms.
+    We included one tree-based model in Random Forest, and two BERT-based models in TinyBERT and RoBERTa, because, as mentioned
+    in <a href="#toc3.1">Section 3.1</a>, TURL is based on TinyBERT.
     All the baselines were modelled as multi-class classification that were presented a concatentation of the entity name and
     a description in case of the product dataset respectively the name of the  entity in case of the LocalBusiness dataset.
     The results are presented in Table <a style="color:#FF0000";>(x.x)</a>.
@@ -767,8 +767,8 @@
         </tbody>
         </table>
 <p>
-    As a baseline for schema matching, both tree and bert based models are used. The tree based models use a random forest with
-    both value and meta based data. The value based data sets are both created with TF-IDF. Hereby, a global and a binary approach is used.
+    As a baseline for schema matching, both tree and BERT-based models were used. The tree based models use a random forest with
+    both value and meta based data. The value based datasets are both created with TF-IDF. Hereby, a global and a binary approach is used.
     For TF-IDF the data is preprocessed with the following steps: the concatenated text of each column is lower-cased and tokenized. Also,
     stopwords and punctuation is removed.
     The meta approach is based on the following properties of the data: whether or not it has a structure such as {},
@@ -780,6 +780,7 @@
     To keep as much information as possible, no further preprocessing was done. The models were trained with 25 epochs. As can be
     seen in the results in table 4.3, the models perform quite different on the small and medium datasets. Except for TinyBert,
     the performance of the different models converges for the large data set.
+    <a style="color:#FF0000";>Kim: tense? Formulierungen?</a>
 
     <table style="width:35%" class="centertable">
         <caption style="margin-top: 1em">Table 5.2: Micro F1-scores for bert-based baseline models in schema matching.</caption>
@@ -831,11 +832,11 @@
 
     All of our experiments were conducted using <a
         href="https://huggingface.co/transformers/main_classes/trainer.html">HuggingFace's Trainer</a> wrapper class for PyTorch. <br>
-
+    <a style="color:#FF0000";>Kim: Nicht direkt verlinken?</a>.
     TURL does already offer several predefined tasks to evaluate the pre-trained framework on <a href="#toc8">[1]</a>.
-    Hereby, the taks of column type annotation is most suitable for both entity as well as schema matching. In order to pretain the model with our selected tables and
-    entities and perform the task of column type annotation the data has to be structured as a list containing lists for each table. Each table list then contains the
-    table id, the page title, section title as well as further lists of headers, cell content and the column types.
+    Hereby, the task of column type annotation was evaluated to be the most suitable for both entity and schema matching. In order to pretain the model with our selected tables and
+    entities and to perform the task of column type annotation the data has to be structured as a nested list where each table was represented by an inner list itself containing
+    table id, page title, section title as well as further lists of headers, cell content and the column types.
     The given input representation of tables for the task of column type annotation can be found within the <a
         href="https://github.com/sunlab-osu/TURL#readme"> README</a> file within the TURL <a
             href="https://github.com/sunlab-osu/TURL"> git repository</a>.
@@ -852,7 +853,7 @@
             <button class="tablinks" onclick="openExpResult(event, 'schema')">Schema</button>
             <button class="tablinks" onclick="openExpResult(event, 'entity')">Entity</button>
         </div>
-        <div id="schema" class="tabcontent" style="display: none;">
+        <div id="schema" class="tabcontent" style="display:block;">
             <table class="Multi-class" >
                 <caption style="margin-top: 1em">Table 5.3: Schema TURL Settings</caption>
                 <tr>
@@ -1043,7 +1044,7 @@
             <button class="tablinks" onclick="openExpResult(event, 'schemacon')">Schema</button>
             <button class="tablinks" onclick="openExpResult(event, 'entitycon')">Entity</button>
         </div>
-        <div id="schemacon" class="tabcontent" style="display: none;">
+        <div id="schemacon" class="tabcontent" style="display:block;">
             <table class="Multi-class">
                 <caption style="margin-top: 1em">Table 5.6: Entity Contrastive Learning Settings</caption>
                  <tr>
@@ -1197,20 +1198,10 @@
 
 <h2>6 Experimental Results and Error Analysis</h2>
 <!--CONTENT-->
-<p>All final F1 score results for both schema and entity tasks and the respective models applied are illustrated in the table below.
-
-  <p>
-    As can be seen in table 3, TURL outperforms the baseline models as well as the contrastive learning approach.
-    It seems as the number of epochs that TURL is trained on does not play an important role for the both mid sized
-    and large dataset as the performance converges for both 25 and 50 epochs at the same outcomes. The size of the training dataset
-    definitely has a great infleunce on the performance of the baseline models and TURL. The performances increase up to 20 percent points.
-    For contrastive learning on the other hand, the size of the dataset only makes a difference of 0.01.
-  </p>
-
-  Further detailed information on each of the results and differences in performance of the models are explained in more detail for each task below.
+<p>
+    Within this chapter all experimental results as well as a detailed error analysis will follow. Table 6.1/6.2 illustrate
+    the final F1 scores we achieved with best ascertained settings for both tasks.
 <br>
-
-
 
 <div style="margin-top:2em;">
     <div style=";margin-right: 2.5em">
@@ -1218,7 +1209,7 @@
             <button class="tablinks" onclick="openExpResult(event, 'unsup')">Schema</button>
             <button class="tablinks" onclick="openExpResult(event, 'supwc')">Entity</button>
         </div>
-        <div id="unsup" class="tabcontent" style="display: none;width:800px; margin:0 auto;">
+        <div id="unsup" class="tabcontent" style="display:block;width:800px; margin:0 auto;">
             <table class="Multi-class">
                 <caption style="margin-top: 1em">Table 6.1: Schema Matching Results</caption>
                 <tr>
@@ -1306,6 +1297,9 @@
 </div>
 <span id="toc7"></span>
 
+<a style="color:#FF0000";>Kim: Table bisschen anders formatieren? Sieht so aus als wäre CL Baseline. Außerdem würde ich immer die gleiche Reihenfolge bei der Auflistung von allem einhalten
+Wollen wir, dass die Tables zwei verschiedene Nummern haben?</a>
+
 <h3>6.1 Schema Matching Results</h3>
 
 <br>
@@ -1313,17 +1307,23 @@
 <a style="color:#FF0000";>@Luisa or Estelle Hier fehlen noch ein paar kommentare zu CL</a>
 
 <p>
-  When looking at the distribution of F1 Scores for each chosen category and the differences in training sizes, the graph above clearly indicates, that
-  the performance increases with increasing training samples. For some categories, such as TV episode or music album, for examples, the difference is rather large
-  while for other categories the difference is not as big. When looking at the data and column count more thoroughly, however, some columns such as number of tracks
-  (in music album) that are only represented in 20 tables within the medium-sized training set already achieve an F1 Score higher than 0.8.
-  Other columns, such as names (in music album) do not reach an F1 Score of 0.8 despite bein represented in more than 160 tables. Hence, even though the models'
-  performances generally increase with a larger training sample size, this is not neccessarily indicate that all columns achieve a high F1 Score with more training data.
+    In Table 6.1 we can see that TURL outperforms the baseline models as well as the contrastive learning approach.
+    It seems as the number of epochs that TURL is trained on does not play an important role for the both mid sized
+    and large dataset as the performance converges for both 25 and 50 epochs at the same outcomes. The size of the training dataset
+    definitely has a great influence on the performance of the baseline models and TURL. The performances increase up to 20 percent points.
+    For contrastive learning on the other hand, the size of the dataset only makes a difference of 0.01.
+    <br>
+    When looking at the distribution of F1 Scores for each chosen category and the differences in training sizes, the graph above clearly indicates, that
+    the performance increases with increasing training samples. For some categories, such as TV episode or music album, for examples, the difference is rather large
+    while for other categories the difference is not as big. When looking at the data and column count more thoroughly, however, some columns such as number of tracks
+    (in music album) that are only represented in 20 tables within the medium-sized training set already achieve an F1 Score higher than 0.8.
+    Other columns, such as names (in music album) do not reach an F1 Score of 0.8 despite bein represented in more than 160 tables. Hence, even though the models'
+    performances generally increase with a larger training sample size, this is not neccessarily indicate that all columns achieve a high F1 Score with more training data.
 </p>
 
 <figcaption style="text-align:center">Figure 6.1: F1 Score Distribution for each Category and Training Size</figcaption>
       <figure>
-        <img src="./images/F1_Score_Distribution.png" style="margin-bottom:2em;"class="center2"/>
+        <img src="./visualizations/Schema/F1_Score_Distribution.png" style="margin-bottom:2em;"class="center2"/>
       </figure>
 
   <br>
@@ -1457,8 +1457,78 @@
 <h3>6.2 Entity Matching Results</h3>
 
 <p>
-  The necessary code to retrace our experimental runs can be found in our <a
-          href="https://github.com/NiklasSabel/data_integration_using_deep_learning">GitHub repository</a>.
+    Unlike schema matching, the results for entity matching appear slightly different (see Table 6.2). RoBerta as our best performing
+    baseline with a F1 score of around 0.90 outperforms the TURL model by far (best F1 score: U+007E 0.76). Moreover,
+    the Contrastive Learning (frozen) model exceeds these scores by almost 4% ending up with the best F1 score of around 0.94.
+    <br>
+    To go deeper into analysis, we compared the best performing models of each category namely RoBERTa for the baseline,
+    TURL (the transposed version) and Contrastive Learning (frozen) on different characteristics. We therefore filtered
+    on specifically created features or existing variables and calculated single F1 scores on each possible value. For TURL, we
+    had to calculate an averaged F1 score since predictions were not given at hand but rather we were
+    directly provided with F1 scores per cluster. This approach helped us finding intrinsic differences between the models.
+    <br>
+    As Figure 6.2 shows the different sizes of train data already show various impact on the F1 score.
+    We binned the sizes of train data appropriately to our data and calculated F1 scores separately on the
+    given bins. Although all indicate an increasing F1 score for increasing sizes of train data, the baseline and TURL
+    start at around the same level whereas Contrastive Learning achieves very good results with only zero to five training
+    instances given. The baseline and Contrastive Learning then both increase steadily, the baseline having a more steep
+    curve and end up at a score around 1.0. On the other hand, one might notice that TURL replicates a more diverse curve
+    regarding the train sizes and indeed only achieves very good results for larger sets.
+
+    <figcaption style="text-align:center">Figure 6.2: Comparison for different sizes of train data</figcaption>
+      <figure>
+        <img src="./visualizations/Entity/Baseline_F1_train_size.png" style="margin-bottom:2em;" class="center2" width="30%" height="auto"/>
+        <img src="./visualizations/Entity/TURL_F1_train_size.png" style="margin-bottom:2em;" class="center2" width="30%" height="auto"/>
+        <img src="./visualizations/Entity/CL_F1_train_size.png" style="margin-bottom:2em;" class="center2" width="30%" height="auto"/>
+      </figure>
+
+    Similarly, we examined the influence of the different domains (<a href="toc4.1">Section 4.1</a>) of the product data that were established in the preprocessing step
+    (Figure 6.3). Here, it is of interest to mention that especially the domains bikes, cars, and
+    technology meet the highest scores and drugstore and clothes perform worst on all of the models. One possible explanation
+    for this can be that the former are rather structured entities containing precise model numbers and description whereas
+    the latter represent more unstructured data where it is therefore harder to make good predictions. Differences between
+    the models occur with the domain random where the baseline and Contrastive Learning outperform TURL relatively speaking.
+    In general, Contrastive Learning still achieves very good results even with drugstore and clothes, dating F1 scores
+    around 0.8. In contrast, the baseline only achieves a F1 of 0.6 for drugstore.
+
+    <br>
+    <figcaption style="text-align:center">Figure 6.3: Comparison for different domains</figcaption>
+      <figure>
+        <img src="./visualizations/Entity/Baseline_F1_domains_test.png" style="margin-bottom:2em;" class="center2" width="30%" height="auto"/>
+        <img src="./visualizations/Entity/TURL_F1_domains_test.png" style="margin-bottom:2em;" class="center2" width="30%" height="auto"/>
+        <img src="./visualizations/Entity/CL_F1_domains_test.png" style="margin-bottom:2em;" class="center2" width="30%" height="auto"/>
+      </figure>
+
+    Next, the investigation for the influence of the description column for the different models was undermined. It could
+    be found that the baseline and Contrastive Learning both perform better without a description than with one. This is in contrast
+    to TURL where the model prefers having more context. Detailed scores are given in Table 6.4.
+
+    <div style="margin-top:2em;">
+      <div style=";margin-right: 2.5em">
+          <table class="centertable">
+                <caption style="margin-top: 1em">Table 6.4: Impact of description column</caption>
+                <tr>
+                    <th></th>
+                    <th>F1 Baseline</th>
+                    <th>F1 TURL</th>
+                    <th>F1 Contrastive Learning</th>
+                </tr>
+                <tr>
+                  <td>With description</td>
+                  <td>0.8054</td>
+                  <td>0.7534</td>
+                  <td>0.9309</td>
+                </tr>
+                  <td>Without description</td>
+                  <td>0.9090</td>
+                  <td>0.7018</td>
+                  <td>0.9395</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+    <br>
+    
 </p>
 
 <br>
