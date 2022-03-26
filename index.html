@@ -520,7 +520,7 @@
             </table>
 
         <a style="color:#FF0000";>(@Estelle postpreprocessing der gesamten tabellen einfügen)</a>
-        With a multilabel stratified shuffle-split <a style="color:#FF0000";>(@Kim/Jen: Ref? https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.StratifiedShuffleSplit.html or just cite sklearn?)</a> we distributed the remaining clusters
+        With a multilabel stratified shuffle-split <a href="#toc8">[1]</a> or just cite sklearn?)</a> we distributed the remaining clusters
         into &frac38; train, &frac14; validation and &frac38; test data. With this approach we ensured that
         tables were distributed equally across size and selected clusters. Furthermore, in favor of not distorting the results
         we cleaned the test set manually and discarded around 10 % of noise. Thereby, we ended up with an amount of
@@ -570,8 +570,7 @@
             less than 50% NAs within selected columns​ as well as less than 15% NAs within relevant columns in entire table.
             <br> The resulting 54,190 tables were then split into
             a training and set set by performing a multi-label stratified shuffled split with 3 splits (random state = 42) resulting in 44,435 training tables and 9,894 test tables.
-            We chose to perform a <a
-                href="https://github.com/trent-b/iterative-stratification">multi-label stratified shuffled split</a> to not only distribute the different categories
+            We chose to perform a multi-label stratified shuffled split <a href="#toc8">[1]</a> to not only distribute the different categories
             but also the selected columns in each category proportionally between the training and test set.
             To compare different input and training sizes later on, our training data was further divided into a medium as well as small sized training set. Again,
             we performed a multi-label stratified shuffled split to distribute the data and especially columns proportinally making sure that all selected columns
@@ -1398,7 +1397,7 @@
   <div style="margin-top:2em;">
       <div style=";margin-right: 2.5em">
           <table class="centertable">
-                <caption style="margin-top: 1em">Table 6.2: Examples of different Column and Data Types and respective Results for the Large Train Size</caption>
+                <caption style="margin-top: 1em">Table 6.2: Examples of different Column and Data Types and respective F1 Score Results for the Large Train Size</caption>
                 <tr>
                     <th>Column</th>
                     <th>Data Type</th>
@@ -1450,7 +1449,7 @@
             </div>
           </div>
   <br>
-
+  <a style="color:#FF0000";>@Estelle and/or Luisa Should we include a table of Product gtins and results ?</a>
 
 <h3>6.2 Entity Matching Results</h3>
 
@@ -1489,11 +1488,8 @@
   analysis and exploration of contrastive learning, so that
 
 <br>
-  <a style="color:#FF0000";>@Luisa or Estelle Can you add a few statements regarding Contrastive Learning?</a>
+  <a style="color:#FF0000";>@Luisa or Estelle Can you add a few statements regarding Contrastive Learning and any further ideas ?</a>
 
-    Insert Discussion and Outlook
-    Schema further work and outlook: <br>
-    - Further analysis on hard cases
 <br>
     <a style="color:#FF0000";>(Application Schema & Entity Matching together? (see slides Bizer: https://www.uni-mannheim.de/media/Einrichtungen/dws/Files_Teaching/Web_Data_Integration/HWS2021/WDI04-IdentityResolution-HWS2021.pdf))</a>.
 </p>
@@ -1501,6 +1497,10 @@
 <span id="toc8"></span>
 <h2>8 References</h2>
 <ol>
+    <li>Bradberry, T.J.:
+      <a href="https://github.com/trent-b/iterative-stratification" target="blank">Iterative Stratification</a>.
+      (2018).
+    </li>
     <li>Deng, X. et al.:
         <a href="https://doi.org/10.48550/arXiv.2006.14806" target="_blank">TURL: Table Understanding through Representation Learning</a>. In:
        Proceedings of the VLDB Endowment 14, 3, 307--319 (2020).
