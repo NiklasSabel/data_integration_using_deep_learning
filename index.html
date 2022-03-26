@@ -327,7 +327,7 @@
     <p>
         Entity matching, often also called identity resolution, is a crucial task for data integration and consists of the exercise of finding all records that refer to the same entity,
         e.g. when integrating data from different source systems. Unfortunately, entity representations in real-world
-        environments are in general not identical or always complete, but have to be processed at massive scale. One solution to address this difficulty is offered by
+        environments are in general neither identical nor always complete, but have to be processed at massive scale. One solution to address this difficulty is offered by
         comparing multiple attributes of different record representations with attribute-specific similarity measures
         like Levenshtein distance or advanced techniques like BERT. Newer approaches include the application of
         so-called table transformers which will be discussed in <a href="#toc3">Section 3</a>. Entity matching tries to allocate entities
@@ -363,8 +363,8 @@
         relational Web tables" <a href="#toc8">[1]</a>. TURL is a TinyBERT based extension model that was pre-trained on around 600,000 Wikipedia tables such that it
          can be applied to different tasks with "minimal task-specific fine-tuning". The authors show that the model generalizes well and
          outperforms existing methods for example in column type annotation <a href="#toc8">[1]</a>.
-        The basic idea of TURL is to "serialize[s] a table into a sequence of words and entities (similar to text data)
-        and [to] learn[s] embedding vectors for words and entities using Word2Vec" <a href="#toc8">[1]</a>.
+        The basic idea of TURL is to " learn[s] deep contextualized representations on relational
+        tables in an unsupervised manner" and generate a framework that can be finetuned to a wide range of tasks <a href="#toc8">[1]</a>.
         More specifically, the TURL architecture which can be seen in Figure 3.1 consists of three modules.
        At first, an embedding layer followed by a structure-aware stacked transformer,as introduced in section <a href="#toc2.3">2.3</a>,
         to capture textual and relational knowledge with a "visibility matrix" that models the row-column structure
@@ -1031,6 +1031,10 @@
 
 </p>
 <br>
+
+    <a style="color:#FF0000";>
+            @Jannik, Marvin bitte settings anpassen. Bzw. eine Setting Representation erstellen
+        </a>
 <div style="margin-top:2em;">
     <div style=";margin-right: 2.5em">
         <div class="tab">
@@ -1039,228 +1043,147 @@
         </div>
         <div id="schemacon" class="tabcontent" style="display: none;">
             <table class="Multi-class">
-                <caption style="margin-top: 1em">Table 3: Experimental results</caption>
-                <tr>
+                <caption style="margin-top: 1em">Table 5.6: Entity Contrastive Learning Settings</caption>
+                 <tr>
                     <th>Category</th>
-                    <th colspan="1" style='text-align:center; vertical-align:middle'> Inital</th>
-                    <th colspan="1" style='text-align:center; vertical-align:middle'> Final/Last</th>
+                    <th colspan="1" style='text-align:center; vertical-align:middle'> Inital Inputs</th>
+                    <th colspan="3" style='text-align:center; vertical-align:middle'> Adjusted/Final Inputs per Train Size</th>
                 </tr>
                 <tr>
                     <th></th>
-                    <th>Epochs</th>
-                    <th>Learning Rate</th>
-                    <th>Step Sizes </th>
-                    <th>...</th>
-                    <th>...</th>
-                    <th>BERT</th>
-                    <th>mBERT</th>
-                    <th>XLM-R</th>
+                    <th></th>
+                    <th>Small</th>
+                    <th>Medium</th>
+                    <th>Large</th>
+                </tr>
+
+                <tr>
+                    <td  style="background-color:#E8E8E8">Training Epochs</td>
+                    <td>10</td>
+                    <td>50</td>
+                    <td>50</td>
+                    <td>50</td>
 
                 </tr>
                 <tr>
-                    <td rowspan="9" style='text-align:center; vertical-align:middle'>Toy</td>
-                    <td>DE</td>
-                    <td>DE</td>
-                    <td style="background-color:#E8E8E8">SVM</td>
-                    <td style="background-color:#E8E8E8">TF-IDF</td>
-                    <td style="background-color:#E8E8E8">0.9677</td>
-                    <td>0.9668<i><sub>t</sub></i></td>
-                    <td><b>0.9745</b></td>
-                    <td>0.9626</td>
+                    <td  style="background-color:#E8E8E8">Learning Rate</td>
+                    <td>5e-5</td>
+                    <td>5e-5</td>
+                    <td>5e-5</td>
+                    <td>5e-5</td>
 
                 </tr>
                 <tr>
-                    <td>EN</td>
-                    <td>DE</td>
-                    <td style="background-color:#E8E8E8">SVM</td>
-                    <td style="background-color:#E8E8E8">TF-IDF</td>
-                    <td style="background-color:#E8E8E8"><b>0.7084</b></td>
-                    <td>0.4713</td>
-                    <td>0.6176</td>
-                    <td>0.5955<i><sub>t</sub></i></td>
+                    <td  style="background-color:#E8E8E8">Batch Size</td>
+                    <td>20</td>
+                    <td>20</td>
+                    <td>20</td>
+                    <td>20</td>
+
                 </tr>
                 <tr>
-                    <td>EN</td>
-                    <td>EN</td>
-                    <td style="background-color:#E8E8E8">Logistic Regression</td>
-                    <td style="background-color:#E8E8E8">TF-IDF</td>
-                    <td style="background-color:#E8E8E8">0.9683</td>
-                    <td><b>0.9836</b></td>
-                    <td>0.9754</td>
-                    <td>0.9743</td>
+                    <td  style="background-color:#E8E8E8">Accumulation Steps</td>
+                    <td>2</td>
+                    <td>2</td>
+                    <td>2</td>
+                    <td>2</td>
+
                 </tr>
                 <tr>
-                    <td>EN</td>
-                    <td>ES</td>
-                    <td style="background-color:#E8E8E8">Logistic Regression</td>
-                    <td style="background-color:#E8E8E8">TF-IDF</td>
-                    <td style="background-color:#E8E8E8"><b>0.6735<i><sub>t</sub></i></b></td>
-                    <td>0.3722</td>
-                    <td>0.5619</td>
-                    <td>0.4812</td>
+                    <td  style="background-color:#E8E8E8">Save Steps</td>
+                    <td>5000</td>
+                    <td>50</td>
+                    <td>125</td>
+                    <td>650</td>
                 </tr>
                 <tr>
-                    <td>EN</td>
-                    <td>FR</td>
-                    <td style="background-color:#E8E8E8">Logistic Regression</td>
-                    <td style="background-color:#E8E8E8">TF-IDF</td>
-                    <td style="background-color:#E8E8E8"><b>0.7047</b></td>
-                    <td>0.4826</td>
-                    <td>0.5975</td>
-                    <td>0.5658<i><sub>t</sub></i></td>
+                    <td  style="background-color:#E8E8E8">Logging Steps</td>
+                    <td>1500</td>
+                    <td>15</td>
+                    <td>50</td>
+                    <td>200</td>
+
                 </tr>
                 <tr>
-                    <td>EN+DE</td>
-                    <td>DE</td>
-                    <td style="background-color:#E8E8E8">SVM</td>
-                    <td style="background-color:#E8E8E8">TF-IDF</td>
-                    <td style="background-color:#E8E8E8">0.9757</td>
-                    <td>0.9789</td>
-                    <td><b>0.9828</b></td>
-                    <td>0.9723</td>
-                </tr>
-                <tr>
-                    <td>EN+DE</td>
-                    <td>EN</td>
-                    <td style="background-color:#E8E8E8">-</td>
-                    <td style="background-color:#E8E8E8">-</td>
-                    <td style="background-color:#E8E8E8">-</td>
-                    <td>0.9802</td>
-                    <td><b>0.9823</b></td>
-                    <td>0.977</td>
-                </tr>
-                <tr>
-                    <td>EN+DE</td>
-                    <td>ES</td>
-                    <td style="background-color:#E8E8E8">-</td>
-                    <td style="background-color:#E8E8E8">-</td>
-                    <td style="background-color:#E8E8E8">-</td>
-                    <td>0.5034</td>
-                    <td><b>0.6602<i><sub>t</sub></i></b></td>
-                    <td>0.5792</td>
-                </tr>
-                <tr>
-                    <td>EN+DE</td>
-                    <td>FR</td>
-                    <td style="background-color:#E8E8E8">-</td>
-                    <td style="background-color:#E8E8E8">-</td>
-                    <td style="background-color:#E8E8E8">-</td>
-                    <td>0.563</td>
-                    <td><b>0.6695</b></td>
-                    <td>0.6384<i><sub>t</sub></i></td>
+                    <td  style="background-color:#E8E8E8">Warm up Steps</td>
+                    <td>5000</td>
+                    <td>50</td>
+                    <td>125</td>
+                    <td>650</td>
+
                 </tr>
             </table>
         </div>
         <div id="entitycon" class="tabcontent" style="display: none;">
             <table class="pair-wiseSmall">
                 <caption style="margin-top: 1em">Table 5.6: Entity Contrastive Learning Settings</caption>
-                <tr>
+                 <tr>
                     <th>Category</th>
-                    <th colspan="2" style='text-align:center; vertical-align:middle'> Setting</th>
-                    <th colspan="3" style='text-align:center; vertical-align:middle'> Baseline</th>
-                    <th colspan="3" style='text-align:center; vertical-align:middle'> Transformer</th>
+                    <th colspan="1" style='text-align:center; vertical-align:middle'> Inital Inputs</th>
+                    <th colspan="3" style='text-align:center; vertical-align:middle'> Adjusted/Final Inputs per Train Size</th>
                 </tr>
                 <tr>
                     <th></th>
-                    <th>Train Lang</th>
-                    <th>Test Lang</th>
-                    <th>Classifier</th>
-                    <th>Embedding</th>
-                    <th>Score</th>
-                    <th>BERT</th>
-                    <th>mBERT</th>
-                    <th>XLM-R</th>
+                    <th></th>
+                    <th>Small</th>
+                    <th>Medium</th>
+                    <th>Large</th>
+                </tr>
+
+                <tr>
+                    <td  style="background-color:#E8E8E8">Training Epochs</td>
+                    <td>10</td>
+                    <td>50</td>
+                    <td>50</td>
+                    <td>50</td>
+
                 </tr>
                 <tr>
-                    <td rowspan="9" style='text-align:center; vertical-align:middle'>Toy</td>
-                    <td>DE</td>
-                    <td>DE</td>
-                    <td style="background-color:#E8E8E8">SVM</td>
-                    <td style="background-color:#E8E8E8">Co-Occurence</td>
-                    <td style="background-color:#E8E8E8">0.8298</td>
-                    <td>0.8984</td>
-                    <td><b>0.948</b></td>
-                    <td>0.9026</td>
+                    <td  style="background-color:#E8E8E8">Learning Rate</td>
+                    <td>5e-5</td>
+                    <td>5e-5</td>
+                    <td>5e-5</td>
+                    <td>5e-5</td>
+
                 </tr>
                 <tr>
-                    <td>EN</td>
-                    <td>DE</td>
-                    <td style="background-color:#E8E8E8">Random Forest</td>
-                    <td style="background-color:#E8E8E8">Co-Occurence</td>
-                    <td style="background-color:#E8E8E8">0.6746<i><sub>t</sub></i></td>
-                    <td>0.6777<i><sub>t</sub></i></td>
-                    <td><b>0.8891</b></td>
-                    <td>0.882</td>
+                    <td  style="background-color:#E8E8E8">Batch Size</td>
+                    <td>20</td>
+                    <td>20</td>
+                    <td>20</td>
+                    <td>20</td>
+
                 </tr>
                 <tr>
-                    <td>EN</td>
-                    <td>EN</td>
-                    <td style="background-color:#E8E8E8">Logistic Regression</td>
-                    <td style="background-color:#E8E8E8">Co-Occurence</td>
-                    <td style="background-color:#E8E8E8">0.8263</td>
-                    <td>0.9167</td>
-                    <td>0.9223</td>
-                    <td><b>0.9284</b></td>
+                    <td  style="background-color:#E8E8E8">Accumulation Steps</td>
+                    <td>2</td>
+                    <td>2</td>
+                    <td>2</td>
+                    <td>2</td>
+
                 </tr>
                 <tr>
-                    <td>EN</td>
-                    <td>ES</td>
-                    <td style="background-color:#E8E8E8">Logistic Regression</td>
-                    <td style="background-color:#E8E8E8">Co-Occurence</td>
-                    <td style="background-color:#E8E8E8">0.625<i><sub>t</sub></i></td>
-                    <td>0.6767<i><sub>t</sub></i></td>
-                    <td><b>0.8043</b></td>
-                    <td>0.7725</td>
+                    <td  style="background-color:#E8E8E8">Save Steps</td>
+                    <td>5000</td>
+                    <td>50</td>
+                    <td>125</td>
+                    <td>650</td>
                 </tr>
                 <tr>
-                    <td>EN</td>
-                    <td>FR</td>
-                    <td style="background-color:#E8E8E8">SVM</td>
-                    <td style="background-color:#E8E8E8">Co-Occurence</td>
-                    <td style="background-color:#E8E8E8">0.6732</td>
-                    <td>0.7416</td>
-                    <td><b>0.8002</b></td>
-                    <td>0.7748</td>
+                    <td  style="background-color:#E8E8E8">Logging Steps</td>
+                    <td>1500</td>
+                    <td>15</td>
+                    <td>50</td>
+                    <td>200</td>
+
                 </tr>
                 <tr>
-                    <td>EN+DE</td>
-                    <td>DE</td>
-                    <td>Logistic Regression</td>
-                    <td>Co-Occurence</td>
-                    <td>0.8146</td>
-                    <td>0.9236</td>
-                    <td>0.9397</td>
-                    <td><b>0.9401</b></td>
-                </tr>
-                <tr>
-                    <td>EN+DE</td>
-                    <td>EN</td>
-                    <td>-</td>
-                    <td >-</td>
-                    <td >-</td>
-                    <td>0.9258</td>
-                    <td>0.9239</td>
-                    <td><b>0.9275</b></td>
-                </tr>
-                <tr>
-                    <td>EN+DE</td>
-                    <td>ES</td>
-                    <td>-</td>
-                    <td >-</td>
-                    <td >-</td>
-                    <td>0.7528</td>
-                    <td><b>0.8467</b></td>
-                    <td>0.8388</td>
-                </tr>
-                <tr>
-                    <td>EN+DE</td>
-                    <td>FR</td>
-                    <td>-</td>
-                     <td >-</td>
-                     <td >-</td>
-                    <td>0.75</td>
-                    <td>0.8298</td>
-                    <td><b>0.8299</b></td>
+                    <td  style="background-color:#E8E8E8">Warm up Steps</td>
+                    <td>5000</td>
+                    <td>50</td>
+                    <td>125</td>
+                    <td>650</td>
+
                 </tr>
             </table>
         </div>
@@ -1293,7 +1216,7 @@
             <button class="tablinks" onclick="openExpResult(event, 'unsup')">Schema</button>
             <button class="tablinks" onclick="openExpResult(event, 'supwc')">Entity</button>
         </div>
-        <div id="unsup" class="tabcontent" style="display: none;">
+        <div id="unsup" class="tabcontent" style="display: none;width:800px; margin:0 auto;">
             <table class="Multi-class">
                 <caption style="margin-top: 1em">Table 6.1: Schema Matching Results</caption>
                 <tr>
@@ -1345,7 +1268,7 @@
                 </tr>
             </table>
         </div>
-        <div id="supwc" class="tabcontent" style="display: none;">
+        <div id="supwc" class="tabcontent" style="display: none;width:800px; margin:0 auto;">
             <table class="pair-wiseSmall">
                  <caption style="margin-top: 1em">Table 6.2: Entity Matching Results</caption>
                 <tr>
@@ -1396,7 +1319,7 @@
 <div style="margin-top:2em;">
     <div style=";margin-right: 2.5em">
         <table class="centertable">
-              <caption style="margin-top: 1em">Table 6.1: F1-scores compared for different data types and models</caption>
+              <caption style="margin-top: 1em">Table 6.3: F1-scores compared for different data types and models</caption>
               <tr>
                   <th>Data Type</th>
                   <th colspan="3" style='text-align:center; vertical-align:middle'> Model</th>
