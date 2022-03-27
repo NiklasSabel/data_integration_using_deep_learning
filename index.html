@@ -541,7 +541,11 @@
               </tbody>
             </table>
 
-        <a style="color:#FF0000";>(@Estelle postpreprocessing der gesamten tabellen einfügen)</a>
+        To increase the performance of the models, post-preprocessing was applied through a cleaning procedure. This procedure
+        entails the removal of special characters and duplicates. More complex cleaning approaches were not applied due to
+        the high possibility of multiple pitfalls given by the high amount of data.
+
+
         With a multilabel stratified shuffle-split <a href="#toc8">[1]</a> we distributed the remaining clusters
         into &frac38; train, &frac14; validation and &frac38; test data. With this approach we ensured that
         tables were distributed equally across size and selected clusters. To avoid skewing the results, we also manually
@@ -584,9 +588,11 @@
             As a basis for schema matching, it was important to gather a large amount of diverse table data to create a sufficient dataset
             with at least 200 different columns that were later on used for matching. Thereby, the chosen columns should be evenly distributed within large, mid-sized and small tables,
             and their content should represent different data types, different lengths as well as hard cases for distinction.
+            We started with 668,593 tables that were taken into account. With the described removal technique of non-english tables the dataset was reduced to
+            267,283 tables.
             To create a solid data base, we chose the 20 largest categories of Schema.org in order to gain a large amount of
-            tables that contain a sufficient amount of data. Due to the vast amount of disorderly data we initally selected 208 columns to be able
-            to addtionally reduce the column set in case that we would detect further misfitting criteria during the following data preparation and preprocessing.
+            tables that contain a sufficient amount of data. Due to the vast amount of disorderly data we initally selected 207 columns to be able
+            to additionally reduce the column set in case that we would detect further misfitting criteria during the following data preparation and preprocessing.
             However, as we wanted to make sure that all tables contain at least three of the selected columns for schema matching, our initial dataset contained 79,318 tables.
             Further, in order to create a useful dataset, we reduced our sample of tables by checking for tables with more than 10 rows,
             less than 50% NAs within selected columns​ as well as less than 15% NAs within relevant columns in entire table.
@@ -595,7 +601,7 @@
             We chose to perform a multi-label stratified shuffled split <a href="#toc8">[1]</a> to not only distribute the different categories
             but also the selected columns in each category proportionally between the training and test set.
             To compare different input and training sizes later on, our training data was further divided into a medium as well as small sized training set. Again,
-            we performed a multi-label stratified shuffled split to distribute the data and especially columns proportinally making sure that all selected columns
+            we performed a multi-label stratified shuffled split to distribute the data and especially columns proportionally making sure that all selected columns
             were represented in all datasets. Hereby, the large training set of 44,345 tables contains all 9,776 tables of the medium-sized training and the medium-sized training
             set contains all 2,444 tables of the small training set.
             <br>
@@ -739,11 +745,47 @@
     The respective distribution of the chosen columns for schema matching are displayed in the following graph with product, being the largest category and source of tables,
     including the majority of the columns. As mentioned above, the chosen columns were to represent different data types so that the set of 207 columns
     includes 150 strings, 21 datetime, 18 float, 13 integers as well as 5 geolocation columns. During the selection of the data set and the aforementioned columns,
-     we made sure to include hard matching cases, i.e. columns that are really hard to distinguish for the algorithm. Examples for such hard cases
-     are 'date created' and 'date modified', 'author' and 'creator' as well as different product gtins (global trade item numbers).
+     we made sure to include hard matching cases, i.e. columns that are really hard to distinguish for the algorithm. Table 4.4 illustrates two examples
+    of those hard match cases. The first one shows the values of different kind of gtins (global trade item numbers). There are five different kind of gtin numbers
+    in the data which are hard to distinguish. Another example are two entities from the recipe class. Most recipe headlines sound like recipe names.
     <br>
-      <a style="color:#FF0000";>(@Estelle: Könntest du hier nochmal beispiele zu den hard cases (irgendwas, was du schon mal in der präsi damals hattest?)
-         z.b. in einer tabelle wir bei jannik oben integrieren?)</a>
+
+
+    <table style="width:100%" class="centertable">
+            <caption style="margin-top: 1em">Table 4.4: Illustration of hard cases.</caption>
+            <thead>
+              <tr>
+                <th>Gtin</th>
+                <th>Example</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>gtin13Product</td>
+                <td>7321428469419 0 8032767441293 0 8032766030245...</td>
+              </tr>
+              <tr>
+                <td>gtin14Product</td>
+                <td>00032054003584 00032054003560 00032054003591 ...</td>
+              </tr>
+            </tbody>
+            <thead>
+                <tr>
+                  <th>Recipe Description Type</th>
+                  <th>Example</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>headlineRecipe</td>
+                  <td>Lemony Angel Hair Pasta with Crab Turkey Spina...</td>
+                </tr>
+                <tr>
+                  <td>nameRecipe</td>
+                  <td>Peach Cake Recipe using Fresh Peaches Canned G.</td>
+                </tr>
+              </tbody>
+            </table>
 
 
 
@@ -1196,7 +1238,7 @@
                     <th>Bert</th>
                     <th>TinyBert</th>
                     <th>Distilbert</th>
-                    <th>RoBerta</th>
+                    <th>RoBERTa</th>
                     <th>Contrastive Learning</th>
                     <th>TURL <br> 25 Epochs</th>
                     <th>TURL <br> 50 Epochs</th>
@@ -1204,21 +1246,21 @@
                 </tr>
                 <tr>
                     <td style="background-color:#E8E8E8">Small</td>
-                    <td>0.73</td>
-                    <td>0.69</td>
-                    <td>0.60</td>
-                    <td>0.66</td>
-                    <td>0.75</td>
+                    <td>0.7327</td>
+                    <td>0.6982</td>
+                    <td>0.6089</td>
+                    <td>0.6601</td>
+                    <td>0.7531</td>
                     <td>0.7457​​</td>
                     <td><b>0.7722</b></td>
                 </tr>
                 <tr>
                     <td style="background-color:#E8E8E8">Medium</td>
-                    <td>0.76</td>
-                    <td>0.70</td>
-                    <td>0.62</td>
-                    <td>0.77</td>
-                    <td>0.76</td>
+                    <td>0.7623</td>
+                    <td>0.7044</td>
+                    <td>0.6166</td>
+                    <td>0.7569</td>
+                    <td>0.7664</td>
                     <td>0.8214</td>
                     <td><b>0.8214​</b></td>
                 </tr>
@@ -1228,7 +1270,7 @@
                     <td>0.7593</td>
                     <td>0.8019</td>
                     <td>0.8030</td>
-                    <td>0.76</td>
+                    <td>0.7644</td>
                     <td>0.8663​​</td>
                     <td><b>0.8684​</b></td>
                 </tr>
@@ -1278,21 +1320,23 @@ Wollen wir, dass die Tables zwei verschiedene Nummern haben?
 
 <br>
 
-<a style="color:#FF0000";>@Luisa or Estelle Hier fehlen noch ein paar kommentare zu CL</a>
 
 <p>
     In Table 6.1 we can see that TURL outperforms the baseline models as well as the contrastive learning approach.
     It seems as the number of epochs that TURL is trained on does not play an important role for the both mid sized
     and large dataset as the performance converges for both 25 and 50 epochs at the same outcomes. The size of the training dataset
     definitely has a great influence on the performance of the baseline models and TURL. The performances increase up to 20 percent points.
-    For contrastive learning on the other hand, the size of the dataset only makes a difference of 0.01.
+    For contrastive learning on the other hand, the size of the dataset only makes a difference of 0.01. Hereby, there is no difference between the
+    mid sized and the large dataset.
     <br>
     When looking at the distribution of F1 Scores for each chosen category and the differences in training sizes, the graph above clearly indicates, that
     the performance increases with increasing training samples. For some categories, such as TV episode or music album, for examples, the difference is rather large
     while for other categories the difference is not as big. When looking at the data and column count more thoroughly, however, some columns such as number of tracks
     (in music album) that are only represented in 20 tables within the medium-sized training set already achieve an F1 Score higher than 0.8.
-    Other columns, such as names (in music album) do not reach an F1 Score of 0.8 despite bein represented in more than 160 tables. Hence, even though the models'
-    performances generally increase with a larger training sample size, this is not neccessarily indicate that all columns achieve a high F1 Score with more training data.
+    Other columns, such as names (in music album) do not reach an F1 Score of 0.8 despite being represented in more than 160 tables. Hence, even though the models'
+    performances generally increase with a larger training sample size, this is not necessarily indicate that all columns achieve a high F1 Score with more
+    training data. With regards to time constraints, such an in-depth look was not possible for the contrastive learning approach. But as mentioned earlier, the
+    size of the training set does not seem to make a big difference anyway.
 </p>
 
 <figcaption style="text-align:center">Figure 6.1: F1 Score Distribution for each Category and Training Size</figcaption>
@@ -1301,11 +1345,12 @@ Wollen wir, dass die Tables zwei verschiedene Nummern haben?
       </figure>
 
 <p>
-  Therefore, to deepen the understanding of the differences between baselines and TURL, a more detailed evaluation with regards to the datatypes
-  of the data is of interest. For example, while TinyBert and Contrastive Learning reach respectively a micro F1 Score of 0.5034 and 0.5780
-  for the type geolocation, TURL outperforms them with a micro F1 Score of 0.8857. Also floats and integers reach much higher micro F1 Scores with TURL.
+  Therefore, to deepen the understanding of the differences between the baselines, the contrastive learning approach and TURL, a more detailed evaluation
+    with regards to the datatypes of the data is of interest. For example, while TinyBert and Contrastive Learning reach respectively a micro F1 Score of
+    0.5034 and 0.5780 for the type geolocation, TURL outperforms them with a micro F1 Score of 0.8857.
+    Also floats and integers reach much higher micro F1 Scores with TURL.
   For datetime the performances of the three approaches are quite similar. Only the type string is detected more accurately
-  by the baseline model and the contrastive approach. The following table shows Detailed F1 ccores for each data type and model applied with the best
+  by the baseline model and the contrastive approach. The following table shows Detailed F1 scores for each data type and model applied with the best
   performing data type highlighted for each model.
 
 </p>
@@ -1313,7 +1358,7 @@ Wollen wir, dass die Tables zwei verschiedene Nummern haben?
 <div style="margin-top:2em;">
     <div style=";margin-right: 2.5em">
         <table class="centertable">
-              <caption style="margin-top: 1em">Table 6.1: F1-scores compared for different data types and models</caption>
+              <caption style="margin-top: 1em">Table 6.2: F1-scores compared for different data types and models</caption>
               <tr>
                   <th>Data Type</th>
                   <th colspan="3" style='text-align:center; vertical-align:middle'> Model</th>
@@ -1401,7 +1446,7 @@ Wollen wir, dass die Tables zwei verschiedene Nummern haben?
                   <td>geolocation</td>
                   <td>{'longitude': '-9.47658792E1', 'latitude': '3.00983072E1'}</td>
                   <td>0.5118</td>
-                  <td>?</td>
+                  <td>0.7165</td>
                   <td>0.9512</td>
                 </tr>
                 <tr>
@@ -1424,7 +1469,60 @@ Wollen wir, dass die Tables zwei verschiedene Nummern haben?
             </div>
           </div>
   <br>
-  <a style="color:#FF0000";>@Estelle and/or Luisa Should we include a table of Product gtins and results ?</a>
+
+    As mentioned earlier, gtins are a hard case. In table 6.3 the different performances of the baseline TinyBERT, the contrastive learning approach
+    and TURL can be seen. All perform best for gtin13. It is evident that TURL outperforms the approaches for gtins for every case while the constrastive
+    approach is outperformed by TinyBERT.
+
+    <div style="margin-top:2em;">
+      <div style=";margin-right: 2.5em">
+          <table class="centertable">
+                <caption style="margin-top: 1em">Table 6.3: Examples of different gtin numbers and respective F1 Score Results for the Large Train Size</caption>
+                <tr>
+                    <th>Column</th>
+                    <th>Data Type</th>
+                    <th>TinyBERT</th>
+                    <th>CL</th>
+                    <th>TURL</th>
+                </tr>
+                <tr>
+                  <td>Product.gtin12</td>
+                  <td>integer</td>
+                  <td>0.5163</td>
+                  <td>0.4402</td>
+                  <td>0.5707</td>
+                </tr>
+                  <td>Product.gtin13</td>
+                  <td>integer</td>
+                  <td>0.6859</td>
+                  <td>0.6963</td>
+                  <td>0.7250</td>
+                </tr>
+                </tr>
+                  <td>Product.gtin14</td>
+                  <td>integer</td>
+                  <td>0.0556</td>
+                  <td>0.0555</td>
+                  <td>0.2500</td>
+                </tr>
+                <tr>
+                  <td>Product.gtin8</td>
+                  <td>integer</td>
+                  <td>0.3858</td>
+                  <td>0.3070</td>
+                  <td>0.4368</td>
+                </tr>
+                <tr>
+                  <td>Product.gtin</td>
+                  <td>integer</td>
+                  <td>0.1429</td>
+                  <td>0.0989</td>
+                  <td>0.4706</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+  <br>
 
 <h3>6.2 Entity Matching Results</h3>
 
