@@ -1238,7 +1238,7 @@
                     <th>Bert</th>
                     <th>TinyBert</th>
                     <th>Distilbert</th>
-                    <th>RoBERTa</th>
+                    <th>RoBerta</th>
                     <th>Contrastive Learning</th>
                     <th>TURL <br> 25 Epochs</th>
                     <th>TURL <br> 50 Epochs</th>
@@ -1713,12 +1713,11 @@ Wollen wir, dass die Tables zwei verschiedene Nummern haben?
 <!--CONTENT-->
 <p>
   As for the task of schema matching, the experiments clearly show that table-based transformer models such as TURL are highly relevant and
-  can be applied advantageously to identify and match identicals schemata. In particular, complex content that seems rather confusing as concatenated input
-  and hard to differentiate by all BERT-based models can be succesfully identified by TURL. Further, as is to be expected, larger amounts of training data clearly improve the model's
+  can be applied advantageously to identify and match identical schemata. In particular, complex content that seems rather confusing as concatenated input
+  and hard to differentiate by all BERT-based models can be successfully identified by TURL. Further, as is to be expected, larger amounts of training data clearly improve the model's
   performance. Especially for hard matching cases such as author and creator within creative work, for example, more training makes a huge difference.
-  At the same time, however,
-  Results also show that difference in length of the content, given in the case of different product gtins, do not help to improve the models' performance as much
-  as context in the case of TURL. Such examples cleary show how tabel-based transformers utilize context to draw inferences about specific columns content.
+  At the same time, however, results also show that difference in length of the content, given in the case of different product gtins, do not help to improve the models' performance as much
+  as context in the case of TURL. Such examples clearly show how table-based transformers utilize context to draw inferences about specific columns content.
   At the same time, the amount of context, such as number of columns does not results in any significant differences in the performance of TURL compared to the baselines.
   <br>
   However, while clean table content seems to provide good results for both baseline as well as table-based models, specific hard cases such as product gtins,
@@ -1732,12 +1731,14 @@ Wollen wir, dass die Tables zwei verschiedene Nummern haben?
   tuning during our project. Therefore, further experiments and adjustment of different hyperparameters within TURL, such as the learning rate for examples,
   could also lead to better results.
   <br>
-  In general, as data integration using deep learning is still a rather new application, further tables-tabes transformer such as ?? for example, could
+  In general, as data integration using deep learning is still a rather new application, further tables-based transformer such as ?? for example, could
   be investigated and used for further experimentation. At the same time, due to time limitations, our project team was not able to dive deeper into the
-  analysis and exploration of contrastive learning, so that
+  analysis and exploration of contrastive learning, so that we had to run as described above the pretraining with a batch size of 128 only. Since the pretraining
+  is an important part of the contrastive approach, one could further run the pretraining with a batch size of 1024 as the entity matching group. Moreover, further
+  experimentation with the parameters of the contrastive approach would also be a possibility for improvements and further insights.
 
 <br>
-  <a style="color:#FF0000";>@Luisa or Estelle Can you add a few statements regarding Contrastive Learning and any further ideas ?</a>
+
 
 <br>
     <a style="color:#FF0000";>(Application Schema & Entity Matching together? (see slides Bizer: https://www.uni-mannheim.de/media/Einrichtungen/dws/Files_Teaching/Web_Data_Integration/HWS2021/WDI04-IdentityResolution-HWS2021.pdf))</a>.
