@@ -232,7 +232,11 @@
     <p>
         This website engages with the experiments and results of a six month student team project on the topic "Data
         Integration using Deep Learning" at the WIM faculty at the University of Mannheim under the supervision of Ralph
-        Peeters and Christian Bizer (Chair of Information Systems V: Web-based Systems).
+        Peeters and Christian Bizer (Chair of Information Systems V: Web-based Systems). We have investigated the performance
+        of table transformer frameworks on the tasks of matching entities (entity matching) and schemes
+        (schema matching) across tables. The task is presented as a multi-class classification
+        problem of characterising if a row (entity) or a column (schema) belongs to a predefined
+        cluster/has a specific label.
         </br>
         The website is structured as follows. In chapter 1, we give a short introduction into the use cases and the challenges that
         are addressed by our project. Afterwards, we continue with an overview on the theoretical framework needed to keep track of the experiments.
@@ -1215,15 +1219,15 @@
                 <tr>
                     <th colspan="1" style='text-align:center; vertical-align:middle'></th>
                     <th colspan="4" style='text-align:center; vertical-align:middle'> Baseline</th>
-                    <th colspan="1" style='text-align:center; vertical-align:middle'></th>
+                    <th colspan="1" style='text-align:center; vertical-align:middle'>Contrastive Learning</th>
                     <th colspan="2" style='text-align:center; vertical-align:middle'> Table-based Transformers</th>
                 </tr>
                 <tr>
                     <th>Train Set</th>
                     <th>Bert</th>
-                    <th>RoBerta</th>
-                    <th>Distilbert</th>
                     <th>TinyBert</th>
+                    <th>Distilbert</th>
+                    <th>RoBerta</th>
                     <th>Contrastive Learning</th>
                     <th>TURL <br> 25 Epochs</th>
                     <th>TURL <br> 50 Epochs</th>
@@ -1232,9 +1236,9 @@
                 <tr>
                     <td style="background-color:#E8E8E8">Small</td>
                     <td>0.73</td>
-                    <td>0.66</td>
-                    <td>0.60</td>
                     <td>0.69</td>
+                    <td>0.60</td>
+                    <td>0.66</td>
                     <td>0.75</td>
                     <td>0.7457​​</td>
                     <td><b>0.7722</b></td>
@@ -1242,9 +1246,9 @@
                 <tr>
                     <td style="background-color:#E8E8E8">Medium</td>
                     <td>0.76</td>
-                    <td>0.77</td>
-                    <td>0.62</td>
                     <td>0.70</td>
+                    <td>0.62</td>
+                    <td>0.77</td>
                     <td>0.76</td>
                     <td>0.8214</td>
                     <td><b>0.8214​</b></td>
@@ -1252,9 +1256,9 @@
                 <tr>
                     <td style="background-color:#E8E8E8">Large</td>
                     <td>0.8014</td>
-                    <td>0.8030</td>
-                    <td>0.8019</td>
                     <td>0.7593</td>
+                    <td>0.8019</td>
+                    <td>0.8030</td>
                     <td>0.76</td>
                     <td>0.8663​​</td>
                     <td><b>0.8684​</b></td>
@@ -1267,16 +1271,16 @@
                 <tr>
                     <th colspan="1" style='text-align:center; vertical-align:middle'></th>
                     <th colspan="3" style='text-align:center; vertical-align:middle'> Baseline</th>
-                    <th colspan="2" style='text-align:center; vertical-align:middle'></th>
+                    <th colspan="2" style='text-align:center; vertical-align:middle'> Contrastive Learning</th>
                     <th colspan="2" style='text-align:center; vertical-align:middle'> Table-based Transformers</th>
                 </tr>
                 <tr>
                     <th>Set</th>
                     <th>Random Forest</th>
-                    <th>RoBerta</th>
                     <th>TinyBert</th>
-                    <th>Contrastive Learning (frozen)</th>
-                    <th>Contrastive Learning (unfrozen)</th>
+                    <th>RoBerta</th>
+                    <th>Frozen</th>
+                    <th>Unfrozen</th>
                     <th>TURL (transposed)</th>
                     <th>TURL (rewritten)</th>
 
@@ -1284,8 +1288,8 @@
                 <tr>
                     <td style="background-color:#E8E8E8">Product</td>
                     <td>0.8684</td>
-                    <td>0.8958</td>
                     <td>0.8329</td>
+                    <td>0.8958</td>
                     <td><b>0.9379</b></td>
                     <td>0.9281</td>
                     <td>0.7556</td>
@@ -1298,7 +1302,8 @@
 <span id="toc7"></span>
 
 <a style="color:#FF0000";>Kim: Table bisschen anders formatieren? Sieht so aus als wäre CL Baseline. Außerdem würde ich immer die gleiche Reihenfolge bei der Auflistung von allem einhalten
-Wollen wir, dass die Tables zwei verschiedene Nummern haben?</a>
+Wollen wir, dass die Tables zwei verschiedene Nummern haben?
+- Niklas: Reihenfolge geändert,Formatierung geändert und Jen und ich waren der Meinung, zwei verschiedene Nummern macht mehr Sinn, weils ja verschiedene Tabellen sind</a>
 
 <h3>6.1 Schema Matching Results</h3>
 
@@ -1477,9 +1482,9 @@ Wollen wir, dass die Tables zwei verschiedene Nummern haben?</a>
 
     <figcaption style="text-align:center">Figure 6.2: Comparison for different sizes of train data</figcaption>
       <figure>
-        <img src="./visualizations/Entity/Baseline_F1_train_size.png" style="margin-bottom:2em;" class="center2" width="30%" height="auto"/>
-        <img src="./visualizations/Entity/TURL_F1_train_size.png" style="margin-bottom:2em;" class="center2" width="30%" height="auto"/>
-        <img src="./visualizations/Entity/CL_F1_train_size.png" style="margin-bottom:2em;" class="center2" width="30%" height="auto"/>
+        <img src="./visualizations/Entity/Baseline_F1_train_size.png" style="margin-bottom:2em;" class="center"/>
+        <img src="./visualizations/Entity/TURL_F1_train_size.png" style="margin-bottom:2em;" class="center" />
+        <img src="./visualizations/Entity/CL_F1_train_size.png" style="margin-bottom:2em;" class="center" >
       </figure>
 
     Similarly, we examined the influence of the different domains (<a href="toc4.1">Section 4.1</a>) of the product data that were established in the preprocessing step
@@ -1494,9 +1499,9 @@ Wollen wir, dass die Tables zwei verschiedene Nummern haben?</a>
     <br>
     <figcaption style="text-align:center">Figure 6.3: Comparison for different domains</figcaption>
       <figure>
-        <img src="./visualizations/Entity/Baseline_F1_domains_test.png" style="margin-bottom:2em;" class="center2" width="30%" height="auto"/>
-        <img src="./visualizations/Entity/TURL_F1_domains_test.png" style="margin-bottom:2em;" class="center2" width="30%" height="auto"/>
-        <img src="./visualizations/Entity/CL_F1_domains_test.png" style="margin-bottom:2em;" class="center2" width="30%" height="auto"/>
+        <img src="./visualizations/Entity/Baseline_F1_domains_test.png" style="margin-bottom:2em;" class="center" />
+        <img src="./visualizations/Entity/TURL_F1_domains_test.png" style="margin-bottom:2em;" class="center" />
+        <img src="./visualizations/Entity/CL_F1_domains_test.png" style="margin-bottom:2em;" class="center" />
       </figure>
 
     Next, the investigation for the influence of the description column for the different models was undermined. It could
