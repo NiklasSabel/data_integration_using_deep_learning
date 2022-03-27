@@ -78,7 +78,6 @@
             display: block;
             margin-left: auto;
             margin-right: auto;
-            width: 35%;
         }
         .center1 {
             display: block;
@@ -87,16 +86,35 @@
             width: 20%;
         }
         .center2 {
-            display: block;
+            float: left;
             margin-left: auto;
             margin-right: auto;
-            width: 55%;
+            width: 50%;
+        }
+        .center2small {
+            float: left;
+            margin-left: auto;
+            margin-right: auto;
+            width: 35%;
+        }
+        .center3 {
+            float: left;
+            margin-left: auto;
+            margin-right: auto;
+            width: 33%;
+            height: auto;
         }
 
         .centertable {
             margin-left: auto;
             margin-right: auto;
             }
+
+        .picturetable {
+            border: none;
+            margin-left: auto;
+            margin-right: auto;
+        }
 
         td[scope="mergedcol"] {
             text-align: center;
@@ -1328,10 +1346,8 @@ Wollen wir, dass die Tables zwei verschiedene Nummern haben?
 
 <figcaption style="text-align:center">Figure 6.1: F1 Score Distribution for each Category and Training Size</figcaption>
       <figure>
-        <img src="./visualizations/Schema/F1_Score_Distribution.png" style="margin-bottom:2em;"class="center2"/>
+        <img src="./visualizations/Schema/F1_Score_Distribution.png" style="margin-bottom:2em;"class="center" width="50%" height="auto"/>
       </figure>
-
-  <br>
 
 <p>
   Therefore, to deepen the understanding of the differences between baselines and TURL, a more detailed evaluation with regards to the datatypes
@@ -1463,7 +1479,7 @@ Wollen wir, dass die Tables zwei verschiedene Nummern haben?
 
 <p>
     Unlike schema matching, the results for entity matching appear slightly different (see Table 6.2). RoBerta as our best performing
-    baseline with a F1 score of around 0.90 outperforms the TURL model by far (best F1 score: U+007E 0.76). Moreover,
+    baseline with a F1 score of around 0.90 outperforms the TURL model by far (best F1 score: around 0.76). Moreover,
     the Contrastive Learning (frozen) model exceeds these scores by almost 4% ending up with the best F1 score of around 0.94.
     <br>
     To go deeper into analysis, we compared the best performing models of each category namely RoBERTa for the baseline,
@@ -1472,19 +1488,20 @@ Wollen wir, dass die Tables zwei verschiedene Nummern haben?
     had to calculate an averaged F1 score since predictions were not given at hand but rather we were
     directly provided with F1 scores per cluster. This approach helped us finding intrinsic differences between the models.
     <br>
-    As Figure 6.2 shows the different sizes of train data already show various impact on the F1 score.
+    As Figure 6.2 illustrates, the different sizes of train data already show various impact on the F1 score.
     We binned the sizes of train data appropriately to our data and calculated F1 scores separately on the
     given bins. Although all indicate an increasing F1 score for increasing sizes of train data, the baseline and TURL
     start at around the same level whereas Contrastive Learning achieves very good results with only zero to five training
     instances given. The baseline and Contrastive Learning then both increase steadily, the baseline having a more steep
-    curve and end up at a score around 1.0. On the other hand, one might notice that TURL replicates a more diverse curve
+    curve and end up at a score of 1.0. On the other hand, one might notice that TURL replicates a more diverse curve
     regarding the train sizes and indeed only achieves very good results for larger sets.
 
     <figcaption style="text-align:center">Figure 6.2: Comparison for different sizes of train data</figcaption>
       <figure>
-        <img src="./visualizations/Entity/Baseline_F1_train_size.png" style="margin-bottom:2em;" class="center"/>
-        <img src="./visualizations/Entity/TURL_F1_train_size.png" style="margin-bottom:2em;" class="center" />
-        <img src="./visualizations/Entity/CL_F1_train_size.png" style="margin-bottom:2em;" class="center" >
+        <img src="./visualizations/Entity/Baseline_F1_train_size.png" style="margin-bottom:2em;" class="center3"/>
+        <img src="./visualizations/Entity/TURL_F1_train_size.png" style="margin-bottom:2em;" class="center3" />
+        <img src="./visualizations/Entity/CL_F1_train_size.png" style="margin-bottom:2em;" class="center3" >
+        <p style="clear: both;">
       </figure>
 
     Similarly, we examined the influence of the different domains (<a href="toc4.1">Section 4.1</a>) of the product data that were established in the preprocessing step
@@ -1495,13 +1512,15 @@ Wollen wir, dass die Tables zwei verschiedene Nummern haben?
     the models occur with the domain random where the baseline and Contrastive Learning outperform TURL relatively speaking.
     In general, Contrastive Learning still achieves very good results even with drugstore and clothes, dating F1 scores
     around 0.8. In contrast, the baseline only achieves a F1 of 0.6 for drugstore.
-
+    </br>
     <br>
+
     <figcaption style="text-align:center">Figure 6.3: Comparison for different domains</figcaption>
       <figure>
-        <img src="./visualizations/Entity/Baseline_F1_domains_test.png" style="margin-bottom:2em;" class="center" />
-        <img src="./visualizations/Entity/TURL_F1_domains_test.png" style="margin-bottom:2em;" class="center" />
-        <img src="./visualizations/Entity/CL_F1_domains_test.png" style="margin-bottom:2em;" class="center" />
+        <img src="./visualizations/Entity/Baseline_F1_domains_test.png" style="margin-bottom:2em;" class="center3" />
+        <img src="./visualizations/Entity/TURL_F1_domains_test.png" style="margin-bottom:2em;" class="center3" />
+        <img src="./visualizations/Entity/CL_F1_domains_test.png" style="margin-bottom:2em;" class="center3" />
+        <p style="clear: both;">
       </figure>
 
     Next, the investigation for the influence of the description column for the different models was undermined. It could
@@ -1533,7 +1552,110 @@ Wollen wir, dass die Tables zwei verschiedene Nummern haben?
             </div>
           </div>
     <br>
-    
+
+    <figcaption style="text-align:center">Figure 6.5: Impact of description column - Correlation with other investigations</figcaption>
+      <figure>
+        <img src="./visualizations/Entity/Amt_with_desc_domain.png" style="margin-bottom:2em;" class="center2" />
+        <img src="./visualizations/Entity/Amt_without_desc_domain.png" style="margin-bottom:2em;" class="center2" />
+        <img src="./visualizations/Entity/Amt_with_desc_set_size.png" style="margin-bottom:2em;" class="center2" />
+        <img src="./visualizations/Entity/Amt_without_desc_set_size.png" style="margin-bottom:2em;" class="center2" />
+        <p style="clear: both;">
+      </figure>
+
+    Going deeper into analysis, a correlation with the domain attribute as well as the train size was discovered.
+    Especially the domain technology contains mostly entries without description where the baseline and Contrastive Learning
+    are very good. <a style="color:#FF0000";>Kim: Aussage mit domains hier eigentlich eher schwierig (siehe random)</a>.
+    Moreover, the entries which do not contain any descriptions are mostly clusters 15 to 50 entries where we could see
+    that TURL's curve in Figure 6.2 registers a drop. Of course, these characteristics are all interrelating which is why
+    it is hard to distinguish causality.
+    <br>
+    As a next step, comparing the overall F1 score to the one filtered on hard cases only appeared to be an interesting
+    tool of choice. The results in Table 6.6 confirm what was expected: The predictions for hard cases
+    appear more difficult. All models date a 10% difference in F1.
+
+    <div style="margin-top:2em;">
+      <div style=";margin-right: 2.5em">
+          <table class="centertable">
+                <caption style="margin-top: 1em">Table 6.6: Comparison for hard cases</caption>
+                <tr>
+                    <th></th>
+                    <th>Baseline</th>
+                    <th>TURL (averaged)</th>
+                    <th>Contrastive Learning</th>
+                </tr>
+                <tr>
+                  <td>Overall F1</td>
+                  <td>0.8329</td>
+                  <td>0.6453</td>
+                  <td>0.9379</td>
+                </tr>
+                  <td>F1 on hard cases only</td>
+                  <td>0.7102</td>
+                  <td>0.5509</td>
+                  <td>0.8458</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+    <br>
+
+    As a last method for comparison, the impact of the length of the name column was investigated. This was only performed
+    for TURL and Contrastive Learning since in the baseline we used the concatenation of name and description column as
+    input. Therefore, this comparison would not be of any use for the baseline. Nevertheless, Figure 6.7 shows a very different
+    behaviour between the two models. Although for both a name column with five to ten tokens appears to be the best input
+    TURL records a steep decrease with increasing name length whereas Contrastive Learning draws still very good results
+    for large names and only drops significantly for a length of over 500 tokens. Very long names here are assumed to include
+    too much noise and therefore hinder the model from precise predictions.
+    <br>
+
+    <figcaption style="text-align:center">Figure 6.7: Comparison for length of name column</figcaption>
+      <figure>
+        <img src="./visualizations/Entity/TURL_F1_amt_tokens_test.png" style="margin-bottom:2em;" class="center2" />
+        <img src="./visualizations/Entity/CL_F1_amt_tokens_test.png" style="margin-bottom:2em;" class="center2" />
+        <p style="clear: both;">
+      </figure>
+
+    After the statistical analysis of our results, we decided to further have a look into the data itself to find intrinsic
+    overlaps and differences between the models. First, one quickly recognizes that all models perform good on mostly very
+    clean and large clusters where the data between different clusters is not too similar and entries include entity-specific
+    tokens like model numbers for example. On the other hand, the tested models have a hard time with clusters which are
+    very similar to another and names and descriptions differ a lot in content and length. This is somehow of what has been expected so far.
+    <br>
+    However, if we now look at the differences between the models, we can still make some new observations.
+    Comparing our baseline model to TURL, the baseline makes way better predictions for small clusters, clusters where entries
+    have very long descriptions or no description is given. Also TURL finds it very hard to deal with a very specific cluster
+    type which appears more often but could possibly also be referred back to the reasons just mentioned.
+    Yet, TURL manages to achieve better results for clusters where entries differ a lot in name length or entries with very
+    different and often long descpritions which also matches with the findings described above.
+    <br>
+    Contrastive Learning as our third model though accomplishes very good results on all the cases. It also manages to deal
+    with clusters with very few training data and hard cases at once where our baseline model seems to fail. To conclude this
+    analysis, of course the baseline also registers better F1 scores on some given clusters but these have to be attributed
+    to the hard cases where either one cluster is picked as the go-to prediction and therefore results in a kind of randomness as the explanation.
+    <br>
+    Data examples for the outlined analysis can be found in Figure 6.8. F1 scores in (a)-(d) are given by TURL, in (e)
+    by Contrastive Learning. Respective baseline F1 score for the differences are added in the description.
+    <br>
+    <br>
+
+    <figcaption style="text-align:center">Figure 6.8: Snapshots from our data to illustrate overlaps and differences between the models</figcaption>
+    <div style="margin-top:2em;">
+      <div style=";margin-right: 2.5em">
+          <table class="picturetable">
+                <tr>
+                  <td><figcaption style="text-align:center">(a) All models perform good.</figcaption><img src="./visualizations/Entity/Error_Analysis_Overlaps_all_good.png" style="margin-bottom:2em;" class="center" width="90%" height="auto"/></td>
+                  <td><figcaption style="text-align:center">(b) All models perform bad</figcaption><img src="./visualizations/Entity/Error_Analysis_Overlaps_all_bad.png" style="margin-bottom:2em;" class="center" width="90%" height="auto"/></td>
+                <tr>
+                  <td><figcaption style="text-align:center">(c) Baseline performs better than TURL.  F1 baseline: 1.0</figcaption><img src="./visualizations/Entity/Error_Analysis_Baseline%20better%20than%20TURL.png" style="margin-bottom:2em;" class="center" width="90%" height="auto"/></td>
+                  <td><figcaption style="text-align:center">(d) TURL performs better than baseline.  F1 baseline: 0.33</figcaption><img src="./visualizations/Entity/Error_Analysis_TURL%20better%20than%20baseline.png" style="margin-bottom:2em;" class="center" width="90%" height="auto"/></td>
+                <tr>
+                  <td><figcaption style="text-align:center">(e) Contrastive Learning performs better than baseline.  F1 baseline: 0.36</figcaption><img src="./visualizations/Entity/Error_Analysis_CL%20better%20than%20baseline.png" style="margin-bottom:2em;" class="center" width="90%" height="auto"/></td>
+                </tr>
+              </table>
+            </div>
+          </div>
+    <br>
+
 </p>
 
 <br>
