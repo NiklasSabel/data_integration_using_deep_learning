@@ -744,8 +744,9 @@
     including the majority of the columns. As mentioned above, the chosen columns were to represent different data types so that the set of 207 columns
     includes 150 strings, 21 datetime, 18 float, 13 integers as well as five geolocation columns. During the selection of the dataset and the aforementioned columns,
      we made sure to include hard matching cases, i.e. columns that are really hard to distinguish for the algorithm. Table 4.4 illustrates two examples
-    of those hard matching cases.<a style="color:#FF0000";>@Jen: explain hard matches a bit more?</a> The first one shows the values of different kinds of product gtins (global trade item numbers). Overall, there are five different kinds of gtin numbers
-    in the data that are hard to distinguish. Another example of two very similar entities shown in Table 4.4 is derived from the recipe class as most recipe headlines sound exactly like recipe names.
+    of those hard matching cases. For example, our data set comprises of five different product gtins (global trade item numbers) that are almost identical and only differ in length.
+    Another example of two very similar entities shown in Table 4.4 is derived from the recipe class as most recipe headlines sound exactly like recipe names.
+    Hence, we refer to hard matching cases if column content can be easily mixed up within as well as between classes and is therefore hard to distinguish.
     <br>
 
 
@@ -878,8 +879,8 @@
             </table>
 
 <p>
-    As mentioned earlier, TURL is based on TinyBERT, so that this represents a feasable baseline model and is mainly used
-    for comparison and evaluation of the results later on. <a style="color:#FF0000";>@Jen</a>
+    As mentioned earlier, TURL is based on TinyBERT so that TinyBERT represents a feasable baseline model and will mainly be used
+    for comparison and evaluation of the results in the subsequent chapters.
 </p>
 
     <!-- include pair-wise trainsizes?-->
@@ -1491,7 +1492,7 @@
     gtin numbers, TURL was unable to correctly differentiate between the numbers as it seems to focus more on cell context rather than differences of the cell content itself.
     <br>
     Such examples clearly show how table-based transformers utilize context to draw inferences about specific columns content.
-    At the same time, however, the amount of context, such as number of columns does not results in any significant differences
+    At the same time, however, the amount of context, such as number of columns did not results in any significant differences
     in the performance of TURL compared to the baselines.
 
     <div style="margin-top:2em;">
