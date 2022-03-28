@@ -364,19 +364,19 @@
         like Levenshtein distance or advanced techniques like BERT. Newer approaches include the application of
         so-called table transformers which will be discussed in <a href="#toc3">Section 3</a>. Entity matching tries to allocate entities
         with different representations under the assumption that the higher the similarity is, the more likely two
-        entity representations are a match <a href="#toc8">[8]</a>.
+        entity representations are a match <a href="#toc8">[7]</a>.
 
     <span id="toc2.3"></span>
     <h3>2.3 Transformer Models</h3>
     <p>
         In 2017, Google Brain proposed the transformer model, that based on an encoder-decoder structure and an attention mechanism showed
         impressive improvements over state-of-the-art methods and simplicity in adoption to a wide range of machine learning tasks,
-         especially in the context of NLP <a href="#toc8">[6]</a>.
+         especially in the context of NLP <a href="#toc8">[8]</a>.
         As a result, a new language representation model named BERT was introduced in 2019 to pre-train deep bidirectional
         representations from unlabeled text. That resulted in a lot of possibilities as a "pre-trained BERT model can be finetuned with
-        just one additional output layer to create state-of-the art methods for a wide range of tasks" <a href="#toc8">[3]</a>. In the
+        just one additional output layer to create state-of-the art methods for a wide range of tasks" <a href="#toc8">[2]</a>. In the
         context of this work, we used algorithms that are pre-trained on different BERT extensions, in particular TinyBERT and RoBERTa
-        <a href="#toc8">[7]</a> <a href="#toc8">[8]</a>.
+        <a href="#toc8">[9]</a> <a href="#toc8">[10]</a>.
     <p>
 
     <span id="toc3"></span>
@@ -420,10 +420,10 @@
     <span id="toc3.2"></span>
     <h3>3.2 Contrastive Learning</h3>
     <p>
-        Contrastive Learning has become a promising approach both in information retrieval <a href="#toc8">[7]</a> as well as in computer vision outperforming previous methods
-        in self-supervised and semi-supervised learning <a href="#toc8">[6]</a>. This framework has further been extended to a fully-supervised setting introducing an alternative
-        to the usual cross-entropy loss function <a href="#toc8">[5]</a> while achieving state-of-the-art results. In addition, supervised Contrastive Learning has seen recent success
-        in product matching which is a special form of entity matching <a href="#toc8">[4]</a>.
+        Contrastive Learning has become a promising approach both in information retrieval <a href="#toc8">[6]</a> as well as in computer vision outperforming previous methods
+        in self-supervised and semi-supervised learning <a href="#toc8">[5]</a>. This framework has further been extended to a fully-supervised setting introducing an alternative
+        to the usual cross-entropy loss function <a href="#toc8">[4]</a> while achieving state-of-the-art results. In addition, supervised Contrastive Learning has seen recent success
+        in product matching which is a special form of entity matching <a href="#toc8">[3]</a>.
 
         <figcaption style="text-align:center">
             Figure 3.2: Supervised Contrastive Learning
@@ -456,12 +456,12 @@
     <p>
         <!-- Concept Explanation-->
         Chapter 4 gives an overview on the generation of our datasets and the final values contained in the sets.
-        Our dataset is based on the Web Data Commons - Schema.org table Corpus <a href="#toc8">[10]</a> maintained by the Data
+        Our dataset is based on the Web Data Commons - Schema.org table Corpus <a href="#toc8">[12]</a> maintained by the Data
         and Web Science Research Group at the University of Mannheim.
         <br> For both tasks, i.e. entity and schema matching, different selection and filtering methods were applied to attain the final datasets.
         However, in a first action, chosen tables for both taks were cleaned using a two-step approach in order to extract English language data only.
         We applied a TLD-based method to first filter our data on English internet domain
-        endings, e.g. ".com",or ".uk", and afterwards applied the fastText language detection algorithm <a href="#toc8">[9]</a> on each single row in
+        endings, e.g. ".com",or ".uk", and afterwards applied the fastText language detection algorithm <a href="#toc8">[11]</a> on each single row in
         the remaining tables to check whether it belongs to the English language and if not we discarded them.
         Further cleaning of selected tables and further preprocessing approaches specific to each task of schema or entity matching will be explained in detail in the following.
 
@@ -477,7 +477,7 @@
         and technology as keywords to get relevant clusters for our final dataset. To further enhance our data, we
         searched for brands with at least 1,000 distinct clusters and established another category called "random". In order to
         make the final matching for the algorithms not too easy, we browsed the selected clusters for homogeneous entities
-        using Doc2Vec <a href="#toc8">[11]</a> and Jaccard similarity to include hard-to-distinguish clusters in our dataset.
+        using Doc2Vec <a href="#toc8">[13]</a> and Jaccard similarity to include hard-to-distinguish clusters in our dataset.
         Here, we based our selection on the balance between both, Jaccard and Doc2Vec score, by manually validating the best
         results for each of the defined domains.
         <p>
@@ -547,7 +547,7 @@
         entailed the removal of special characters and duplicates. More complex cleaning approaches were not used due to
         the high possibility of multiple pitfalls given by the high amount of data.
 
-        With a multilabel stratified shuffle-split <a href="#toc8">[16]</a> we distributed the remaining clusters
+        With a multilabel stratified shuffle-split <a href="#toc8">[15]</a> we distributed the remaining clusters
         into &frac38; train, &frac14; validation and &frac38; test data. With this approach we ensured that
         tables were distributed equally across size and selected clusters. To avoid skewing the results, we also manually
         cleaned the test set, detecting about 10% noise, which we discarded entirely. Thereby, we ended up with an amount of
@@ -599,7 +599,7 @@
             less than 50% NAs within selected columns​ as well as less than 15% NAs within relevant columns in the entire table.
             <br> The resulting 54,190 tables were then divided into
             a training and test set by performing a multi-label stratified shuffle split with three separations (random state = 42) resulting in 44,435 training tables and 9,894 test tables.
-            We chose to perform a multi-label stratified shuffled split <a href="#toc8">[16]</a> to not only distribute the different categories
+            We chose to perform a multi-label stratified shuffled split <a href="#toc8">[15]</a> to not only distribute the different categories
             but also the selected columns in each category proportionally between the training and test set.
             To compare different input and training sizes later on, our training data was further divided into a medium as well as small sized training set. Again,
             we performed a multi-label stratified shuffled split to distribute the data and especially columns proportionally making sure that all selected columns
@@ -1079,7 +1079,7 @@
 <span id="toc5.3"></span>
 <h3> 5.3 Contrastive Learning Experiments </h3>
 <p>
-    All our experiments presented in this Section build upon the previous work on supervised Contrastive Learning for product matching <a href="#toc8">[4]</a>
+    All our experiments presented in this Section build upon the previous work on supervised Contrastive Learning for product matching <a href="#toc8">[3]</a>
     and the respective <a href="https://github.com/wbsg-uni-mannheim/contrastive-product-matching">git repository</a>. Their model already offered the use-case of binary pair-wise classification for product matching.
     From there we reformulated their approach to serve as a multi-class classification framework, for both schema and entitiy matching.
     As this approach is not table-based anymore, we had to restructure our data in a similar way as we did for our baseline experiments. While for product matching we only had one
@@ -1768,7 +1768,7 @@
 
     <br>
 
-    As data integration using deep learning is still considered as new ground, further table-based models such as encoder-decoder transformer models [17]
+    As data integration using deep learning is still considered as new ground, further table-based models such as encoder-decoder transformer models [16]
     or hierarchical table transformers (HTT) [to be done], could be investigated and used for further experimentation. At the same time, due to time limitations, our project team was not able to dive deeper into the
     analysis and exploration of contrastive learning. As described above for schema matching we only managed to run pretraining with a batch size of 128. Since pretraining
     is a crucial part of the contrastive approach, it is worth trying to experiment with a batch size of 1024 (as we did for product matching). Moreover, further
@@ -1785,10 +1785,6 @@
     <li>Deng, X. et al.:
         <a href="https://doi.org/10.48550/arXiv.2006.14806" target="_blank">TURL: table Understanding through Representation Learning</a>. In:
        Proceedings of the VLDB Endowment 14, 3, 307--319 (2020).
-    </li>
-    <li>Iida, H. et al.:
-        <a href="http://arxiv.org/abs/2105.02584" target="_blank">TABBIE: Pretrained Representations of Tabular Data</a>.
-       arXiv:2105.02584 [cs] (2021).
     </li>
     <li>Devlin, J. et al.: <a
             href="http://dblp.uni-trier.de/db/conf/naacl/naacl2019-1.html#DevlinCLT19"
