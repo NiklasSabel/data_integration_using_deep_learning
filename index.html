@@ -1426,7 +1426,8 @@ Wollen wir, dass die Tables zwei verschiedene Nummern haben?
    or integers only performs similarly well for both baselines, CL as well as TURL.
   Compared to the baselines, TURL performs significantly better on columns containing rather complex content, such as mixtures of strings and integers or floats combined.
   Examples of such complex columns are openinghours, specification of places or address columns for different categories such as person, hotel or local business.
-  The table below shows some examples of clean, e.g. total time, and complex, e.g. address, columns as well as the respective F1 score of the models.
+  The table below shows some examples of clean, e.g. total time, and complex, e.g. address, columns as well as the respective F1 score of the models. 
+  <a style="color:#FF0000";>Jannik: We might want to rephrase here. To me this sounds bit confusing. Also mention table explicitly as we show quite some tables in this chapter?</a>. 
 
   <div style="margin-top:2em;">
       <div style=";margin-right: 2.5em">
@@ -1619,10 +1620,10 @@ Wollen wir, dass die Tables zwei verschiedene Nummern haben?
 
     <figcaption style="text-align:center">Figure 6.5: Impact of description column - Correlation with other investigations</figcaption>
       <figure>
-        <img src="./visualizations/Entity/Amt_with_desc_domain.png" style="margin-bottom:2em;" class="center2" />
-        <img src="./visualizations/Entity/Amt_without_desc_domain.png" style="margin-bottom:2em;" class="center2" />
-        <img src="./visualizations/Entity/Amt_with_desc_set_size.png" style="margin-bottom:2em;" class="center2" />
-        <img src="./visualizations/Entity/Amt_without_desc_set_size.png" style="margin-bottom:2em;" class="center2" />
+        <img src="./visualizations/Entity/Amt_with_desc_domain.png" style="margin-bottom:2em;" class="left" width="40%" height="auto"/>
+        <img src="./visualizations/Entity/Amt_without_desc_domain.png" style="margin-bottom:2em;" class="right" width="40%" height="auto"/>
+        <img src="./visualizations/Entity/Amt_with_desc_set_size.png" style="margin-bottom:2em;" class="left" width="40%" height="auto"/>
+        <img src="./visualizations/Entity/Amt_without_desc_set_size.png" style="margin-bottom:2em;" class="right" width="40%" height="auto"/>
         <p style="clear: both;">
       </figure>
 
@@ -1663,7 +1664,7 @@ Wollen wir, dass die Tables zwei verschiedene Nummern haben?
           </div>
     <br>
 
-    As a last method for comparison, the impact of the length of the name column was investigated. This was only performed
+    As a last method for comparison, we investigated the impact of the amount of tokens in the name column. This was only performed
     for TURL and Contrastive Learning since in the baseline we used the concatenation of name and description column as
     input. Therefore, this comparison would not be of any use for the baseline. Nevertheless, Figure 6.7 shows a very different
     behaviour between the two models. Although for both a name column with five to ten tokens appears to be the best input,
@@ -1675,8 +1676,8 @@ Wollen wir, dass die Tables zwei verschiedene Nummern haben?
 
     <figcaption style="text-align:center">Figure 6.7: Comparison for length of name column</figcaption>
       <figure>
-        <img src="./visualizations/Entity/TURL_F1_amt_tokens_test.png" style="margin-bottom:2em;" class="center2" />
-        <img src="./visualizations/Entity/CL_F1_amt_tokens_test.png" style="margin-bottom:2em;" class="center2" />
+        <img src="./visualizations/Entity/TURL_F1_amt_tokens_test.png" style="margin-bottom:2em;" class="left" width="40%" height="auto"/>
+        <img src="./visualizations/Entity/CL_F1_amt_tokens_test.png" style="margin-bottom:2em;" class="left" width="40%" height="auto"/>
         <p style="clear: both;">
       </figure>
 
@@ -1687,14 +1688,14 @@ Wollen wir, dass die Tables zwei verschiedene Nummern haben?
     very similar to another and names and descriptions differ a lot in content and length. This is somehow of what has been expected so far.
     <br>
     However, if we now look at the differences between the models, we can still make some new observations.
-    Comparing our baseline model to TURL, the baseline makes way better predictions for small clusters, clusters where entries
+    Comparing our baseline model to TURL, the baseline makes way better predictions for small clusters  <a style="color:#FF0000";>?and?</a> clusters where entries
     have very long descriptions or no description is given. Also TURL finds it very hard to deal with a very specific cluster
     type which appears more often but could possibly also be referred back to the reasons just mentioned.
     Yet, TURL manages to achieve better results for clusters where entries differ a lot in name length or entries with very
     different and often long descpritions which also matches with the findings described above.
     <br>
     Contrastive Learning as our third model though accomplishes very good results on all the cases. It also manages to deal
-    with clusters with very few training data and hard cases at once where our baseline model seems to fail. To conclude this
+    with clusters featuring both very few training data and hard cases where our baseline model seems to fail. To conclude this
     analysis, of course the baseline also registers better F1 scores on some given clusters but these have to be attributed
     to the hard cases where either one cluster is picked as the go-to prediction and therefore results in a kind of randomness as the explanation.
     <br>
@@ -1743,16 +1744,19 @@ Wollen wir, dass die Tables zwei verschiedene Nummern haben?
   noise within the training data. Hence, further cleaning and investigation of the column content could give more insights and potentially lead to better
   model performance as well.
   <br>
+  Furthermore, contrastive learning being a non table-based approach clearly outperformed TURL on the task of product matching. This could indicate 
+  that TURL is much stronger in remembering context on a schema level rather than on entity level.
+  <br>
   With regard to further work that can be applied to the tasks of data integration and transformer models, we also suggest to gather more training data and
   gain more insights on other categories next to the already chosen ones. Additionally, due to time restrictions, we did not focus extensively on hyperparameter
-  tuning during our project. Therefore, further experiments and adjustment of different hyperparameters within TURL, such as the learning rate for examples,
+  tuning during our project. Therefore, further experiments and adjustment of different hyperparameters within TURL, such as learning rate,
   could also lead to better results.
   <br>
-  In general, as data integration using deep learning is still a rather new application, further tables-based transformer such as ?? for example, could
-  be investigated and used for further experimentation. At the same time, due to time limitations, our project team was not able to dive deeper into the
-  analysis and exploration of contrastive learning, so that we had to run as described above the pretraining with a batch size of 128 only. Since the pretraining
-  is an important part of the contrastive approach, one could further run the pretraining with a batch size of 1024 as the entity matching group. Moreover, further
-  experimentation with the parameters of the contrastive approach would also be a possibility for improvements and further insights.
+  As data integration using deep learning is still considered as new ground, further table-based models such as encoder-decoder transformer models [17] 
+  or hierarchical table transformers (HTT) [to be done], could be investigated and used for further experimentation. At the same time, due to time limitations, our project team was not able to dive deeper into the
+  analysis and exploration of contrastive learning. As described above for schema matching we only managed to run pretraining with a batch size of 128. Since pretraining
+  is a crucial part of the contrastive approach, it is worth trying to experiment with a batch size of 1024 (as we did for product matching). Moreover, further
+  experimentation on hyperparameters such as learning rate, temperature or augmentation would also be a possibility for improvements and further insights.
 
 <br>
 
@@ -1845,6 +1849,14 @@ Wollen wir, dass die Tables zwei verschiedene Nummern haben?
     <li>Bradberry, T.J.:
       <a href="https://github.com/trent-b/iterative-stratification" target="blank">Iterative Stratification</a>.
       (2018).
+    </li>
+    <li>Tang, Nan and Fan, Ju and Li, Fangyi and Tu et al.:
+      <a href="https://arxiv.org/abs/2012.02469" target="blank">RPT: Relational Pre-trained Transformer Is Almost All You Need towards Democratizing Data Preparation</a>.
+      arXiv:2012.02469 [cs.LG](2020).
+    </li>
+    <li>:Authors 
+      <a href="example.com" target="blank">Hierarchical Table Transformer</a>.
+      .
     </li>
     </ol>
     <span id="toc9"></span>
