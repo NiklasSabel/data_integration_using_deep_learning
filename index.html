@@ -251,7 +251,7 @@
         This website engages with the experiments and results of a six month student team project on the topic "Data
         Integration using Deep Learning" at the School of Business Informatics and Mathematics of the University of Mannheim under the supervision of Ralph
         Peeters and Christian Bizer (Chair of Information Systems V: Web-based Systems). We have investigated the performance
-        of table frameworks based on the tasks of matching entities (entity matching) and schemata
+        of frameworks based on the tasks of matching entities (entity matching) and schemata
         (schema matching) across tables. The task is presented as a multi-class classification
         problem characterising whether a row (entity) or a column (schema) belongs to a predefined
         cluster/has a specific label.
@@ -464,7 +464,7 @@
         Chapter 4 gives an overview on the generation of our datasets and the final values contained in the sets.
         Our dataset is based on the Web Data Commons - Schema.org Table Corpus <a href="#toc8">[10]</a> maintained by the Data
         and Web Science Research Group at the University of Mannheim.
-        <br> For both tasks, i.e. entity and schema matching, different selection and filtering methods were applied to attain the final data sets.
+        <br> For both tasks, i.e. entity and schema matching, different selection and filtering methods were applied to attain the final datasets.
         However, in a first action, chosen tables for both taks were cleaned using a two-step approach in order to extract English language data only.
         We applied a TLD-based method to first filter our data on English internet domain
         endings, e.g. ".com",or ".uk", and afterwards applied the fastText language detection algorithm <a href="#toc8">[9]</a> on each single row in
@@ -486,7 +486,8 @@
         using Doc2Vec <a href="#toc8">[11]</a> and Jaccard similarity to include hard-to-distinguish clusters in our dataset.
         Here, we based our selection on the balance between both, Jaccard and Doc2Vec score, by manually validating the best
         results for each of the defined domains.
-        <a style="color:#FF0000";>Kim: soll ich hier eine explizite Übersicht einstellen zu den Scores?</a>
+        <a style="color:#FF0000";>Kim: soll ich hier eine explizite Übersicht einstellen zu den Scores?
+        <br>Niklas: wenn du meinst, was für thresholds wir verwendet haben, dann würde ich sagen nein</a>
         <p>
             To get a better understanding of hard-to-distinguish cases, we provide some examples in Table 4.1.
             The upper table illustrates three examples of so-called hard non-matching cases. A hard non-match describes two entities which are semantically very close
@@ -550,7 +551,7 @@
               </tbody>
             </table>
 
-        To increase the performance of the models, post-preprocessing was applied through a cleaning procedure. This procedure
+        To increase the performance of the models, post-preprocessing was applied through a cleaning procedure. This
         entails the removal of special characters and duplicates. More complex cleaning approaches were not used due to
         the high possibility of multiple pitfalls given by the high amount of data.
 
@@ -747,15 +748,10 @@
             </tbody>
             </table>
 
-
-<p>
-     All of our datasets can be downloaded in <a href="#toc9">section 9</a> but are available for research purposes only.
-     <a style="color:#FF0000";>Jannik: this is already mentioned in intro. To be consistent either put it in paragraph 4 or leave out as already mentioned</a>
-    
      <br><br>
-    The respective distribution of the chosen columns for schema matching are also displayed in Table 4.3 the with product, being the largest category and source of tables,
+    The respective distribution of the chosen columns for schema matching is also displayed in Table 4.3 with product, being the largest category and source of tables,
     including the majority of the columns. As mentioned above, the chosen columns were to represent different data types so that the set of 207 columns
-    includes 150 strings, 21 datetime, 18 float, 13 integers as well as 5 geolocation columns. During the selection of the data set and the aforementioned columns,
+    includes 150 strings, 21 datetime, 18 float, 13 integers as well as 5 geolocation columns. During the selection of the dataset and the aforementioned columns,
      we made sure to include hard matching cases, i.e. columns that are really hard to distinguish for the algorithm. Table 4.4 illustrates two examples
     of those hard matching cases.<a style="color:#FF0000";>Jannik: Given the definition above (from entitiy) we should be more precise here. I think we should go
     with "hard non-match" to describe your examples here, right?</a> The first one shows the values of different kinds of product gtins (global trade item numbers). Overall, there are five different kinds of gtin numbers
@@ -818,7 +814,7 @@
     We included one tree-based model in Random Forest, and two BERT-based models in TinyBERT and RoBERTa, because, as mentioned
     in <a href="#toc3.1">Section 3.1</a>, TURL is based on TinyBERT.
     All the baselines were modelled as multi-class classification that were presented a concatentation of the entity name and
-    a description in case of the product dataset
+    a description in case of the product dataset.
     The results are presented in Table 5.1 below.
     <table style="width:30%" class="centertable">
         <caption style="margin-top: 1em">Table 5.1: F1-scores for different baselines models in entity matching.</caption>
@@ -842,7 +838,7 @@
 <p>
     As a baseline for schema matching, both tree and BERT-based models were used. As a tree based model, we applied a random forest with
     both value and meta-based data.
-    <br> The value based datasets were both created with TF-IDF, whereby a global and a binary approach was used.
+    <br> The value based datasets were created with TF-IDF, whereby a global and a binary approach was used.
     For TF-IDF the data was preprocessed with the following steps: the concatenated text of each column was lower-cased and tokenized and
     stopwords as well as punctuation was removed. The meta approach was based on the following properties of the data:
     whether or not the column content was structured within brackets such as {}, the length of the value, the average word length and a binary variable whether the column includes dates.
@@ -914,7 +910,9 @@
         href="https://github.com/sunlab-osu/TURL#readme"> README</a> file within the TURL <a
             href="https://github.com/sunlab-osu/TURL"> git repository</a>.
     Further information on the pretraining and the respective fine-tuning task can be found in TURL: Table Understanding through Representation Learning <a href="#toc8">[1]</a>.
-    <br>
+    For Entity matching we experimented with two different approaches. One setting was based on transposing the matrix, such that
+    each column was modelled as one entity as the prebuild framework aggregated the column information. In the second case
+    we changed the TURL code itself to be able to aggregate over rows instead of columns. <br>
     Detailed information on settings and hyperparameters adjusted during the experimentation are presented in the table below.
 
 
@@ -1095,10 +1093,10 @@
     and the authors' <a href="https://github.com/wbsg-uni-mannheim/contrastive-product-matching">repository</a>. Their model already offered the use-case of binary pair-wise classification for product matching.
     From there we reformulated their approach to serve as a multi-class classification framework, for both schema and entitiy matching.
     As this approach is not table-based anymore, we had to restructure our data in a similar way as we did for our baseline experiments. While for product matching we only had one
-    dataset available we conducted experiments on all three datasets for schema matching namely small, medium and large. Furthermore, for product we concatenated
+    dataset available, we conducted experiments on all three datasets for schema matching namely small, medium and large. Furthermore, for product we concatenated
     the name and description columns and appended the respective cluster id as the label column. For schema matching the whole column information is concatenated into
     one text column followed the corresponding label. In both cases we basically got rid of the table content information as all entries are compressed into the same file.
-    For contrastive pretraining we then combined training and validation sets into a single one to rely on more data. As mentioned before, the whole power of this apporach builds on
+    For contrastive pretraining we then combined training and validation sets into a single one to rely on more data. As mentioned before, the whole power of this approach builds on
     meaningful contrastive pretraining. It is for the same reason that for product, we decided for a large batch size to avoid noisy gradient signals. In the case of schema matching
     we were not able to set batch size as high as desired due to resource contraints. This is important to note and will be discussed later.
     After successful pretraining we froze the parameters of the encoder network and only trained a linear classifier which is a basic feed forward neural network. For product we even experimented
@@ -1107,8 +1105,6 @@
 
 
 </p>
-<br>
-
 <div style="margin-top:2em;">
     <div style=";margin-right: 2.5em">
         <div class="tab">
@@ -1231,7 +1227,7 @@
 <h2>6 Experimental Results and Error Analysis</h2>
 <!--CONTENT-->
 <p>
-    Within this chapter all experimental results as well as a detailed error analysis will follow. Table 6.1/6.2 illustrate
+    Within this chapter all experimental results as well as a detailed error analysis will follow. Tables 6.1/6.2 illustrate
     the final F1 scores we achieved with best ascertained settings for both tasks.
 <br>
 
