@@ -393,8 +393,8 @@
         Table transformers are models that not only incorporate data from individual entries,
         but include information from their surroundings inside the table as well. This results in models which take a
         whole table representation of a website or a knowledge base as input instead of only single entries like most other models do.
-        The contrastive learning approach on the other hand rather tries to learn general features of the data without the labels by
-        exploring the differences and similarities of the data points.
+        The contrastive learning approach on the other hand rather tries to learn high-level features of a dataset by
+        exploring the differences and similarities of data points.
     </p>
     <span id="toc3.1"></span>
     <h3>3.1 TURL</h3>
@@ -439,7 +439,7 @@
             <img src="./visualizations/Website_images/supervised contrastive loss.JPG" style="margin-bottom:2em;"class="center1"/>
         </figure>
 
-        Figure 3.2 summarizes the general framework of supervised contrastive learning. In general, the whole process is split up in two stages, pretraining
+        Figure 3.2 summarizes the overall framework of supervised contrastive learning. In general, the whole process is split up in two stages, the ccontrastive pretraining
         followed by the second stage of finetuning. The main purpose of contrastive pretraining is to learn hidden representations of respective clusters in such a way
         that instances from the same class end up close in space while instances from different classes end up far in space.
         To this end, the pretraining usually requires pairs of training instances: a positive is defined as a pair of training instances drawn
@@ -491,10 +491,10 @@
             To get a better understanding of hard-to-distinguish cases, we provide some examples in Table 4.1.
             The upper table illustrates three examples of so-called hard non-matching cases. A hard non-match describes two entities which are semantically very close
             but belong to different classes.  As one can see, some entities only differ in some characters, resulting in different cluster assignments.
-            On the other hand, hard matches relate to two entities which belong to the same cluster but are semantically not as close to entities of the same class.
+            On the other hand, hard matches relate to two entities which belong to the same cluster but are not as close in space as other entities within that class.
             This can easily happen when the same entities differ in the character length of their respective name column.
             For hard non-matches we provide the corresponding cosine similarity between a query entity and its closest match while for hard matches we show
-            the cosine metric between the query and the closest product in the same cluster. In both cases, the cosine similarity is computed by comparing the vectorized
+            the cosine metric between a query and its closest match within the same cluster. In both cases, the cosine similarity is computed by comparing the vectorized
             entities obtained by Doc2Vec.
         </p>
 
@@ -749,13 +749,16 @@
 
 
 <p>
-    All of our datasets can be downloaded in <a href="#toc9">section 9</a> but are available for research purposes only.
-    <br><br>
+     All of our datasets can be downloaded in <a href="#toc9">section 9</a> but are available for research purposes only.
+     <a style="color:#FF0000";>Jannik: this is already mentioned in intro. To be consistent either put it in paragraph 4 or leave out as already mentioned</a>
+    
+     <br><br>
     The respective distribution of the chosen columns for schema matching are also displayed in Table 4.3 the with product, being the largest category and source of tables,
     including the majority of the columns. As mentioned above, the chosen columns were to represent different data types so that the set of 207 columns
     includes 150 strings, 21 datetime, 18 float, 13 integers as well as 5 geolocation columns. During the selection of the data set and the aforementioned columns,
      we made sure to include hard matching cases, i.e. columns that are really hard to distinguish for the algorithm. Table 4.4 illustrates two examples
-    of those hard matching cases. The first one shows the values of different kinds of product gtins (global trade item numbers). Overall, there are five different kinds of gtin numbers
+    of those hard matching cases.<a style="color:#FF0000";>Jannik: Given the definition above (from entitiy) we should be more precise here. I think we should go
+    with "hard non-match" to describe your examples here, right?</a> The first one shows the values of different kinds of product gtins (global trade item numbers). Overall, there are five different kinds of gtin numbers
     in the data that are hard to distinguish. Another example of two very similar entities shown in Table 4.4 is derived from the recipe class as most recipe headlines sound exactly like recipe names.
     <br>
 
