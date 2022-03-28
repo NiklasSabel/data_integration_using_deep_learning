@@ -345,19 +345,19 @@
     <h2>2 Theoretical Framework </h2>
     <!--CONTENT-->
     <p>
-        This chapter provides an overview of the theoretical underpinnings and specific information required for the traceability of our work. For this reason, we will
-        introduce the main tasks we are trying to solve: Schema and entity matching. We also give a brief introduction to transformer models, especially BERT-based implementations,
-        as they form the basis for the algorithms we use and became more and more popular in recent years,
-        due to limitations of standard algorithms and measures.
+        This chapter provides an overview of the theoretical underpinnings, frameworks as well as specific information relevant to follow our work. For this reason, we start by
+        introducing the main tasks we are trying to solve: Schema and entity matching. We also give a brief introduction to transformer models, especially BERT-based implementations,
+        as they form the basis for the algorithms we use and, due to limitations of standard algorithms and measures,
+        became more and more popular in recent years.
     <p>
     <span id="toc2.1"></span>
     <h3>2.1 Schema Matching</h3>
     <p>
         Schema Matching describes the task of matching similar or rather the same schemata and finding agreement and unity between applied structures.
-        Database instances, for example, comprise of schemata and respective (table) columns describing the same attribute can be matched.
+        Database instances, for example, comprising of schemata and respective (table) columns describing the same attribute can or often need to be matched.
         The main challenges are size, semantic heterogeneity, generic names, esoteric naming conventions and different languages.
         Therefore, correspondences between the schemes should be detected in an automated or semi-automated manner. Although 1:n and n:1 approaches are possible,
-        the scope of the object is reduced and only 1:1 matching is considered as defined in the problem statement of the initial project discussion.
+        the scope of the object is reduced to only considering 1:1 matching as defined in the problem statement of the initial project discussion.
 
     <p>
     <span id="toc2.2"></span>
@@ -602,7 +602,7 @@
             To create a solid data base, we chose the 20 largest categories of Schema.org in order to gain a large amount of
             tables that contain a sufficient amount of data. Due to the vast amount of disorderly data we initally selected 207 columns to be able
             to additionally reduce the column set in case that we would detect further misfitting criteria during the following data preparation and preprocessing.
-            However, as we wanted to make sure that all tables contain at least three of the selected columns for schema matching, our initial dataset contained 79,318 tables.
+            However, as we wanted to make sure that all tables contain at least three of the selected columns for schema matching, our initial dataset was already reduced to 79,318 tables.
             Further, in order to create a useful dataset, we reduced our sample of tables by checking for tables with more than 10 rows,
             less than 50% NAs within selected columns​ as well as less than 15% NAs within relevant columns in entire table.
             <br> The resulting 54,190 tables were then divided into
@@ -751,12 +751,12 @@
 <p>
     All of our datasets can be downloaded in <a href="#toc9">section 9</a> but are available for research purposes only.
     <br><br>
-    The respective distribution of the chosen columns for schema matching are displayed in the following graph with product, being the largest category and source of tables,
+    The respective distribution of the chosen columns for schema matching are also displayed in Table 4.3 the with product, being the largest category and source of tables,
     including the majority of the columns. As mentioned above, the chosen columns were to represent different data types so that the set of 207 columns
     includes 150 strings, 21 datetime, 18 float, 13 integers as well as 5 geolocation columns. During the selection of the data set and the aforementioned columns,
      we made sure to include hard matching cases, i.e. columns that are really hard to distinguish for the algorithm. Table 4.4 illustrates two examples
-    of those hard match cases. The first one shows the values of different kind of gtins (global trade item numbers). There are five different kind of gtin numbers
-    in the data which are hard to distinguish. Another example are two entities from the recipe class. Most recipe headlines sound like recipe names.
+    of those hard matching cases. The first one shows the values of different kinds of product gtins (global trade item numbers). Overall, there are five different kinds of gtin numbers
+    in the data that are hard to distinguish. Another example of two very similar entities shown in Table 4.4 is derived from the recipe class as most recipe headlines sound exactly like recipe names.
     <br>
 
 
@@ -837,20 +837,20 @@
         </tbody>
         </table>
 <p>
-    As a baseline for schema matching, both tree and BERT-based models were used. The tree based models use a random forest with
-    both value and meta based data. The value based datasets are both created with TF-IDF. Hereby, a global and a binary approach is used.
-    For TF-IDF the data is preprocessed with the following steps: the concatenated text of each column is lower-cased and tokenized. Also,
-    stopwords and punctuation is removed.
-    The meta approach is based on the following properties of the data: whether or not it has a structure such as {},
-    the length of the value, the average word length and a binary variable whether the column includes dates. To keep the original
-    structure of the data, no preprocessing is done. Hereby, the regular TF-IDF approach yields a micro F1-Score of 0.35 and the binary TF-IDF
-    approach yields a micro F1-Score of 0.27 while the meta approach yields a micro F1-Score of 0.12.
+    As a baseline for schema matching, both tree and BERT-based models were used. As a tree based model, we applied a random forest with
+    both value and meta-based data.
+    <br> The value based datasets were both created with TF-IDF, whereby a global and a binary approach was used.
+    For TF-IDF the data was preprocessed with the following steps: the concatenated text of each column was lower-cased and tokenized and
+    stopwords as well as punctuation was removed. The meta approach was based on the following properties of the data:
+    whether or not the column content was structured within brackets such as {}, the length of the value, the average word length and a binary variable whether the column includes dates.
+    To keep the original structure of the data, no preprocessing was performed. Hereby, the regular TF-IDF approach yielded a micro F1-Score of 0.35 and the binary TF-IDF
+    approach yielded a micro F1-Score of 0.27 while the meta approach yielded a micro F1-Score of 0.12.
     Further, we used BERT-based models such as BERT, RoBERTa, TinyBERT and DistilBERT as baseline models for the
     respective small, medium as well as large training data set. As a data base the concatenated values of the target columns were used.
-    To keep as much information as possible, no further preprocessing was done. The models were trained with 25 epochs. As can be
-    seen in the results in table 4.3, the models perform quite different on the small and medium datasets. Except for TinyBERT,
-    the performance of the different models converges for the large data set.
-    <a style="color:#FF0000";>Kim: tense? Formulierungen?</a>
+    To keep as much information as possible, agin, no further preprocessing was applied. The models were trained with 25 epochs. As can be
+    seen in the results in table 4.3, the models performed quite different on the small and medium datasets. However, when looking at the
+    results of the large training data set, all models performed quite well and, except for TinyBERT,
+    all models reached a performance of 0.80 micro F1 Score.
 
     <table style="width:35%" class="centertable">
         <caption style="margin-top: 1em">Table 5.2: Micro F1-scores for BERT-based baseline models in schema matching.</caption>
