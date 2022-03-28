@@ -850,8 +850,8 @@
     approach yielded a micro F1-Score of 0.27 while the meta approach yielded a micro F1-Score of 0.12.
     Further, we used BERT-based models such as BERT, RoBERTa, TinyBERT and DistilBERT as baseline models for the
     respective small, medium as well as large training data set. As a data base the concatenated values of the target columns were used.
-    To keep as much information as possible, agin, no further preprocessing was applied. The models were trained with 25 epochs. As can be
-    seen in the results in table 4.3, the models performed quite different on the small and medium datasets. However, when looking at the
+    To keep as much information as possible, again, no further preprocessing was applied. The models were trained with 25 epochs. As can be
+    seen in the results in Table 5.2, the models performed quite different on the small and medium datasets. However, when looking at the
     results of the large training data set, all models performed quite well and, except for TinyBERT,
     all models reached a performance of 0.80 micro F1 Score.
 
@@ -1101,16 +1101,14 @@
     For contrastive pretraining we then combined training and validation sets into a single one to rely on more data. As mentioned before, the whole power of this apporach builds on
     meaningful contrastive pretraining. It is for the same reason that for product, we decided for a large batch size to avoid noisy gradient signals. In the case of schema matching
     we were not able to set batch size as high as desired due to resource contraints. This is important to note and will be discussed later.
-    After successful pretraining we froze the parameters of the encoder network and only trained a linear classifier which is a basic feed forward neural network.
-    Detailed information on the respective hyperparameter settings during experimentation are presented in the table below.
+    After successful pretraining we froze the parameters of the encoder network and only trained a linear classifier which is a basic feed forward neural network. For product we even experimented
+    with unfrozen parameters but results did not outperform the frozen setting.
+    Table 5.5/5.6 summarizes our respective hyperparameter settings for the contrastive learning experiments. Note that for the fine-tuning step, we train our models for up to 150 epochs using early stopping if validation loss does not improve significantly.
 
 
 </p>
 <br>
 
-    <a style="color:#FF0000";>
-            @Jannik, Marvin bitte settings anpassen. Bzw. eine Setting Representation erstellen
-        </a>
 <div style="margin-top:2em;">
     <div style=";margin-right: 2.5em">
         <div class="tab">
@@ -1119,7 +1117,7 @@
         </div>
         <div id="schemacon" class="tabcontent" style="display:block;">
             <table class="Multi-class">
-                <caption style="margin-top: 1em">Table 5.6: Schema Contrastive Learning Settings</caption>
+                <caption style="margin-top: 1em">Table 5.5: Schema Contrastive Learning Settings</caption>
                  <tr>
                     <th>Category</th>
                     <th colspan="1" style='text-align:center; vertical-align:middle'> Pretraining</th>
@@ -1149,6 +1147,13 @@
                     <td>5e-5</td>
 
                 </tr>
+                <tr>
+                  <td  style="background-color:#E8E8E8">Temperature</td>
+                  <td>0.07</td>
+                  <td>0.07</td>
+                  <td>0.07</td>
+                  <td>0.07</td>
+              </tr>
                 <tr>
                     <td  style="background-color:#E8E8E8">Batch Size</td>
                     <td>128</td>
@@ -1178,9 +1183,8 @@
                 <tr>
                     <th></th>
                     <th></th>
-                    <th>Small</th>
-                    <th>Medium</th>
-                    <th>Large</th>
+                    <th>Frozen</th>
+                    <th>Unfrozen</th>
                 </tr>
 
                 <tr>
@@ -1188,32 +1192,32 @@
                     <td>200</td>
                     <td>150</td>
                     <td>150</td>
-                    <td>150</td>
-
                 </tr>
                 <tr>
                     <td  style="background-color:#E8E8E8">Learning Rate</td>
                     <td>5e-5</td>
                     <td>5e-5</td>
                     <td>5e-5</td>
-                    <td>5e-5</td>
-
+                    
                 </tr>
+                <tr>
+                  <td  style="background-color:#E8E8E8">Temperature</td>
+                  <td>0.07</td>
+                  <td>0.07</td>
+                  <td>0.07</td>
+                  
+              </tr>
                 <tr>
                     <td  style="background-color:#E8E8E8">Batch Size</td>
                     <td>1024</td>
                     <td>128</td>
                     <td>128</td>
-                    <td>128</td>
-
                 </tr>
                 <tr>
                     <td  style="background-color:#E8E8E8">Tokenizer</td>
                     <td>RoBERTa</td>
                     <td>RoBERTa</td>
                     <td>RoBERTa</td>
-                    <td>RoBERTa</td>
-
                 </tr>
             </table>
         </div>
