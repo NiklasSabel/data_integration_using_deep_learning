@@ -1710,7 +1710,7 @@ Wollen wir, dass die Tables zwei verschiedene Nummern haben?
           <table class="picturetable">
                 <tr>
                   <td><figcaption style="text-align:center">(a) All models perform good.</figcaption><img src="./visualizations/Entity/Error_Analysis_Overlaps_all_good.png" style="margin-bottom:2em;" class="center" width="90%" height="auto"/></td>
-                  <td><figcaption style="text-align:center">(b) All models perform bad</figcaption><img src="./visualizations/Entity/Error_Analysis_Overlaps_all_bad.png" style="margin-bottom:2em;" class="center" width="90%" height="auto"/></td>
+                  <td><figcaption style="text-align:center">(b) All models perform bad.</figcaption><img src="./visualizations/Entity/Error_Analysis_Overlaps_all_bad.png" style="margin-bottom:2em;" class="center" width="90%" height="auto"/></td>
                 <tr>
                   <td><figcaption style="text-align:center">(c) Baseline performs better than TURL.  F1 baseline: 1.0</figcaption><img src="./visualizations/Entity/Error_Analysis_Baseline%20better%20than%20TURL.png" style="margin-bottom:2em;" class="center" width="90%" height="auto"/></td>
                   <td><figcaption style="text-align:center">(d) TURL performs better than baseline.  F1 baseline: 0.33</figcaption><img src="./visualizations/Entity/Error_Analysis_TURL%20better%20than%20baseline.png" style="margin-bottom:2em;" class="center" width="90%" height="auto"/></td>
@@ -1740,31 +1740,40 @@ Wollen wir, dass die Tables zwei verschiedene Nummern haben?
   <br>
   However, while clean table content seems to provide good results for both baseline as well as table-based models, specific hard cases such as product gtins,
   despite the large amount of data, still seems to be rather difficult to differentiate. Taking this as an example, one could further look into the specific
-  column content of hard matching cases and possibly identify noise, other misleading content or further relevant context information. The test data already yielded roughly ten percent of noise, mainly due to languages other than english, we assume that there are also roughly 10 percent of
+  column content of hard matching cases and possibly identify noise, other misleading content or further relevant context information. The test data already yielded roughly ten percent of noise, mainly due to languages other than English, we assume that there are also roughly 10 percent of
   noise within the training data. Hence, further cleaning and investigation of the column content could give more insights and potentially lead to better
   model performance as well.
   <br>
-  Furthermore, contrastive learning being a non table-based approach clearly outperformed TURL on the task of product matching. This could indicate 
-  that TURL is much stronger in remembering context on a schema level rather than on entity level.
-  <br>
-  With regard to further work that can be applied to the tasks of data integration and transformer models, we also suggest to gather more training data and
-  gain more insights on other categories next to the already chosen ones. Additionally, due to time restrictions, we did not focus extensively on hyperparameter
-  tuning during our project. Therefore, further experiments and adjustment of different hyperparameters within TURL, such as learning rate,
-  could also lead to better results.
-  <br>
-  As data integration using deep learning is still considered as new ground, further table-based models such as encoder-decoder transformer models [17] 
-  or hierarchical table transformers (HTT) [to be done], could be investigated and used for further experimentation. At the same time, due to time limitations, our project team was not able to dive deeper into the
-  analysis and exploration of contrastive learning. As described above for schema matching we only managed to run pretraining with a batch size of 128. Since pretraining
-  is a crucial part of the contrastive approach, it is worth trying to experiment with a batch size of 1024 (as we did for product matching). Moreover, further
-  experimentation on hyperparameters such as learning rate, temperature or augmentation would also be a possibility for improvements and further insights.
+ 
+    Drawing a conclusion on the task of entity matching, it is remarkable that overall Contrastive Learning by far
+    outperformed our other models and TURL indeed achieved only comparably poor results. This is in great contrast to
+    the schema matching results. Since the column type annotation as the chosen finetuning task is in general more applicable
+    for schema matching where context of columns plays a more crucial role it is not surprising that results for schema matching
+    were better than for entity matching. Nevertheless, we tried to adapt the model by transposing our input for TURL such that
+    we could still use the model at hand which therefore yet worked quite well. <a style="color:#FF0000";>Kim@Niklas: was zum umformulierten Modell?</a>
+    On the other hand, Contrastive Learning being a non table-based approach rather tries to learn an embedding space to better distinguish between various entities. This approach 
+    seems to work well for product matching but performs poorly on the task of schema matching. This is not surprising as contrastive learning does not utilize 
+    the table context information necessary to perform well on schema matching.
+    
+    <br>
+    With regard to further work that can be applied to the tasks of data integration and transformer models, we also suggest to gather more training data and
+    gain more insights on other categories next to the already chosen ones. Additionally, due to time restrictions, we did not focus extensively on hyperparameter
+    tuning during our project. Therefore, further experiments and adjustment of different hyperparameters within TURL, such as learning rate,
+    could also lead to better results.
+
+    <br>
+
+    As data integration using deep learning is still considered as new ground, further table-based models such as encoder-decoder transformer models [17] 
+    or hierarchical table transformers (HTT) [to be done], could be investigated and used for further experimentation. At the same time, due to time limitations, our project team was not able to dive deeper into the
+    analysis and exploration of contrastive learning. As described above for schema matching we only managed to run pretraining with a batch size of 128. Since pretraining
+    is a crucial part of the contrastive approach, it is worth trying to experiment with a batch size of 1024 (as we did for product matching). Moreover, further
+    experimentation on hyperparameters such as learning rate, temperature or augmentation would also be a possibility for improvements and further insights.
 
 <br>
 
 
 <br>
     <a style="color:#FF0000";>(Application Schema & Entity Matching together? (see slides Bizer: https://www.uni-mannheim.de/media/Einrichtungen/dws/Files_Teaching/Web_Data_Integration/HWS2021/WDI04-IdentityResolution-HWS2021.pdf))
-    <br>
-        - Specifics for entity missing.
     </a>.
 </p>
 
