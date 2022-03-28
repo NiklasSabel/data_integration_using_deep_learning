@@ -370,7 +370,7 @@
         like Levenshtein distance or advanced techniques like BERT. Newer approaches include the application of
         so-called table transformers which will be discussed in <a href="#toc3">Section 3</a>. Entity matching tries to allocate entities
         with different representations under the assumption that the higher the similarity is, the more likely two
-        entity representations are a match <a href="#toc8">[1]</a>.
+        entity representations are a match <a href="#toc8">[8]</a>.
 
     <span id="toc2.3"></span>
     <h3>2.3 Transformer Models</h3>
@@ -556,7 +556,7 @@
         the high possibility of multiple pitfalls given by the high amount of data.
 
 
-        With a multilabel stratified shuffle-split <a href="#toc8">[1]</a> we distributed the remaining clusters
+        With a multilabel stratified shuffle-split <a href="#toc8">[16]</a> we distributed the remaining clusters
         into &frac38; train, &frac14; validation and &frac38; test data. With this approach we ensured that
         tables were distributed equally across size and selected clusters. To avoid skewing the results, we also manually
         cleaned the test set, detecting about 10% noise, which we discarded entirely. Thereby, we ended up with an amount of
@@ -608,7 +608,7 @@
             less than 50% NAs within selected columns​ as well as less than 15% NAs within relevant columns in entire table.
             <br> The resulting 54,190 tables were then divided into
             a training and test set by performing a multi-label stratified shuffle split with three separations (random state = 42) resulting in 44,435 training tables and 9,894 test tables.
-            We chose to perform a multi-label stratified shuffled split <a href="#toc8">[1]</a> to not only distribute the different categories
+            We chose to perform a multi-label stratified shuffled split <a href="#toc8">[16]</a> to not only distribute the different categories
             but also the selected columns in each category proportionally between the training and test set.
             To compare different input and training sizes later on, our training data was further divided into a medium as well as small sized training set. Again,
             we performed a multi-label stratified shuffled split to distribute the data and especially columns proportionally making sure that all selected columns
@@ -1330,18 +1330,18 @@ Wollen wir, dass die Tables zwei verschiedene Nummern haben?
 
 <p>
     In Table 6.1 we can see that TURL outperforms the baseline models as well as the contrastive learning approach.
-    It seems as the number of epochs that TURL is trained on does not play an important role for the both mid sized
-    and large dataset as the performance converges for both 25 and 50 epochs at the same outcomes. The size of the training dataset
+    It seems as if the number of epochs that TURL is trained on does not play an important role for the both mid sized
+    and large dataset as the performance converges for both 25 and 50 epochs to the same outcomes. The size of the training dataset
     definitely has a great influence on the performance of the baseline models and TURL. The performances increase up to 20 percent points.
     For contrastive learning on the other hand, the size of the dataset only makes a difference of 0.01. Hereby, there is no difference between the
     mid sized and the large dataset.
     <br>
-    When looking at the distribution of F1 Scores for each chosen category and the differences in training sizes, the graph above clearly indicates, that
+    When looking at the distribution of F1 Scores for each chosen category and the differences in training sizes, the graph below clearly indicates, that
     the performance increases with increasing training samples. For some categories, such as TV episode or music album, for examples, the difference is rather large
     while for other categories the difference is not as big. When looking at the data and column count more thoroughly, however, some columns such as number of tracks
     (in music album) that are only represented in 20 tables within the medium-sized training set already achieve an F1 Score higher than 0.8.
     Other columns, such as names (in music album) do not reach an F1 Score of 0.8 despite being represented in more than 160 tables. Hence, even though the models'
-    performances generally increase with a larger training sample size, this is not necessarily indicate that all columns achieve a high F1 Score with more
+    performances generally increase with a larger training sample size, this does not necessarily indicate that all columns achieve a high F1 Score with more
     training data. With regards to time constraints, such an in-depth look was not possible for the contrastive learning approach. But as mentioned earlier, the
     size of the training set does not seem to make a big difference anyway.
 </p>
@@ -1353,11 +1353,11 @@ Wollen wir, dass die Tables zwei verschiedene Nummern haben?
 
 <p>
   Therefore, to deepen the understanding of the differences between the baselines, the contrastive learning approach and TURL, a more detailed evaluation
-    with regards to the datatypes of the data is of interest. For example, while TinyBERT and Contrastive Learning reach respectively a micro F1 Score of
-    0.5034 and 0.5780 for the type geolocation, TURL outperforms them with a micro F1 Score of 0.8857.
+    with regards to the datatypes is of interest. For example, while TinyBERT and Contrastive Learning reach a micro F1 Score of
+    0.5034 and 0.5780 respectively for the type geolocation, TURL outperforms them with a micro F1 Score of 0.8857.
     Also floats and integers reach much higher micro F1 Scores with TURL.
-  For datetime the performances of the three approaches are quite similar. Only the type string is detected more accurately
-  by the baseline model and the contrastive approach. The following table shows Detailed F1 scores for each data type and model applied with the best
+  For datetime, the performances of the three approaches are quite similar. Only the type string is detected more accurately
+  by the baseline model and the contrastive approach. The following table shows detailed F1 scores for each data type and model applied with the best
   performing data type highlighted for each model.
 
 </p>
@@ -1415,10 +1415,10 @@ Wollen wir, dass die Tables zwei verschiedene Nummern haben?
 <p>
   In addition to differences in data types in general, when looking into the data and tables more thoroughly, further criteria amount for
   differences in the models' performances. As the analysis of different data types already suggests, all baseline models perform fairly well
-   on string input as they seem to be more easily identifiable when being concatenated as input. At the same time clean column content of strings
+   on string input as they seem to be more easily identifiable when being concatenated as input. At the same time, clean column content of strings
    or integers only performs similarly well for both baselines, CL as well as TURL.
   Compared to the baselines, TURL performs significantly better on columns containing rather complex content, such as mixtures of strings and integers or floats combined.
-  Examples of such complex columns are openinghours specification of places or address columns for different categories such as person, hotel or local business.
+  Examples of such complex columns are openinghours, specification of places or address columns for different categories such as person, hotel or local business.
   The table below shows some examples of clean, e.g. total time, and complex, e.g. address, columns as well as the respective F1 score of the models.
 
   <div style="margin-top:2em;">
@@ -1535,18 +1535,18 @@ Wollen wir, dass die Tables zwei verschiedene Nummern haben?
 <h3>6.2 Entity Matching Results</h3>
 
 <p>
-    Unlike schema matching, the results for entity matching appear slightly different (see Table 6.2). RoBERTa as our best performing
-    baseline with a F1 score of around 0.90 outperforms the TURL model by far (best F1 score: around 0.76). Moreover,
-    the Contrastive Learning (frozen) model exceeds these scores by almost 4% ending up with the best F1 score of around 0.94.
+    Unlike schema matching, the results for entity matching appear slightly different (see Table 6.2). RoBERTa, as our best performing
+    baseline with a F1 score of around 0.90, outperforms the TURL model by far (best F1 score: around 0.76). Moreover,
+    the Contrastive Learning (frozen) model exceeds these scores by almost 4%, ending up with the best F1 score of around 0.94.
     <br>
     To go deeper into analysis, we compared the best performing models of each category namely RoBERTa for the baseline,
     TURL (the transposed version) and Contrastive Learning (frozen) on different characteristics. We therefore filtered
     on specifically created features or existing variables and calculated single F1 scores on each possible value. For TURL, we
-    had to calculate an averaged F1 score since predictions were not given at hand but rather we were
+    had to calculate an averaged F1 score since predictions were not given at hand, but rather we were
     directly provided with F1 scores per cluster. This approach helped us finding intrinsic differences between the models.
     <br>
     As Figure 6.2 illustrates, the different sizes of train data already show various impact on the F1 score.
-    We binned the sizes of train data appropriately to our data and calculated F1 scores separately on the
+    We binned the sizes of train data appropriately to our circumstances and calculated F1 scores separately on the
     given bins. Although all indicate an increasing F1 score for increasing sizes of train data, the baseline and TURL
     start at around the same level whereas Contrastive Learning achieves very good results with only zero to five training
     instances given. The baseline and Contrastive Learning then both increase steadily, the baseline having a more steep
@@ -1564,7 +1564,7 @@ Wollen wir, dass die Tables zwei verschiedene Nummern haben?
     Similarly, we examined the influence of the different domains (<a href="toc4.1">Section 4.1</a>) of the product data that were established in the preprocessing step
     (Figure 6.3). Here, it is of interest to mention that especially the domains bikes, cars, and
     technology meet the highest scores and drugstore and clothes perform worst on all of the models. One possible explanation
-    for this can be that the former are rather structured entities containing precise model numbers and description whereas
+    for this can be that the former are rather structured entities containing precise model numbers and description, whereas
     the latter represent more unstructured data where it is therefore harder to make good predictions. Differences between
     the models occur with the domain random where the baseline and Contrastive Learning outperform TURL relatively speaking.
     In general, Contrastive Learning still achieves very good results even with drugstore and clothes, dating F1 scores
@@ -1622,7 +1622,7 @@ Wollen wir, dass die Tables zwei verschiedene Nummern haben?
     Going deeper into analysis, a correlation with the domain attribute as well as the train size was discovered.
     Especially the domain technology contains mostly entries without description where the baseline and Contrastive Learning
     are very good. <a style="color:#FF0000";>Kim: Aussage mit domains hier eigentlich eher schwierig (siehe random)</a>.
-    Moreover, the entries which do not contain any descriptions are mostly clusters 15 to 50 entries where we could see
+    Moreover, the entries which do not contain any descriptions are mostly clusters with 15 to 50 entries where we could see
     that TURL's curve in Figure 6.2 registers a drop. Of course, these characteristics are all interrelating which is why
     it is hard to distinguish causality.
     <br>
@@ -1659,7 +1659,7 @@ Wollen wir, dass die Tables zwei verschiedene Nummern haben?
     As a last method for comparison, the impact of the length of the name column was investigated. This was only performed
     for TURL and Contrastive Learning since in the baseline we used the concatenation of name and description column as
     input. Therefore, this comparison would not be of any use for the baseline. Nevertheless, Figure 6.7 shows a very different
-    behaviour between the two models. Although for both a name column with five to ten tokens appears to be the best input
+    behaviour between the two models. Although for both a name column with five to ten tokens appears to be the best input,
     TURL records a steep decrease with increasing name length whereas Contrastive Learning draws still very good results
     for large names and only drops significantly for a length of over 500 tokens. Very long names here are assumed to include
     too much noise and therefore hinder the model from precise predictions.
@@ -1673,7 +1673,7 @@ Wollen wir, dass die Tables zwei verschiedene Nummern haben?
         <p style="clear: both;">
       </figure>
 
-    After the statistical analysis of our results, we decided to further have a look into the data itself to find intrinsic
+    After the statistical analysis of our results, we decided to further look into the data itself for investigating intrinsic
     overlaps and differences between the models. First, one quickly recognizes that all models perform good on mostly very
     clean and large clusters where the data between different clusters is not too similar and entries include entity-specific
     tokens like model numbers for example. On the other hand, the tested models have a hard time with clusters which are
@@ -1692,7 +1692,7 @@ Wollen wir, dass die Tables zwei verschiedene Nummern haben?
     to the hard cases where either one cluster is picked as the go-to prediction and therefore results in a kind of randomness as the explanation.
     <br>
     Data examples for the outlined analysis can be found in Figure 6.8. F1 scores in (a)-(d) are given by TURL, in (e)
-    by Contrastive Learning. Respective baseline F1 score for the differences are added in the description.
+    by Contrastive Learning. Respective baseline F1 scores for the differences are added in the description.
     <br>
     <br>
 
@@ -1751,16 +1751,15 @@ Wollen wir, dass die Tables zwei verschiedene Nummern haben?
 
 
 <br>
-    <a style="color:#FF0000";>(Application Schema & Entity Matching together? (see slides Bizer: https://www.uni-mannheim.de/media/Einrichtungen/dws/Files_Teaching/Web_Data_Integration/HWS2021/WDI04-IdentityResolution-HWS2021.pdf))</a>.
+    <a style="color:#FF0000";>(Application Schema & Entity Matching together? (see slides Bizer: https://www.uni-mannheim.de/media/Einrichtungen/dws/Files_Teaching/Web_Data_Integration/HWS2021/WDI04-IdentityResolution-HWS2021.pdf))
+    <br>
+        - Specifics for entity missing.
+    </a>.
 </p>
 
 <span id="toc8"></span>
 <h2>8 References</h2>
 <ol>
-    <li>Bradberry, T.J.:
-      <a href="https://github.com/trent-b/iterative-stratification" target="blank">Iterative Stratification</a>.
-      (2018).
-    </li>
     <li>Deng, X. et al.:
         <a href="https://doi.org/10.48550/arXiv.2006.14806" target="_blank">TURL: Table Understanding through Representation Learning</a>. In:
        Proceedings of the VLDB Endowment 14, 3, 307--319 (2020).
@@ -1835,6 +1834,10 @@ Wollen wir, dass die Tables zwei verschiedene Nummern haben?
             href="https://aclanthology.org/2020.acl-main.745"
             target="_blank">TaBERT: Pretraining for Joint Understanding of Textual and Tabular Data</a>.
         In: Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics, 8413–8426, (2020)
+    </li>
+    <li>Bradberry, T.J.:
+      <a href="https://github.com/trent-b/iterative-stratification" target="blank">Iterative Stratification</a>.
+      (2018).
     </li>
     </ol>
     <span id="toc9"></span>
