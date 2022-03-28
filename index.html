@@ -251,7 +251,7 @@
         This website engages with the experiments and results of a six month student team project on the topic "Data
         Integration using Deep Learning" at the WIM faculty at the University of Mannheim under the supervision of Ralph
         Peeters and Christian Bizer (Chair of Information Systems V: Web-based Systems). We have investigated the performance
-        of table transformer frameworks on the tasks of matching entities (entity matching) and schemes
+        of table frameworks on the tasks of matching entities (entity matching) and schemes
         (schema matching) across tables. The task is presented as a multi-class classification
         problem of characterising if a row (entity) or a column (schema) belongs to a predefined
         cluster/has a specific label.
@@ -542,14 +542,14 @@
             </table>
 
         To increase the performance of the models, post-preprocessing was applied through a cleaning procedure. This procedure
-        entails the removal of special characters and duplicates. More complex cleaning approaches were not applied due to
+        entails the removal of special characters and duplicates. More complex cleaning approaches were not used due to
         the high possibility of multiple pitfalls given by the high amount of data.
 
 
         With a multilabel stratified shuffle-split <a href="#toc8">[1]</a> we distributed the remaining clusters
         into &frac38; train, &frac14; validation and &frac38; test data. With this approach we ensured that
         tables were distributed equally across size and selected clusters. To avoid skewing the results, we also manually
-        cleaned the test set, detecting about 10% noise, which we then discarded entirely. Thereby, we ended up with an amount of
+        cleaned the test set, detecting about 10% noise, which we discarded entirely. Thereby, we ended up with an amount of
         1,410 clusters that were used for training the algorithms. The final set sizes can be seen in Table 4.2.
 
 
@@ -806,15 +806,15 @@
     We included one tree-based model in Random Forest, and two BERT-based models in TinyBERT and RoBERTa, because, as mentioned
     in <a href="#toc3.1">Section 3.1</a>, TURL is based on TinyBERT.
     All the baselines were modelled as multi-class classification that were presented a concatentation of the entity name and
-    a description in case of the product dataset respectively the name of the  entity in case of the LocalBusiness dataset.
-    The results are presented in Table <a style="color:#FF0000";>(x.x)</a>.
+    a description in case of the product dataset
+    The results are presented in Table 5.1 below.
     <table style="width:30%" class="centertable">
         <caption style="margin-top: 1em">Table 5.1: F1-scores for different baselines models in entity matching.</caption>
         <thead>
           <tr>
             <th></th>
             <th>Random Forest</th>
-            <th>TinyBert</th>
+            <th>TinyBERT</th>
             <th>RoBERTa</th>
           </tr>
         </thead>
@@ -836,21 +836,21 @@
     the length of the value, the average word length and a binary variable whether the column includes dates. To keep the original
     structure of the data, no preprocessing is done. Hereby, the regular TF-IDF approach yields a micro F1-Score of 0.35 and the binary TF-IDF
     approach yields a micro F1-Score of 0.27 while the meta approach yields a micro F1-Score of 0.12.
-    Further, we used bert based models such as Bert, RoBERTa, TinyBert and Distilbert as baseline models for the
+    Further, we used BERT-based models such as BERT, RoBERTa, TinyBERT and DistilBERT as baseline models for the
     respective small, medium as well as large training data set. As a data base the concatenated values of the target columns were used.
     To keep as much information as possible, no further preprocessing was done. The models were trained with 25 epochs. As can be
-    seen in the results in table 4.3, the models perform quite different on the small and medium datasets. Except for TinyBert,
+    seen in the results in table 4.3, the models perform quite different on the small and medium datasets. Except for TinyBERT,
     the performance of the different models converges for the large data set.
     <a style="color:#FF0000";>Kim: tense? Formulierungen?</a>
 
     <table style="width:35%" class="centertable">
-        <caption style="margin-top: 1em">Table 5.2: Micro F1-scores for bert-based baseline models in schema matching.</caption>
+        <caption style="margin-top: 1em">Table 5.2: Micro F1-scores for BERT-based baseline models in schema matching.</caption>
             <thead>
               <tr>
                 <th></th>
-                <th>Distilbert</th>
-                <th>Bert</th>
-                <th>TinyBert</th>
+                <th>DistilBERT</th>
+                <th>BERT</th>
+                <th>TinyBERT</th>
                 <th>RoBERTa</th>
               </tr>
             </thead>
@@ -880,7 +880,7 @@
             </table>
 
 <p>
-    As mentioned earlier, TURL is based on TinyBert so that this represents a feasable baseline model and is mainly used
+    As mentioned earlier, TURL is based on TinyBERT, so that this represents a feasable baseline model and is mainly used
     for comparison and evaluation of the results later on.
 </p>
 
@@ -1147,10 +1147,10 @@
                 </tr>
                 <tr>
                     <td  style="background-color:#E8E8E8">Tokenizer</td>
-                    <td>RoBerta</td>
-                    <td>RoBerta</td>
-                    <td>RoBerta</td>
-                    <td>RoBerta</td>
+                    <td>RoBERTa</td>
+                    <td>RoBERTa</td>
+                    <td>RoBERTa</td>
+                    <td>RoBERTa</td>
 
                 </tr>
             </table>
@@ -1197,10 +1197,10 @@
                 </tr>
                 <tr>
                     <td  style="background-color:#E8E8E8">Tokenizer</td>
-                    <td>RoBerta</td>
-                    <td>RoBerta</td>
-                    <td>RoBerta</td>
-                    <td>RoBerta</td>
+                    <td>RoBERTa</td>
+                    <td>RoBERTa</td>
+                    <td>RoBERTa</td>
+                    <td>RoBERTa</td>
 
                 </tr>
             </table>
@@ -1235,10 +1235,10 @@
                 </tr>
                 <tr>
                     <th>Train Set</th>
-                    <th>Bert</th>
-                    <th>TinyBert</th>
-                    <th>Distilbert</th>
-                    <th>RoBerta</th>
+                    <th>BERT</th>
+                    <th>TinyBERT</th>
+                    <th>DistilBERT</th>
+                    <th>RoBERTa</th>
                     <th>Contrastive Learning</th>
                     <th>TURL <br> 25 Epochs</th>
                     <th>TURL <br> 50 Epochs</th>
@@ -1288,8 +1288,8 @@
                 <tr>
                     <th>Set</th>
                     <th>Random Forest</th>
-                    <th>TinyBert</th>
-                    <th>RoBerta</th>
+                    <th>TinyBERT</th>
+                    <th>RoBERTa</th>
                     <th>Frozen</th>
                     <th>Unfrozen</th>
                     <th>TURL (transposed)</th>
@@ -1346,7 +1346,7 @@ Wollen wir, dass die Tables zwei verschiedene Nummern haben?
 
 <p>
   Therefore, to deepen the understanding of the differences between the baselines, the contrastive learning approach and TURL, a more detailed evaluation
-    with regards to the datatypes of the data is of interest. For example, while TinyBert and Contrastive Learning reach respectively a micro F1 Score of
+    with regards to the datatypes of the data is of interest. For example, while TinyBERT and Contrastive Learning reach respectively a micro F1 Score of
     0.5034 and 0.5780 for the type geolocation, TURL outperforms them with a micro F1 Score of 0.8857.
     Also floats and integers reach much higher micro F1 Scores with TURL.
   For datetime the performances of the three approaches are quite similar. Only the type string is detected more accurately
@@ -1527,7 +1527,7 @@ Wollen wir, dass die Tables zwei verschiedene Nummern haben?
 <h3>6.2 Entity Matching Results</h3>
 
 <p>
-    Unlike schema matching, the results for entity matching appear slightly different (see Table 6.2). RoBerta as our best performing
+    Unlike schema matching, the results for entity matching appear slightly different (see Table 6.2). RoBERTa as our best performing
     baseline with a F1 score of around 0.90 outperforms the TURL model by far (best F1 score: around 0.76). Moreover,
     the Contrastive Learning (frozen) model exceeds these scores by almost 4% ending up with the best F1 score of around 0.94.
     <br>
@@ -1655,6 +1655,7 @@ Wollen wir, dass die Tables zwei verschiedene Nummern haben?
     TURL records a steep decrease with increasing name length whereas Contrastive Learning draws still very good results
     for large names and only drops significantly for a length of over 500 tokens. Very long names here are assumed to include
     too much noise and therefore hinder the model from precise predictions.
+    <br>
     <br>
 
     <figcaption style="text-align:center">Figure 6.7: Comparison for length of name column</figcaption>
