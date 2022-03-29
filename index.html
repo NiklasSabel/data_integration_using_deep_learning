@@ -436,16 +436,11 @@
         Figure 3.2 summarizes the overall framework of supervised Contrastive Learning. In general, the whole process is split up in two stages, the contrastive pretraining
         followed by the second stage of finetuning. The main purpose of contrastive pretraining is to learn hidden representations of respective clusters in such a way
         that instances from the same class end up close in space while instances from different classes end up far in space.
-        To this end, the pretraining usually requires pairs of training instances: a positive is defined as a pair of training instances drawn
-        from the same class, while negatives are training instances drawn from different classes. At training time these pairs are fed through two distinct encoder networks which share the same weights.
-        This yields two latent representations which can now be used to compute the supervised contrastive (SupCon) loss which usually involves some sort of similarity metric. The SupCon loss function then
-        maximizes the agreement between positives while it minimizes the agreement between negatives.
         <br>
         After the pretraining step, the encoder network ideally maps each class to a well seperated cluster in the embedding space. For the final stage of finetuning
-        the parameters of the encoder network remain frozen and only the linear classifier is trained using the usal cross-entropy loss for multi-class classification.
+        the parameters of the encoder network remain frozen and only the linear classification head is trained.
         In contrast to other methods, contrastive pretraining makes it much easier to learn decision boundaries for a linear classifier given a pretrained embedding space.
         This makes contrastive pretraining a powerful method for further downstream tasks such as multi-class classification.
-        <a style="color:#FF0000";>@Jannik</a>
     </p>
 
 
@@ -903,7 +898,7 @@
     For Entity matching we experimented with two different approaches. One setting was based on transposing the matrix, such that
     each column was modelled as one entity as the prebuild framework aggregated the column information. In the second case
     we changed the TURL code itself to be able to aggregate over rows instead of columns. For schema matching the proposed column type annotation was directly applicable.<br>
-    Detailed information on settings and hyperparameters adjusted during the experimentation are presented in the table below.
+    Detailed information on settings and hyperparameters adjusted during the experimentation are presented in Table 5.3/5.4.
 
 
 </p>
@@ -1217,8 +1212,7 @@
 <h2>6 Experimental Results and Error Analysis</h2>
 <!--CONTENT-->
 <p>
-    <a style="color:#FF0000";>@Jannik: Nummerierung anpassen + im Text auch</a>
-    Within this Chapter all experimental results as well as a detailed error analysis will follow. tables 6.1/6.2 illustrate
+    Within this chapter all experimental results as well as a detailed error analysis will follow Tables 6.1/6.2 illustrate
     the final F1 scores we achieved with best ascertained settings for both tasks.
 <br>
 
@@ -1327,16 +1321,10 @@
     It seems that increasing the number of epochs that TURL is trained after 25 epochs does not play a significant role for the both mid sized
     and large datasets as the performance converged for both 25 and 50 epochs to the same outcomes. The size of the training dataset, however,
     definitely has a great influence on the performance of the baseline models and TURL as the performances increased up to 20 percent.
-    For contrastive learning on the other hand, the size of the dataset only made a difference of 0.01. Hereby, there was no difference between the
-
-    In Table 6.1 we can see that TURL outperforms the baseline models as well as the Contrastive Learning approach.
-    It seems as if the number of epochs that TURL is trained on does not play an important role for the both mid sized
-    and large dataset as the performance converges for both 25 and 50 epochs to the same outcomes. The size of the training dataset
-    definitely has a great influence on the performance of the baseline models and TURL. The performances increase up to 20 percent points.
-    For Contrastive Learning on the other hand, the size of the dataset only makes a difference of 0.01. Hereby, there is no difference between the
+    For contrastive learning on the other hand, the size of the dataset only made a difference of 0.01. Hereby, there is no difference between the
     mid sized and the large dataset.
     <br>
-    When looking at the distribution of F1 scores for each chosen category and the differences in training sizes, the graph below clearly indicates, that
+    When looking at the distribution of F1 scores for each chosen category and the differences in training sizes, Figure 6.1 clearly indicates, that
     the performance increased with increasing training samples. For some categories, such as TV episode or music album, for example, the difference was rather large
     while for other categories the difference is not as big. When looking at the data and column count more thoroughly, however, some columns such as number of tracks
     (in music album) that are only represented in 20 tables within the medium-sized training set already achieved an F1 score higher than 0.8.
@@ -1344,11 +1332,7 @@
     performances generally increased with a larger training sample size, this does not necessarily indicate that all columns achieve a high F1 score with more
     training data. With regards to time constraints, such an in-depth look was not possible for the contrastive learning approach. But, as mentioned earlier, the
     size of the training set does not seem to make a big difference.
-    (in music album) that are only represented in 20 tables within the medium-sized training set already achieve an F1 score higher than 0.8.
-    Other columns, such as names (in music album) do not reach an F1 score of 0.8 despite being represented in more than 160 tables. Hence, even though the models'
-    performances generally increase with a larger training sample size, this does not necessarily indicate that all columns achieve a high F1 score with more
-    training data. With regards to time constraints, such an in-depth look was not possible for the Contrastive Learning approach. But as mentioned earlier, the
-    size of the training set does not seem to make a big difference anyway.
+
 </p>
 
 <figcaption style="text-align:center">Figure 6.1: F1 score Distribution for each Category and Training Size</figcaption>
@@ -1358,25 +1342,18 @@
 
 <p>
   Therefore, to deepen the understanding of the differences between the baselines, the contrastive learning approach and TURL, a more detailed evaluation
-    with regards to the datatypes is of interest. For example, while TinyBERT and Contrastive Learning reached a micro F1 score of
-    0.5034 and 0.5780 respectively for the type geolocation, TURL outperformed them with a micro F1 score of 0.8857.
-    Also floats and integers reached much higher micro F1 scores with TURL.
-  For datetime, the performances of the three approaches were quite similar. Only the type string was detected more accurately
-  by the baseline model and the contrastive approach. The following Table 6.2 shows detailed F1 scores for each data type and model applied with the best
-  Therefore, to deepen the understanding of the differences between the baselines, the Contrastive Learning approach and TURL, a more detailed evaluation
-    with regards to the datatypes is of interest. For example, while TinyBERT and Contrastive Learning reach a micro F1 score of
-    0.5034 and 0.5780 respectively for the type geolocation, TURL outperforms them with a micro F1 score of 0.8857.
-    Also floats and integers reach much higher micro F1 scores with TURL.
-  For datetime, the performances of the three approaches are quite similar. Only the type string is detected more accurately
-  by the baseline model and the contrastive approach. The following table shows detailed F1 scores for each data type and model applied with the best
-  performing data type highlighted for each model.
-
+  with regards to the datatypes is of interest. For example, while TinyBERT and Contrastive Learning reached a micro F1 Score of
+  0.5034 and 0.5780 respectively for the type geolocation, TURL outperformed them with a micro F1 Score of 0.8857.
+  Also floats and integers reached much higher micro F1 Scores with TURL.
+For datetime, the performances of the three approaches were quite similar. Only the type string was detected more accurately
+by the baseline model and the contrastive approach. Table 6.3 shows detailed F1 scores for each data type and model applied with the best
+performing data type highlighted for each model.
 </p>
 
 <div style="margin-top:2em;">
     <div style=";margin-right: 2.5em">
         <table class="centertable">
-              <caption style="margin-top: 1em">Table 6.2: F1 scores compared for different data types and models</caption>
+              <caption style="margin-top: 1em">Table 6.3: F1 scores compared for different data types and models</caption>
               <tr>
                   <th>Data Type</th>
                   <th colspan="3" style='text-align:center; vertical-align:middle'> Model</th>
@@ -1427,16 +1404,16 @@
   In addition to differences in data types in general, when looking into the data and tables more thoroughly, further criteria amount for
   differences in the models' performances. As the analysis of different data types already suggests, all baseline models performed fairly well
    on string input as they seem to be more easily identifiable when being concatenated as input. At the same time, clean column content of strings
-   or integers only performed similarly well for both baselines, CL as well as TURL. Clean column content, as shown in the example of bookformat in Table 6.2
+   or integers only performed similarly well for both baselines, CL as well as TURL. Clean column content, as shown in the example of bookformat in Table 6.4
    only contains one data type and no mixtures.
   Compared to the baselines, TURL performed significantly better on columns containing rather complex content. Complex content can be mixtures of strings and integers or floats combined.
   Examples of such complex columns are opening hours, specification of places or address columns for different categories such as person, hotel or local business.
-  Table 6.2 below shows some examples of clean, e.g. total time, and complex, e.g. address, columns as well as the respective F1 score of the models.
+  Table 6.4 below shows some examples of clean, e.g. total time, and complex, e.g. address, columns as well as the respective F1 score of the models.
 
   <div style="margin-top:2em;">
       <div style=";margin-right: 2.5em">
           <table class="centertable">
-                <caption style="margin-top: 1em">Table 6.2: Examples of different Column and Data Types and respective F1 score Results for the Large Train Size</caption>
+                <caption style="margin-top: 1em">Table 6.4: Examples of different Column and Data Types and respective F1 score Results for the Large Train Size</caption>
                 <tr>
                     <th>Column</th>
                     <th>Data Type</th>
@@ -1489,7 +1466,7 @@
           </div>
   <br>
 
-  As mentioned earlier, product gtins are examples of hard matching cases. Accordingly, results of the different models, displayed in table 6.3,
+  As mentioned earlier, product gtins are examples of hard matching cases. Accordingly, results of the different models, displayed in Table 6.5,
     show rather bad to moderate performances of the respective columns. It is evident that TURL outperformed the approaches for gtins for every case while the constrastive approach is outperformed by TinyBERT.
     However, even TURL only achieved an F1 score of 0.7250 for gtin13, which performed best for
     all models as the column comprises more training data compared to the other gtins. These results suggest that, despite the difference in length of the
@@ -1502,7 +1479,7 @@
     <div style="margin-top:2em;">
       <div style=";margin-right: 2.5em">
           <table class="centertable">
-                <caption style="margin-top: 1em">Table 6.3: Examples of different gtin numbers and respective F1 score Results for the Large Train Size</caption>
+                <caption style="margin-top: 1em">Table 6.5: Examples of different gtin numbers and respective F1 score Results for the Large Train Size</caption>
                 <tr>
                     <th>Column</th>
                     <th>Data Type</th>
@@ -1600,12 +1577,12 @@
 
     Next, the investigation for the influence of the description column for the different models was undermined. It could
     be found that the baseline and Contrastive Learning both perform better without a description than with one. This is in contrast
-    to TURL where the model prefers having more context. Detailed scores are given in Table 6.4.
+    to TURL where the model prefers having more context. Detailed scores are given in Table 6.6.
 
     <div style="margin-top:2em;">
       <div style=";margin-right: 2.5em">
           <table class="centertable">
-                <caption style="margin-top: 1em">Table 6.4: Impact of description column</caption>
+                <caption style="margin-top: 1em">Table 6.6: Impact of description column</caption>
                 <tr>
                     <th></th>
                     <th>F1 Baseline</th>
@@ -1628,7 +1605,7 @@
           </div>
     <br>
 
-    <figcaption style="text-align:center">Figure 6.5: Impact of description column - Correlation with other investigations</figcaption>
+    <figcaption style="text-align:center">Figure 6.4: Impact of description column - Correlation with other investigations</figcaption>
       <figure>
         <img src="./visualizations/Entity/Amt_with_desc_domain.png" style="margin-bottom:2em;" class="left" width="40%" height="auto"/>
         <img src="./visualizations/Entity/Amt_without_desc_domain.png" style="margin-bottom:2em;" class="right" width="40%" height="auto"/>
@@ -1641,17 +1618,17 @@
     Especially the domain technology contains mostly entries without description where the baseline and Contrastive Learning
     are very good.
     Moreover, the entries which do not contain any descriptions are mostly clusters with 15 to 50 entries where we could see
-    that TURL's curve in Figure 6.2 registers a drop. Of course, these characteristics are all interrelating which is why
+    that TURL's curve in Figure 6.4 registers a drop. Of course, these characteristics are all interrelating which is why
     it is hard to distinguish causality.
     <br>
     As a next step, comparing the overall F1 score to the one filtered on hard cases only appeared to be an interesting
-    tool of choice. The results in Table 6.6 confirm what was expected: The predictions for hard cases
+    tool of choice. The results in Table 6.7 confirm what was expected: The predictions for hard cases
     appear more difficult. All models date a 10% difference in F1.
 
     <div style="margin-top:2em;">
       <div style=";margin-right: 2.5em">
           <table class="centertable">
-                <caption style="margin-top: 1em">Table 6.6: Comparison for hard cases</caption>
+                <caption style="margin-top: 1em">Table 6.7: Comparison for hard cases</caption>
                 <tr>
                     <th></th>
                     <th>Baseline</th>
@@ -1676,14 +1653,14 @@
 
     As a last method for comparison, we investigated the impact of the amount of tokens in the name column. This was only performed for TURL
     since both, Contrastive Learning and the baseline, operate with the concatenation of name and description column as
-    input which means that the comparison would not be of any use here. Figure 6.7 shows that a name column with five to ten tokens appears to be the best input.
-    A shorter name seems to be to less information for the model.
+    input which means that the comparison would not be of any use here. Figure 6.5 shows that a name column with five to ten tokens appears to be the best input.
+    A shorter name seems to be too less information for the model.
     TURL then records a steep decrease with increasing name length. This is probably because very long names contain more
     noise and therefore hinder the model from precise predictions.
     <br>
     <br>
 
-    <figcaption style="text-align:center">Figure 6.7: Comparison for length of name column</figcaption>
+    <figcaption style="text-align:center">Figure 6.5: Comparison for length of name column</figcaption>
       <figure>
         <img src="./visualizations/Entity/TURL_F1_amt_tokens_test.png" style="margin-bottom:2em;" class="center" width="40%" height="auto"/>
         <p style="clear: both;">
@@ -1707,12 +1684,12 @@
     analysis, of course the baseline also registers better F1 scores on some given clusters but these have to be attributed
     to the hard cases where either one cluster is picked as the go-to prediction and therefore results in a kind of randomness as the explanation.
     <br>
-    Data examples for the outlined analysis can be found in Figure 6.8. F1 scores in (a)-(d) are given by TURL, in (e)
+    Data examples for the outlined analysis can be found in Figure 6.6. F1 scores in (a)-(d) are given by TURL, in (e)
     by Contrastive Learning. Respective baseline F1 scores for the differences are added in the description.
     <br>
     <br>
 
-    <figcaption style="text-align:center">Figure 6.8: Snapshots from our data to illustrate overlaps and differences between the models</figcaption>
+    <figcaption style="text-align:center">Figure 6.6: Snapshots from our data to illustrate overlaps and differences between the models</figcaption>
     <div style="margin-top:2em;">
       <div style=";margin-right: 2.5em">
           <table class="picturetable">
@@ -1763,16 +1740,13 @@
     <br>
     With regard to further work that can be applied to the tasks of data integration and transformer models, we also suggest to gather more training data and
     gain more insights on other categories next to the already chosen ones. Additionally, due to time restrictions, we did not focus extensively on hyperparameter
-    tuning during our project. Therefore, further experiments and adjustment of different hyperparameters within TURL, such as learning rate,
-    could also lead to better results.
-
+    tuning within TURL. Similarly, for schema matching we only managed to run pretraining with a batch size of 128. Since pretraining
+    is a crucial part of the contrastive approach, it is worth trying to experiment with a batch size of 1024 (as we did for product matching). Further
+    experimentation on hyperparameters such as learning rate, temperature or augmentation would also be a possibility for improvements and further insights.
     <br>
 
-    As data integration using deep learning is still considered as new ground, further table-based models such as encoder-decoder transformer models [16]
-    or hierarchical table transformers (HTT) [to be done], could be investigated and used for further experimentation. At the same time, due to time limitations, our project team was not able to dive deeper into the
-    analysis and exploration of contrastive learning. As described above for schema matching we only managed to run pretraining with a batch size of 128. Since pretraining
-    is a crucial part of the contrastive approach, it is worth trying to experiment with a batch size of 1024 (as we did for product matching). Moreover, further
-    experimentation on hyperparameters such as learning rate, temperature or augmentation would also be a possibility for improvements and further insights.
+    As data integration using deep learning is still considered as new ground, other table-based models such as encoder-decoder transformer models [16]
+    or frameworks using multi-task training [17], could be investigated and used for further experimentation. 
     As a last point, it is to mention that until now entity and schema matching was only looked at as separate tasks.
     One might find it of interest to combine the two tasks in an iterative manner in order to deal with the mentioned challenges that occur in web data integration.
 
@@ -1861,8 +1835,9 @@
       <a href="https://arxiv.org/abs/2012.02469" target="blank">RPT: Relational Pre-trained Transformer Is Almost All You Need towards Democratizing Data Preparation</a>.
       arXiv:2012.02469 [cs.LG](2020).
     </li>
-    <li>:Authors
-      <a href="example.com" target="blank">Hierarchical table Transformer</a>.
+    <li>Yoshihiko Suhara, Jinfeng Li, Yuliang Li, Dan Zhang et al.:
+      <a href="https://arxiv.org/abs/2104.01785" target="blank">Annotating Columns with Pre-trained Language Models</a>.
+      arXiv:2104.01785 [cs.DB](2021)
     </li>
     </ol>
     <span id="toc9"></span>
